@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+
+    tools:context="com.chedengwo.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:textColor="#000000"
+        android:text="@string/chedengwo"
+        android:id="@+id/textView"
+        android:gravity="center"
+        android:textSize="50sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:onClick="to1"
+        android:background="#4C5EAE"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/frameLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="126dp"
+
+        >
+
+        <TextView
+            android:layout_marginTop="8sp"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="@string/query"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal|top"
+            android:textSize="24dp"
+            android:textAlignment="center"
+            android:textColor="#ffffff" />
+
+        <ImageView
+
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="center"
+            android:src="@drawable/a1" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:onClick="to2"
+        android:background="#95D624"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/frameLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_marginTop="8sp"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="@string/iwantto"
+            android:id="@+id/textView3"
+            android:layout_gravity="center_horizontal|top"
+            android:textSize="24dp"
+            android:textAlignment="center"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageView2"
+            android:layout_gravity="center"
+            android:src="@drawable/a2" />
+    </FrameLayout>
+
+
+</RelativeLayout>

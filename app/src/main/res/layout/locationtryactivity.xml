@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+
+        <ImageButton
+            android:onClick="back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageButton"
+            android:layout_gravity="left|center_vertical"
+            android:background="@drawable/back" />
+
+        <TextView
+
+            android:layout_width="190dp"
+            android:layout_height="60dp"
+            android:text="我要去"
+            android:id="@+id/textView5"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="50dp"
+            android:textSize="30dp"
+            android:textColor="#fefefe"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+
+
+
+    <FrameLayout
+
+        android:background="#6D8A6A"
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:layout_weight="0.09">
+
+        <ImageView
+
+            android:onClick="jiaohuan"
+            android:src="@drawable/jiaohuan"
+            android:layout_marginLeft="12sp"
+            android:layout_width="54dp"
+            android:layout_height="90dp"
+            android:id="@+id/imageView3"
+            android:layout_gravity="left|center_vertical" />
+
+        <TextView
+            android:onClick="search"
+            android:layout_marginRight="12sp"
+            android:background="@drawable/wenhao"
+            android:layout_width="54dp"
+            android:layout_height="90dp"
+            android:text="@string/sousuo"
+            android:id="@+id/textView4"
+            android:layout_gravity="right|center_vertical"
+            android:textAlignment="center"
+            android:textSize="21sp"
+            android:gravity="bottom" />
+
+        <EditText
+
+            android:layout_marginBottom="8sp"
+            android:hint="@string/zhongdian"
+            android:background="#ffffff"
+            android:layout_width="200dp"
+            android:layout_height="38dp"
+            android:id="@+id/ed2"
+            android:layout_gravity="center_horizontal|bottom" />
+
+        <EditText
+            android:text="我的位置"
+            android:layout_marginTop="8sp"
+            android:hint="@string/qidian"
+            android:background="#ffffff"
+            android:layout_width="200dp"
+            android:layout_height="38dp"
+            android:id="@+id/ed1"
+            android:layout_gravity="center_horizontal|top" />
+    </FrameLayout>
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/testmap"
+        android:layout_width="fill_parent"
+        android:layout_height="500dp"
+        android:clickable="true"
+        android:layout_marginTop="0dp" />
+
+
+
+
+</LinearLayout>
