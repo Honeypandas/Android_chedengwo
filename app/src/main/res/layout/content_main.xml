@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -11,20 +11,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
 
     tools:context="com.chedengwo.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:weightSum="1">
 
 
     <TextView
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
         android:textColor="#000000"
         android:text="@string/chedengwo"
         android:id="@+id/textView"
-        android:gravity="center"
-        android:textSize="50sp"
+        android:gravity="center|center_horizontal"
+        android:textSize="35dp"
+        android:layout_marginTop="39dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:text=""
+        android:id="@+id/locView"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18dp"
+        android:textColor="#ff0000"
+        android:layout_weight="0.31"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal">
     <FrameLayout
         android:onClick="to1"
         android:background="#4C5EAE"
@@ -85,6 +109,35 @@
             android:layout_gravity="center"
             android:src="@drawable/a2" />
     </FrameLayout>
+    </LinearLayout>
+        <FrameLayout
+            android:onClick="to3"
+            android:background="#c2692a"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:layout_alignTop="@+id/frameLayout"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
 
+            <TextView
+                android:layout_marginTop="8sp"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:text="@string/siteroutesear"
+                android:id="@+id/tv_siteroute"
+                android:layout_gravity="center_horizontal|top"
+                android:textSize="24dp"
+                android:textAlignment="center"
+                android:textColor="#ffffff" />
 
-</RelativeLayout>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/im_search"
+                android:layout_gravity="center"
+                android:src="@drawable/search" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

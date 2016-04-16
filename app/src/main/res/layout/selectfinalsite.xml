@@ -30,16 +30,6 @@
             android:layout_below="@+id/tv_name"
             android:gravity="center_vertical" />
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:text="地图"
-            android:id="@+id/button4"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/tv_busid"
-            android:layout_alignEnd="@+id/tv_busid"
-            android:background="#e0773e" />
-
     </RelativeLayout>
 
 </LinearLayout>

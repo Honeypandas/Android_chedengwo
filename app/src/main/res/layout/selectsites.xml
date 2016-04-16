@@ -24,7 +24,7 @@
 
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="@string/myloc"
+            android:text="选择终点"
             android:id="@+id/textView5"
             android:layout_gravity="center"
             android:layout_marginLeft="0dp"

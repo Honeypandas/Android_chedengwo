@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/searlayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,38 +10,37 @@
     android:background="#ffffff">
 
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary">
 
         <ImageButton
             android:onClick="back3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/imageButton"
-            android:layout_gravity="left|center_vertical"
             android:background="@drawable/back" />
 
         <TextView
 
-            android:layout_width="190dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:text="搜索"
             android:id="@+id/textView5"
-            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="50dp"
-            android:textSize="30dp"
+            android:textSize="23dp"
             android:textColor="#fefefe"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_vertical" />
+
         <RelativeLayout
             android:layout_width="154dp"
             android:layout_height="43dp"
             android:layout_gravity="center_vertical|right"
             style="@style/TextAppearance.AppCompat.Button"
-            android:background="#ffffff"
-            android:layout_marginRight="10dp">
+            android:background="#ffffff">
 
             <Button
                 android:onClick="selectroutes"
@@ -73,9 +73,9 @@
         </RelativeLayout>
 
 
-    </FrameLayout>
+    </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -99,7 +99,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="40dp" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 </LinearLayout>

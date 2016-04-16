@@ -1,59 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="50dip"
-        android:layout_width="fill_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-        <TextView android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="在">
-        </TextView>
-        <EditText
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"
-        android:text="北京"
-        android:id="@+id/city"/>
-        <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="市内找">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
-        </TextView>
-        <AutoCompleteTextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="餐厅"
-        android:id="@+id/searchkey"
-        android:layout_weight="0.88"/>
-    </LinearLayout>
+
     <LinearLayout
-    android:orientation="horizontal"
-    android:layout_height="50dip"
-    android:layout_width="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <Button android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:text="开始"
-        android:id="@+id/search"
-        android:layout_weight="12"
-        android:padding="10dip"
-        android:onClick="searchButtonProcess"/>
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:text="下一组数据"
-        android:id="@+id/map_next_data"
-        android:layout_weight="12"
-        android:padding="10dip"
-        android:onClick="goToNextPage"/>
-    </LinearLayout>
-    <fragment
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/map" class="com.baidu.mapapi.map.SupportMapFragment"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+
+        <ImageButton
+            android:onClick="back2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageButton"
+            android:layout_gravity="left|center_vertical"
+            android:background="@drawable/back" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="周边站点查询"
+            android:id="@+id/textView5"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="50dp"
+            android:textSize="26dp"
+            android:textColor="#fefefe"
+            android:layout_marginTop="8dp" />
+
+        <ImageButton
+            android:onClick="to11"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageButton2"
+            android:background="@drawable/search"
+            android:baselineAlignBottom="false" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
+
 </LinearLayout>

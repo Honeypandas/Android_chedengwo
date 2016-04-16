@@ -1,6 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="70dp" android:gravity="right"
+        android:padding="10dp"
+        android:layout_gravity="left">
+
+        <TextView android:id="@+id/tv_name"
+            android:text="沈阳航空航天大学"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#0b0b0b"
+            android:gravity="top|left|center_vertical"
+            android:layout_alignBottom="@+id/tv_distance"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/tv_distance" />
+        <TextView android:id="@+id/tv_busid"
+            android:text="180路"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="14dp"
+            android:textColor="#23750f"
+            android:singleLine="true"
+            android:maxLength="30"
+            android:layout_below="@+id/tv_name" />
+
+        <TextView android:id="@+id/tv_distance"
+            android:text="150米"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textColor="#ed5050"
+            android:gravity="bottom|right"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/tv_busid"
+            android:layout_alignEnd="@+id/tv_busid"
+            android:layout_marginRight="27dp"
+            android:layout_marginEnd="27dp" />
+    </RelativeLayout>
 
 </LinearLayout>
