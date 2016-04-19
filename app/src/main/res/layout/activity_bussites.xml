@@ -13,7 +13,7 @@
         android:background="?attr/colorPrimary">
 
         <ImageButton
-            android:onClick="backselect"
+            android:onClick="back8"
             android:layout_width="60dp"
             android:layout_height="fill_parent"
             android:id="@+id/imageButton"
@@ -24,8 +24,8 @@
 
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="选择终点"
-            android:id="@+id/textView5"
+            android:text="站点"
+            android:id="@+id/siteinfo"
             android:layout_gravity="center"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="50dp"

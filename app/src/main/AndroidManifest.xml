@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test">
 
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -43,7 +44,10 @@
         <activity
             android:name=".iwantogo"
             android:label="@string/IWG"
-            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".selectsites"
+            android:label="@string/IWG"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Query"
@@ -64,11 +68,23 @@
         <activity
             android:name=".searchsite"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Gotosite"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".Map"
+        <activity
+            android:name=".Gotosite"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Map"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".bussites"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BusInfo"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Bus_site_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Bus_station_map"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

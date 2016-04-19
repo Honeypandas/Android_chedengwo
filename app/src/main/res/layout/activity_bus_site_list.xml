@@ -13,10 +13,11 @@
         android:background="?attr/colorPrimary">
 
         <ImageButton
-            android:onClick="backselect"
+
+            android:onClick="bus_site_list_back"
             android:layout_width="60dp"
             android:layout_height="fill_parent"
-            android:id="@+id/imageButton"
+            android:id="@+id/BusInfo_imageButton"
             android:layout_gravity="left|center_vertical"
             android:background="@drawable/back" />
 
@@ -24,8 +25,8 @@
 
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="选择终点"
-            android:id="@+id/textView5"
+            android:text="路线"
+            android:id="@+id/Bus_site_list_info"
             android:layout_gravity="center"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="50dp"
@@ -36,11 +37,10 @@
 
     </LinearLayout>
 
-
-
     <ListView
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@android:id/list" />
+
+
 </LinearLayout>

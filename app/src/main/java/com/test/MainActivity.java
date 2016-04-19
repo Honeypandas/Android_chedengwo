@@ -1,36 +1,74 @@
 package com.test;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TooManyListenersException;
+import java.util.logging.Handler;
 
 public class MainActivity extends AppCompatActivity {
+    LocationClient mLocClient;
+    LatLng mylocation;
+    public MyLocationListenner myListener = new MyLocationListenner();
+    boolean isFirstLoc = true;
+    private PoiSearch poiSearch;
 
+    private String B = "sssss";
 
+    List<PoiInfo> poiInfoList;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -41,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+      //  SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("模拟车等我APP的设计与实现");
@@ -48,15 +87,60 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        ConnectivityManager con = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+        boolean internet = con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+        if (wifi | internet)
+        {
 
-        //初始化SDK
-        //SDKInitializer.initialize(getApplicationContext());
-      //  setContentView(R.layout.activity_main);
+            SDKInitializer.initialize(getApplicationContext());
+
+            MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+            mLocClient = new LocationClient(this);
+            mLocClient.registerLocationListener(myListener);
+            LocationClientOption option = new LocationClientOption();
+            option.setIsNeedAddress(true);
+            option.setIsNeedLocationDescribe(true);
+
+            option.setOpenGps(true); // 打开gps
+            option.setCoorType("bd09ll"); // 设置坐标类型
+            option.setScanSpan(1000);
+            mLocClient.setLocOption(option);
+            mLocClient.start();
 
 
+        } else
+        {
+           // exit();
+
+            Toast.makeText(getApplicationContext(),
+                    "请检查网络是否连接！", Toast.LENGTH_LONG).show();
+
+           check();
 
 
+        }
+/*
 
+        SDKInitializer.initialize(getApplicationContext());
+
+        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+        mLocClient = new LocationClient(this);
+        mLocClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+        option.setOpenGps(true); // 打开gps
+        option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setScanSpan(1000);
+        mLocClient.setLocOption(option);
+        mLocClient.start();
+*/
+
+        //  database nearby=new database(this);
+        // nearby.getWritableDatabase();
+        // DistanceUtil.getDistance(p1, p2);
+        //nearbydata ywq = new nearbydata(MainActivity.this);
+        // ywq.add("yaddas","ydaswq","150米");
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -89,12 +173,11 @@ public class MainActivity extends AppCompatActivity {
     *
     * */
     public void to1(View view) {
-       // Toast.makeText(MainActivity.this, "HHHHH", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(MainActivity.this, "HHHHH", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, Query.class);
         startActivity(intent);
 
     }
-
 
     /*
     *
@@ -103,12 +186,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void to2(View view) {
 
-       // Intent intent = new Intent(MainActivity.this, LocationTryActivity.class);
-     //   startActivity(intent);
+        // Intent intent = new Intent(MainActivity.this, LocationTryActivity.class);
+        //   startActivity(intent);
 
         Intent intent = new Intent(MainActivity.this, LocationTryActivity.class);
         startActivity(intent);
 
+    }
+
+    public void to3(View view) {
+        Intent intent=new Intent(MainActivity.this,searchsite.class);
+        startActivity(intent);
     }
 
     @Override
@@ -131,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
         AppIndex.AppIndexApi.start(client, viewAction);
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
@@ -149,8 +238,136 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+
+
     }
 
+
+    public class MyLocationListenner implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null) {
+
+                return;
+            }
+
+
+            // Toast.makeText(MainActivity.this, locData.toString(),Toast.LENGTH_LONG).show();
+            if (isFirstLoc) {
+                isFirstLoc = false;
+
+                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+                String loc = location.getAddrStr();
+                String des=location.getLocationDescribe();
+
+                TextView loca = (TextView) findViewById(R.id.locView);
+                loca.setText("\n" + "\n" + "您现在的位置：\n" + loc + "," + des);
+
+
+               // Log.e("YY:", location.getAddrStr());
+                Log.e("ll:", ll.toString());
+
+                mylocation = ll;
+                poiSearch = PoiSearch.newInstance();
+                poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
+
+
+               poiSearch.searchNearby((new PoiNearbySearchOption())
+                        .location(ll).radius(1500).keyword("公交站").pageCapacity(15));
+
+
+            }
+        }
+
+        public void onReceivePoi(BDLocation poiLocation) {
+        }
+    }
+
+    private class PoiSearchResultListener implements
+            OnGetPoiSearchResultListener {
+
+        @Override
+        public void onGetPoiDetailResult(PoiDetailResult result) {
+            if (result.error != SearchResult.ERRORNO.NO_ERROR) {
+                Log.e("add", B);
+            } else {
+
+                Log.e("add", B);
+
+                Toast.makeText(getApplicationContext(),
+                        result.getName() + ": " + result.getAddress(), Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+
+
+        public void onGetPoiResult(PoiResult result) {
+            if ((result == null)
+                    || (result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND)) {
+
+                Log.e("add", "A");
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+
+                //Toast.makeText(MainActivity.this, "查找成功！", Toast.LENGTH_SHORT).show();
+
+                //c = result.getTotalPoiNum();
+                //Log.e("add", "A" + c);
+                nearbydata ywq = new nearbydata(MainActivity.this);
+                ywq.clear();
+                poiInfoList = result.getAllPoi();
+                for (int i = 0; i < poiInfoList.size(); i++) {
+                    int a = (int) DistanceUtil.getDistance(poiInfoList.get(i).location, mylocation);
+
+
+                    String distance = a + "米";
+                   Log.e("addddd", poiInfoList.get(i).address + poiInfoList.get(i).name + "cc" + distance + "bb");
+
+
+
+
+                        ywq.add(poiInfoList.get(i).name, poiInfoList.get(i).address, distance);
+
+
+                }
+
+
+                // String c=result.getAllAddr().get(0).address.trim();
+                // Log.e("address",c);
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
+                Log.e("add", "C");
+            }
+        }
+
+
+    }
+
+
+
+    public void check() {
+        new AlertDialog.Builder(this).setTitle("请检查网络是否连接!\n程序将关闭!")
+                .setIcon(R.drawable.warn).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MainActivity.this.finish();
+            }
+        }).show();
+
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        poiSearch.destroy();
+
+        super.onDestroy();
+    }
 
 
 

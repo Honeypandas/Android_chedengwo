@@ -7,19 +7,20 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="70dp" android:gravity="right"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_gravity="left">
 
-        <TextView android:id="@+id/map_name"
+        <TextView android:id="@+id/routename"
             android:text="180路"
-            android:layout_width="250dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
             android:textColor="#0b0b0b"
-            android:layout_alignParentTop="true"
+            android:gravity="top|left|center_vertical"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="false" />
-        <TextView android:id="@+id/map_sitenum"
-            android:text="全程5公里"
+            android:layout_alignParentStart="true" />
+        <TextView android:id="@+id/sitenum"
+            android:text="3站后到达"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -32,8 +33,25 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:id="@+id/map_reachtime"
-            android:text="约30分钟到达"
+            android:id="@+id/mdistance"
+            android:text="3站后到达"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#d80906"
+            android:singleLine="true"
+            android:maxLength="30"
+            android:gravity="center_vertical"
+
+            android:layout_alignTop="@+id/sitenum"
+            android:layout_toRightOf="@+id/sitenum"
+            android:layout_toEndOf="@+id/sitenum"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp" />
+
+        <TextView
+            android:id="@+id/reachtime"
+            android:text="3站后到达"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -41,19 +59,9 @@
             android:singleLine="true"
             android:maxLength="30"
             android:gravity="center_vertical"
-            android:layout_alignTop="@+id/map_sitenum"
-            android:layout_centerHorizontal="true" />
-
-        <Button
-            android:background="#127e0e"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:text="地图"
-            android:id="@+id/button4"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/map_reachtime"
-            android:textColor="#ffffff" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/routename"
+            android:layout_alignEnd="@+id/routename" />
 
     </RelativeLayout>
 

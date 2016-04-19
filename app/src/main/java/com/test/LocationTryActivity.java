@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.Toast;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -32,7 +35,9 @@ import com.baidu.mapapi.model.LatLng;
  * 使用MyLocationOverlay绘制定位位置 同时展示如何使用自定义图标绘制并点击时弹出泡泡
  */
 public class LocationTryActivity extends AppCompatActivity {
-
+    EditText editText=null;
+    String target=null;
+    LatLng mylocation=null;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
@@ -55,14 +60,6 @@ public class LocationTryActivity extends AppCompatActivity {
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.locationtryactivity);
 
-      //  mCurrentMarker =BitmapDescriptorFactory.fromResource(R.drawable.myloc);
-
-
-
-        //LocationMode mCurrentMode = LocationMode.FOLLOWING;
-       // mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-       // mCurrentMode, true, null));
-
 
         // 地图初始化
 
@@ -70,9 +67,7 @@ public class LocationTryActivity extends AppCompatActivity {
         mBaiduMap = mMapView.getMap();
 
         LocationMode mCurrentMode = LocationMode.NORMAL;
-        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-                mCurrentMode, true, mCurrentMarker,
-                accuracyCircleFillColor, accuracyCircleStrokeColor));
+
 
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
@@ -88,7 +83,34 @@ public class LocationTryActivity extends AppCompatActivity {
     }
 
     public void search(View view) {
-        Intent intent=new Intent(this,Gotosite.class);
+        EditText ed1 = (EditText) findViewById(R.id.ed1);
+        EditText ed2 = (EditText) findViewById(R.id.ed2);
+        if(ed2.getText().toString().equals("")&&ed1.getText().toString().equals(""))
+        {
+            Toast.makeText(LocationTryActivity.this,"请输入完整信息！",Toast.LENGTH_SHORT).show();
+            return ;
+        }
+        if(ed1.getText().toString().equals(""))
+        {
+            Toast.makeText(LocationTryActivity.this,"请输入起点！",Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+       Log.e("myloc",mylocation.toString());
+        if(ed2.getText().toString().equals(""))
+        {
+            Toast.makeText(LocationTryActivity.this,"请输入终点！",Toast.LENGTH_SHORT).show();
+            return ;
+        }
+        String start=ed1.getText().toString().trim();
+        String finalsite=ed2.getText().toString().trim();
+
+        Intent intent=new Intent(this,selectsites.class);
+        Bundle bundle=new Bundle();
+
+        bundle.putString("终点", finalsite);
+        intent.putExtras(bundle);
+
         startActivity(intent);
 
     }
@@ -112,8 +134,10 @@ public class LocationTryActivity extends AppCompatActivity {
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {
                 isFirstLoc = false;
+
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
+                mylocation =ll;
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));

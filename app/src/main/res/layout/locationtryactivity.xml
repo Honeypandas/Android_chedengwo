@@ -55,6 +55,7 @@
             android:layout_gravity="left|center_vertical" />
 
         <TextView
+
             android:onClick="search"
             android:layout_marginRight="18dp"
             android:background="@drawable/wenhao"

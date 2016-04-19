@@ -1,0 +1,3213 @@
+Index: app/src/main/java/com/test/nearbydata.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/nearbydata.java	(revision )
++++ app/src/main/java/com/test/nearbydata.java	(revision )
+@@ -0,0 +1,89 @@
++package com.test;
++
++import android.content.Context;
++import android.database.Cursor;
++import android.database.sqlite.SQLiteDatabase;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import nearbysite.nearbysites;
++
++/**
++ * Created by Administrator on 2016/4/7.
++ */
++public class nearbydata {
++    private database helper;
++
++    public nearbydata(Context context){
++        helper=new database(context);
++    }
++
++    //添加Nearby信息
++    public void add(String name,String busid,String distance)
++    {
++
++        if(find(name)==false) {
++            SQLiteDatabase db=helper.getWritableDatabase();
++            db.execSQL("insert into nearby (name,busid,distance) values(?,?,?)", new Object[]{name, busid, distance});
++            db.close();
++        }else {
++            return;
++        }
++
++    }
++
++    public boolean find(String name)
++    {
++        SQLiteDatabase db= helper.getReadableDatabase();
++        Cursor cursor=db.rawQuery("select *from nearby where name=?", new String[]{name});
++        boolean result=cursor.moveToNext();
++        cursor.close();
++        db.close();
++        return result;
++    }
++
++    public  void updata(String name,String distance)
++    {
++        SQLiteDatabase db=helper.getWritableDatabase();
++        db.execSQL("update nearby set distance=？ where name=?", new Object[]{distance, name});
++        db.close();
++    }
++    //删除一条记录
++    public  void delete(String name) {
++
++        SQLiteDatabase db=helper.getWritableDatabase();
++        db.execSQL("delete from nearby where name=?",new Object[]{name});
++        db.close();
++    }
++
++    public List<nearbysites> findAll(){
++        SQLiteDatabase db=helper.getReadableDatabase();
++        List<nearbysites> sites=new ArrayList<nearbysites>() ;
++        Cursor cursor=db.rawQuery("select * from nearby", null);
++        while (cursor.moveToNext())
++        {
++            int id=cursor.getInt(cursor.getColumnIndex("id"));
++            String name=cursor.getString(cursor.getColumnIndex("name"));
++            String busid=cursor.getString(cursor.getColumnIndex("busid"));
++            String distance=cursor.getString(cursor.getColumnIndex("distance"));
++            nearbysites site=new nearbysites(id,name,busid,distance);
++            sites.add(site);
++        }
++
++        cursor.close();
++        db.close();
++
++        return sites;
++    }
++
++    public void clear() {
++        SQLiteDatabase db=helper.getWritableDatabase();
++        db.execSQL("delete from nearby where 1=1");
++        db.close();
++
++    }
++
++
++
++}
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision )
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -0,0 +1,75 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.test">
++    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
++    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
++    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
++    <uses-permission android:name="android.permission.INTERNET" />
++    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
++    <uses-permission android:name="android.permission.WAKE_LOCK" />
++    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
++    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
++    <uses-permission android:name="android.permission.GET_TASKS" />
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
++    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
++    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
++
++    <application
++        android:allowBackup="true"
++        android:icon="@mipmap/ic"
++        android:label="@string/chedengwo"
++        android:supportsRtl="true"
++        android:theme="@style/AppTheme">
++        <meta-data
++            android:name="com.baidu.lbsapi.API_KEY"
++            android:value="gnGoDdI3hIjDd3nxfbTVPeeMIXdUd7H2" />
++
++        <service
++            android:name="com.baidu.location.f"
++            android:enabled="true"
++            android:process=":remote" />
++
++        <activity
++            android:name=".MainActivity"
++            android:label="@string/chedengwo"
++            android:theme="@style/AppTheme.NoActionBar">
++            <intent-filter>
++                <action android:name="android.intent.action.MAIN" />
++
++                <category android:name="android.intent.category.LAUNCHER" />
++            </intent-filter>
++        </activity>
++        <activity
++            android:name=".iwantogo"
++            android:label="@string/IWG"
++            android:theme="@style/AppTheme.NoActionBar"
++
++              />
++        <activity
++            android:name=".Query"
++            android:label="@string/title_activity_query"
++            android:theme="@style/AppTheme.NoActionBar" />
++        <activity
++            android:name=".LocationTryActivity"
++            android:label="@string/title_activity_query"
++            android:theme="@style/AppTheme.NoActionBar" />
++        <!--
++             ATTENTION: This was auto-generated to add Google Play services to your project for
++             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
++        -->
++        <meta-data
++            android:name="com.google.android.gms.version"
++            android:value="@integer/google_play_services_version" />
++
++        <activity
++            android:name=".searchsite"
++            android:theme="@style/AppTheme.NoActionBar" />
++        <activity android:name=".Gotosite"
++            android:theme="@style/AppTheme.NoActionBar"/>
++
++        <activity android:name=".Map"
++            android:theme="@style/AppTheme.NoActionBar" />
++    </application>
++
++</manifest>
+Index: app/src/main/java/com/test/Map.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/Map.java	(revision )
++++ app/src/main/java/com/test/Map.java	(revision )
+@@ -0,0 +1,20 @@
++package com.test;
++
++import android.support.v7.app.AppCompatActivity;
++import android.os.Bundle;
++import android.view.View;
++
++public class Map extends AppCompatActivity {
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_map);
++    }
++
++
++
++    public void mapback(View view) {
++        finish();;
++    }
++}
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(revision )
++++ app/src/main/res/values/colors.xml	(revision )
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <color name="colorPrimary">#3F51B5</color>
++    <color name="colorPrimaryDark">#303F9F</color>
++    <color name="colorAccent">#FF4081</color>
++    <color name="mywhite">#FFFFFF</color>
++    <color name="myblue">#274fc8</color>
++</resources>
+Index: .idea/copyright/profiles_settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/copyright/profiles_settings.xml	(revision )
++++ .idea/copyright/profiles_settings.xml	(revision )
+@@ -0,0 +1,3 @@
++<component name="CopyrightManager">
++  <settings default="" />
++</component>
+\ No newline at end of file
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/styles.xml	(revision )
++++ app/src/main/res/values/styles.xml	(revision )
+@@ -0,0 +1,20 @@
++<resources>
++
++    <!-- Base application theme. -->
++    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
++        <!-- Customize your theme here. -->
++        <item name="colorPrimary">@color/colorPrimary</item>
++        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
++        <item name="colorAccent">@color/colorAccent</item>
++    </style>
++
++    <style name="AppTheme.NoActionBar">
++        <item name="windowActionBar">false</item>
++        <item name="windowNoTitle">true</item>
++    </style>
++
++    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
++
++    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
++
++</resources>
+Index: .idea/inspectionProfiles/Project_Default.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/inspectionProfiles/Project_Default.xml	(revision )
++++ .idea/inspectionProfiles/Project_Default.xml	(revision )
+@@ -0,0 +1,10 @@
++<component name="InspectionProjectProfileManager">
++  <profile version="1.0">
++    <option name="myName" value="Project Default" />
++    <inspection_tool class="AndroidLintRtlHardcoded" enabled="false" level="WARNING" enabled_by_default="false" />
++    <inspection_tool class="LoggerInitializedWithForeignClass" enabled="false" level="WARNING" enabled_by_default="false">
++      <option name="loggerClassName" value="org.apache.log4j.Logger,org.slf4j.LoggerFactory,org.apache.commons.logging.LogFactory,java.util.logging.Logger" />
++      <option name="loggerFactoryMethodName" value="getLogger,getLogger,getLog,getLogger" />
++    </inspection_tool>
++  </profile>
++</component>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(revision )
++++ .idea/vcs.xml	(revision )
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++    <mapping directory="D:/github" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/java/com/test/Gotosite.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/Gotosite.java	(revision )
++++ app/src/main/java/com/test/Gotosite.java	(revision )
+@@ -0,0 +1,18 @@
++package com.test;
++
++import android.support.v7.app.AppCompatActivity;
++import android.os.Bundle;
++import android.view.View;
++
++public class Gotosite extends AppCompatActivity {
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_gotosite);
++    }
++
++    public void back4(View view) {
++        finish();
++    }
++}
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision )
++++ app/src/main/res/layout/activity_main.xml	(revision )
+@@ -0,0 +1,29 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:fitsSystemWindows="true"
++    android:background="#A0DCE8"
++    tools:context="com.chedengwo.MainActivity">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/AppTheme.AppBarOverlay">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:popupTheme="@style/AppTheme.PopupOverlay" />
++
++    </android.support.design.widget.AppBarLayout>
++
++    <include layout="@layout/content_main" />
++
++
++
++</android.support.design.widget.CoordinatorLayout>
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/gradle.xml	(revision )
++++ .idea/gradle.xml	(revision )
+@@ -0,0 +1,19 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="GradleSettings">
++    <option name="linkedExternalProjectsSettings">
++      <GradleProjectSettings>
++        <option name="distributionType" value="LOCAL" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="gradleHome" value="C:\Program Files\Android\Android Studio\gradle\gradle-2.8" />
++        <option name="gradleJvm" value="1.8" />
++        <option name="modules">
++          <set>
++            <option value="$PROJECT_DIR$" />
++            <option value="$PROJECT_DIR$/app" />
++          </set>
++        </option>
++      </GradleProjectSettings>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: gradlew
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gradlew	(revision )
++++ gradlew	(revision )
+@@ -0,0 +1,160 @@
++#!/usr/bin/env bash
++
++##############################################################################
++##
++##  Gradle start up script for UN*X
++##
++##############################################################################
++
++# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
++DEFAULT_JVM_OPTS=""
++
++APP_NAME="Gradle"
++APP_BASE_NAME=`basename "$0"`
++
++# Use the maximum available, or set MAX_FD != -1 to use that value.
++MAX_FD="maximum"
++
++warn ( ) {
++    echo "$*"
++}
++
++die ( ) {
++    echo
++    echo "$*"
++    echo
++    exit 1
++}
++
++# OS specific support (must be 'true' or 'false').
++cygwin=false
++msys=false
++darwin=false
++case "`uname`" in
++  CYGWIN* )
++    cygwin=true
++    ;;
++  Darwin* )
++    darwin=true
++    ;;
++  MINGW* )
++    msys=true
++    ;;
++esac
++
++# Attempt to set APP_HOME
++# Resolve links: $0 may be a link
++PRG="$0"
++# Need this for relative symlinks.
++while [ -h "$PRG" ] ; do
++    ls=`ls -ld "$PRG"`
++    link=`expr "$ls" : '.*-> \(.*\)$'`
++    if expr "$link" : '/.*' > /dev/null; then
++        PRG="$link"
++    else
++        PRG=`dirname "$PRG"`"/$link"
++    fi
++done
++SAVED="`pwd`"
++cd "`dirname \"$PRG\"`/" >/dev/null
++APP_HOME="`pwd -P`"
++cd "$SAVED" >/dev/null
++
++CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
++
++# Determine the Java command to use to start the JVM.
++if [ -n "$JAVA_HOME" ] ; then
++    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
++        # IBM's JDK on AIX uses strange locations for the executables
++        JAVACMD="$JAVA_HOME/jre/sh/java"
++    else
++        JAVACMD="$JAVA_HOME/bin/java"
++    fi
++    if [ ! -x "$JAVACMD" ] ; then
++        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
++
++Please set the JAVA_HOME variable in your environment to match the
++location of your Java installation."
++    fi
++else
++    JAVACMD="java"
++    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
++
++Please set the JAVA_HOME variable in your environment to match the
++location of your Java installation."
++fi
++
++# Increase the maximum file descriptors if we can.
++if [ "$cygwin" = "false" -a "$darwin" = "false" ] ; then
++    MAX_FD_LIMIT=`ulimit -H -n`
++    if [ $? -eq 0 ] ; then
++        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ] ; then
++            MAX_FD="$MAX_FD_LIMIT"
++        fi
++        ulimit -n $MAX_FD
++        if [ $? -ne 0 ] ; then
++            warn "Could not set maximum file descriptor limit: $MAX_FD"
++        fi
++    else
++        warn "Could not query maximum file descriptor limit: $MAX_FD_LIMIT"
++    fi
++fi
++
++# For Darwin, add options to specify how the application appears in the dock
++if $darwin; then
++    GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
++fi
++
++# For Cygwin, switch paths to Windows format before running java
++if $cygwin ; then
++    APP_HOME=`cygpath --path --mixed "$APP_HOME"`
++    CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
++    JAVACMD=`cygpath --unix "$JAVACMD"`
++
++    # We build the pattern for arguments to be converted via cygpath
++    ROOTDIRSRAW=`find -L / -maxdepth 1 -mindepth 1 -type d 2>/dev/null`
++    SEP=""
++    for dir in $ROOTDIRSRAW ; do
++        ROOTDIRS="$ROOTDIRS$SEP$dir"
++        SEP="|"
++    done
++    OURCYGPATTERN="(^($ROOTDIRS))"
++    # Add a user-defined pattern to the cygpath arguments
++    if [ "$GRADLE_CYGPATTERN" != "" ] ; then
++        OURCYGPATTERN="$OURCYGPATTERN|($GRADLE_CYGPATTERN)"
++    fi
++    # Now convert the arguments - kludge to limit ourselves to /bin/sh
++    i=0
++    for arg in "$@" ; do
++        CHECK=`echo "$arg"|egrep -c "$OURCYGPATTERN" -`
++        CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### Determine if an option
++
++        if [ $CHECK -ne 0 ] && [ $CHECK2 -eq 0 ] ; then                    ### Added a condition
++            eval `echo args$i`=`cygpath --path --ignore --mixed "$arg"`
++        else
++            eval `echo args$i`="\"$arg\""
++        fi
++        i=$((i+1))
++    done
++    case $i in
++        (0) set -- ;;
++        (1) set -- "$args0" ;;
++        (2) set -- "$args0" "$args1" ;;
++        (3) set -- "$args0" "$args1" "$args2" ;;
++        (4) set -- "$args0" "$args1" "$args2" "$args3" ;;
++        (5) set -- "$args0" "$args1" "$args2" "$args3" "$args4" ;;
++        (6) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" ;;
++        (7) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" ;;
++        (8) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" "$args7" ;;
++        (9) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" "$args7" "$args8" ;;
++    esac
++fi
++
++# Split up the JVM_OPTS And GRADLE_OPTS values into an array, following the shell quoting and substitution rules
++function splitJvmOpts() {
++    JVM_OPTS=("$@")
++}
++eval splitJvmOpts $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS
++JVM_OPTS[${#JVM_OPTS[*]}]="-Dorg.gradle.appname=$APP_BASE_NAME"
++
++exec "$JAVACMD" "${JVM_OPTS[@]}" -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
+Index: app/src/main/res/layout/activity_iwantogo.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_iwantogo.xml	(revision )
++++ app/src/main/res/layout/activity_iwantogo.xml	(revision )
+@@ -0,0 +1,50 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1">
++
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        android:background="?attr/colorPrimary">
++
++        <ImageButton
++            android:onClick="back2"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageButton"
++            android:layout_gravity="left|center_vertical"
++            android:background="@drawable/back" />
++
++        <TextView
++
++            android:layout_width="wrap_content"
++            android:layout_height="fill_parent"
++            android:text="周边站点查询"
++            android:id="@+id/textView5"
++            android:layout_gravity="center"
++            android:layout_marginLeft="5dp"
++            android:layout_marginRight="50dp"
++            android:textSize="26dp"
++            android:textColor="#fefefe"
++            android:layout_marginTop="8dp" />
++
++        <ImageButton
++            android:onClick="to11"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageButton2"
++            android:background="@drawable/search"
++            android:baselineAlignBottom="false" />
++    </LinearLayout>
++
++    <ListView
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"></ListView>
++
++
++</LinearLayout>
+\ No newline at end of file
+Index: gradle/wrapper/gradle-wrapper.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>GBK
+===================================================================
+--- gradle/wrapper/gradle-wrapper.properties	(revision )
++++ gradle/wrapper/gradle-wrapper.properties	(revision )
+@@ -0,0 +1,6 @@
++#Wed Oct 21 11:34:03 PDT 2015
++distributionBase=GRADLE_USER_HOME
++distributionPath=wrapper/dists
++zipStoreBase=GRADLE_USER_HOME
++zipStorePath=wrapper/dists
++distributionUrl=https\://services.gradle.org/distributions/gradle-2.8-all.zip
+Index: app/src/test/java/com/test/ExampleUnitTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/test/java/com/test/ExampleUnitTest.java	(revision )
++++ app/src/test/java/com/test/ExampleUnitTest.java	(revision )
+@@ -0,0 +1,15 @@
++package com.test;
++
++import org.junit.Test;
++
++import static org.junit.Assert.*;
++
++/**
++ * To work on unit tests, switch the Test Artifact in the Build Variants view.
++ */
++public class ExampleUnitTest {
++    @Test
++    public void addition_isCorrect() throws Exception {
++        assertEquals(4, 2 + 2);
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/test/ToolBarActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/ToolBarActivity.java	(revision )
++++ app/src/main/java/com/test/ToolBarActivity.java	(revision )
+@@ -0,0 +1,17 @@
++package com.test;
++
++import  android.os.Bundle;
++import  android.support.v7.app.AppCompatActivity;
++import  android.support.v7.widget.Toolbar;
++import  android.view.MenuItem;
++
++
++/**
++ * Created by Administrator on 2016/4/3.
++ */
++
++
++public class ToolBarActivity {
++
++
++}
+Index: app/src/main/java/nearbysite/nearbysites.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/nearbysite/nearbysites.java	(revision )
++++ app/src/main/java/nearbysite/nearbysites.java	(revision )
+@@ -0,0 +1,40 @@
++package nearbysite;
++
++/**
++ * Created by Administrator on 2016/4/7.
++ */
++public class nearbysites {
++    private int id;
++    private String name;
++    private String busid;
++    private String distance;
++
++    public nearbysites() {
++
++    }
++
++    public nearbysites(int id, String name, String busid, String distance) {
++        this.id = id;
++        this.name = name;
++        this.busid = busid;
++        this.distance = distance;
++    }
++
++    public int getId() {
++        return id;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public String getBusid() {
++        return busid;
++    }
++
++    public String getDistance() {
++        return distance;
++    }
++
++
++}
+Index: settings.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- settings.gradle	(revision )
++++ settings.gradle	(revision )
+@@ -0,0 +1,1 @@
++include ':app'
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .gitignore	(revision )
++++ .gitignore	(revision )
+@@ -0,0 +1,8 @@
++*.iml
++.gradle
++/local.properties
++/.idea/workspace.xml
++/.idea/libraries
++.DS_Store
++/build
++/captures
+Index: .idea/dictionaries/Administrator.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/dictionaries/Administrator.xml	(revision )
++++ .idea/dictionaries/Administrator.xml	(revision )
+@@ -0,0 +1,7 @@
++<component name="ProjectDictionaryState">
++  <dictionary name="Administrator">
++    <words>
++      <w>selectsites</w>
++    </words>
++  </dictionary>
++</component>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(revision )
++++ .idea/compiler.xml	(revision )
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <resourceExtensions />
++    <wildcardResourcePatterns>
++      <entry name="!?*.java" />
++      <entry name="!?*.form" />
++      <entry name="!?*.class" />
++      <entry name="!?*.groovy" />
++      <entry name="!?*.scala" />
++      <entry name="!?*.flex" />
++      <entry name="!?*.kt" />
++      <entry name="!?*.clj" />
++      <entry name="!?*.aj" />
++    </wildcardResourcePatterns>
++    <annotationProcessing>
++      <profile default="true" name="Default" enabled="false">
++        <processorPath useClasspath="true" />
++      </profile>
++    </annotationProcessing>
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_searchsite.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_searchsite.xml	(revision )
++++ app/src/main/res/layout/activity_searchsite.xml	(revision )
+@@ -0,0 +1,105 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1"
++    android:baselineAligned="false"
++    android:background="#ffffff">
++
++
++    <FrameLayout
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        android:background="?attr/colorPrimary">
++
++        <ImageButton
++            android:onClick="back3"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageButton"
++            android:layout_gravity="left|center_vertical"
++            android:background="@drawable/back" />
++
++        <TextView
++
++            android:layout_width="190dp"
++            android:layout_height="60dp"
++            android:text="搜索"
++            android:id="@+id/textView5"
++            android:layout_gravity="center"
++            android:layout_marginLeft="0dp"
++            android:layout_marginRight="50dp"
++            android:textSize="30dp"
++            android:textColor="#fefefe"
++            android:layout_marginTop="8dp" />
++        <RelativeLayout
++            android:layout_width="154dp"
++            android:layout_height="43dp"
++            android:layout_gravity="center_vertical|right"
++            style="@style/TextAppearance.AppCompat.Button"
++            android:background="#ffffff"
++            android:layout_marginRight="10dp">
++
++            <Button
++                android:onClick="selectroutes"
++                android:layout_width="75dp"
++                android:layout_height="40dp"
++                android:text="@string/routes"
++                android:id="@+id/button2"
++                android:layout_gravity="center_horizontal"
++                android:background="?attr/colorPrimary"
++                android:textColor="#ffffff"
++                android:layout_centerVertical="true"
++                android:layout_alignParentRight="true"
++                android:layout_alignParentEnd="false"
++                android:layout_marginRight="2dp" />
++
++            <Button
++                android:onClick="selectsites"
++                android:layout_width="75dp"
++                android:layout_height="40dp"
++                android:text="@string/sites"
++                android:id="@+id/button"
++                android:layout_gravity="center_horizontal"
++                android:background="#ffffff"
++                android:textColor="?attr/colorPrimary"
++                android:layout_alignTop="@+id/button2"
++                android:layout_toLeftOf="@+id/button2"
++                android:layout_toStartOf="@+id/button2"
++                android:layout_marginLeft="0dp" />
++
++        </RelativeLayout>
++
++
++    </FrameLayout>
++
++   <!-- <LinearLayout
++        android:orientation="horizontal"
++        android:layout_width="match_parent"
++        android:layout_height="50dp"
++        android:background="#c1c1c1">
++
++        <EditText
++            android:hint="@string/pleaseInputsite"
++            android:background="#ffffff"
++            android:layout_width="260dp"
++            android:layout_height="40dp"
++            android:id="@+id/ed1"
++            android:layout_marginLeft="10dp"
++            android:layout_gravity="center_vertical" />
++
++        <Button
++            android:background="#ffffff"
++            android:layout_width="80dp"
++            android:layout_height="40dp"
++            android:text="@string/sousuo"
++            android:id="@+id/button3"
++            android:layout_gravity="center_vertical"
++            android:layout_marginLeft="40dp" />
++
++    </LinearLayout>-->
++
++
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/locationtryactivity.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/locationtryactivity.xml	(revision )
++++ app/src/main/res/layout/locationtryactivity.xml	(revision )
+@@ -0,0 +1,100 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        android:background="?attr/colorPrimary">
++
++        <ImageButton
++            android:onClick="back"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageButton"
++            android:layout_gravity="left|center_vertical"
++            android:background="@drawable/back" />
++
++        <TextView
++
++            android:layout_width="190dp"
++            android:layout_height="match_parent"
++            android:text="我要去"
++            android:id="@+id/textView5"
++            android:layout_gravity="center"
++            android:layout_marginLeft="0dp"
++            android:layout_marginRight="50dp"
++            android:textSize="23dp"
++            android:textColor="#fefefe"
++            android:layout_marginTop="8dp" />
++
++    </LinearLayout>
++
++
++
++
++    <FrameLayout
++
++        android:background="#6D8A6A"
++        android:layout_width="fill_parent"
++        android:layout_height="110dp"
++        android:layout_weight="0.09">
++
++        <ImageView
++
++            android:onClick="jiaohuan"
++            android:src="@drawable/jiaohuan"
++            android:layout_marginLeft="12sp"
++            android:layout_width="54dp"
++            android:layout_height="90dp"
++            android:id="@+id/imageView3"
++            android:layout_gravity="left|center_vertical" />
++
++        <TextView
++            android:onClick="search"
++            android:layout_marginRight="12sp"
++            android:background="@drawable/wenhao"
++            android:layout_width="54dp"
++            android:layout_height="90dp"
++            android:text="@string/sousuo"
++            android:id="@+id/textView4"
++            android:layout_gravity="right|center_vertical"
++            android:textAlignment="center"
++            android:textSize="21sp"
++            android:gravity="bottom" />
++
++        <EditText
++
++            android:layout_marginBottom="8sp"
++            android:hint="@string/zhongdian"
++            android:background="#ffffff"
++            android:layout_width="200dp"
++            android:layout_height="38dp"
++            android:id="@+id/ed2"
++            android:layout_gravity="center_horizontal|bottom" />
++
++        <EditText
++            android:text="我的位置"
++            android:layout_marginTop="8sp"
++            android:hint="@string/qidian"
++            android:background="#ffffff"
++            android:layout_width="200dp"
++            android:layout_height="38dp"
++            android:id="@+id/ed1"
++            android:layout_gravity="center_horizontal|top" />
++    </FrameLayout>
++    <com.baidu.mapapi.map.MapView
++        android:id="@+id/testmap"
++        android:layout_width="fill_parent"
++        android:layout_height="500dp"
++        android:clickable="true"
++        android:layout_marginTop="0dp" />
++
++
++
++
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/test/iwantogo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/iwantogo.java	(revision )
++++ app/src/main/java/com/test/iwantogo.java	(revision )
+@@ -0,0 +1,59 @@
++package com.test;
++
++import java.util.ArrayList;
++import java.util.List;
++
++
++import android.app.Activity;
++import android.app.ListActivity;
++import android.content.Context;
++import android.content.DialogInterface;
++import android.content.DialogInterface.OnClickListener;
++import android.os.Bundle;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++import android.text.Layout;
++import android.util.Log;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.BaseAdapter;
++import android.widget.ImageView;
++import android.widget.LinearLayout;
++import android.widget.ListView;
++
++import android.widget.TabHost;
++import android.widget.TextView;
++
++import nearbysite.nearbysites;
++
++public class iwantogo extends AppCompatActivity {
++
++    private TabHost tabHost;
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.seartestt);
++
++
++        tabHost= (TabHost) findViewById(android.R.id.tabhost);
++        tabHost.setup();
++
++        LayoutInflater inflater=LayoutInflater.from(this);
++        inflater.inflate(R.layout.searchtab1,tabHost.getTabContentView());
++        inflater.inflate(R.layout.searchtab2,tabHost.getTabContentView());
++        tabHost.addTab(tabHost.newTabSpec("tab01").setIndicator("站点").setContent(R.id.searlayout1));
++        tabHost.addTab(tabHost.newTabSpec("tab02").setIndicator("路线").setContent(R.id.searlayout2));
++
++    }
++
++
++
++    public void mapback(View view) {
++        finish();;
++    }
++
++    public void back3(View view) {
++        finish();
++    }
++}
+Index: app/src/main/java/com/test/LocationTryActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/LocationTryActivity.java	(revision )
++++ app/src/main/java/com/test/LocationTryActivity.java	(revision )
+@@ -0,0 +1,173 @@
++package com.test;
++
++import android.app.Activity;
++import android.content.Intent;
++import android.location.Location;
++import android.os.Bundle;
++import android.support.v7.app.AppCompatActivity;
++import android.view.View;
++import android.view.View.OnClickListener;
++import android.widget.Button;
++import android.widget.EditText;
++import android.widget.RadioGroup;
++import android.widget.RadioGroup.OnCheckedChangeListener;
++import com.baidu.location.BDLocation;
++import com.baidu.location.BDLocationListener;
++import com.baidu.location.LocationClient;
++import com.baidu.location.LocationClientOption;
++import com.baidu.mapapi.SDKInitializer;
++import com.baidu.mapapi.map.BaiduMap;
++import com.baidu.mapapi.map.BitmapDescriptor;
++import com.baidu.mapapi.map.BitmapDescriptorFactory;
++import com.baidu.mapapi.map.MapStatus;
++import com.baidu.mapapi.map.MapStatusUpdateFactory;
++import com.baidu.mapapi.map.MapView;
++import com.baidu.mapapi.map.MyLocationConfiguration;
++import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
++import com.baidu.mapapi.map.MyLocationData;
++import com.baidu.mapapi.model.LatLng;
++
++
++/**
++ * 使用MyLocationOverlay绘制定位位置 同时展示如何使用自定义图标绘制并点击时弹出泡泡
++ */
++public class LocationTryActivity extends AppCompatActivity {
++
++    // 定位相关
++    LocationClient mLocClient;
++    public MyLocationListenner myListener = new MyLocationListenner();
++    BitmapDescriptor mCurrentMarker;
++    private static final int accuracyCircleFillColor = 0xAAFFFF88;
++    private static final int accuracyCircleStrokeColor = 0xAA00FF00;
++
++    MapView mMapView;
++    BaiduMap mBaiduMap;
++
++    // UI相关
++    OnCheckedChangeListener radioButtonListener;
++
++    boolean isFirstLoc = true; // 是否首次定位
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++
++        SDKInitializer.initialize(getApplicationContext());
++        setContentView(R.layout.locationtryactivity);
++
++      //  mCurrentMarker =BitmapDescriptorFactory.fromResource(R.drawable.myloc);
++
++
++
++        //LocationMode mCurrentMode = LocationMode.FOLLOWING;
++       // mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
++       // mCurrentMode, true, null));
++
++
++        // 地图初始化
++
++        mMapView = (MapView) findViewById(R.id.testmap);
++        mBaiduMap = mMapView.getMap();
++
++        LocationMode mCurrentMode = LocationMode.NORMAL;
++       /* mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
++                mCurrentMode, true, mCurrentMarker,
++                accuracyCircleFillColor, accuracyCircleStrokeColor));
++*/
++        // 开启定位图层
++        mBaiduMap.setMyLocationEnabled(true);
++        // 定位初始化
++        mLocClient = new LocationClient(this);
++        mLocClient.registerLocationListener(myListener);
++        LocationClientOption option = new LocationClientOption();
++        option.setOpenGps(true); // 打开gps
++        option.setCoorType("bd09ll"); // 设置坐标类型
++        option.setScanSpan(1000);
++        mLocClient.setLocOption(option);
++        mLocClient.start();
++    }
++
++    public void search(View view) {
++        Intent intent=new Intent(this,Gotosite.class);
++        startActivity(intent);
++
++    }
++
++    /**
++     * 定位SDK监听函数
++     */
++    public class MyLocationListenner implements BDLocationListener {
++
++        @Override
++        public void onReceiveLocation(BDLocation location) {
++            // map view 销毁后不在处理新接收的位置
++            if (location == null || mMapView == null) {
++                return;
++            }
++            MyLocationData locData = new MyLocationData.Builder()
++                    .accuracy(location.getRadius())
++                            // 此处设置开发者获取到的方向信息，顺时针0-360
++                    .direction(100).latitude(location.getLatitude())
++                    .longitude(location.getLongitude()).build();
++            mBaiduMap.setMyLocationData(locData);
++            if (isFirstLoc) {
++                isFirstLoc = false;
++                LatLng ll = new LatLng(location.getLatitude(),
++                        location.getLongitude());
++                MapStatus.Builder builder = new MapStatus.Builder();
++                builder.target(ll).zoom(18.0f);
++                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
++            }
++        }
++
++        public void onReceivePoi(BDLocation poiLocation) {
++        }
++    }
++
++    @Override
++    protected void onPause() {
++        mMapView.onPause();
++        super.onPause();
++    }
++
++    @Override
++    protected void onResume() {
++        mMapView.onResume();
++        super.onResume();
++    }
++
++    @Override
++    protected void onDestroy() {
++        // 退出时销毁定位
++        mLocClient.stop();
++        // 关闭定位图层
++        mBaiduMap.setMyLocationEnabled(false);
++        mMapView.onDestroy();
++        mMapView = null;
++        super.onDestroy();
++    }
++
++    public void jiaohuan(View view) {
++
++        EditText ed1 = (EditText) findViewById(R.id.ed1);
++        EditText ed2 = (EditText) findViewById(R.id.ed2);
++        String str1 = ed1.getText().toString().trim();
++        String str2 = ed2.getText().toString().trim();
++        String temp = str1;
++        str1 = str2;
++        str2 = temp;
++        ed1.setText(str1);
++        ed2.setText(str2);
++
++    }
++
++
++    public void back(View view) {
++        finish();
++    }
++
++
++
++
++
++}
+Index: app/src/main/res/layout/activity_map.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_map.xml	(revision )
++++ app/src/main/res/layout/activity_map.xml	(revision )
+@@ -0,0 +1,38 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1">
++
++
++    <FrameLayout
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        android:background="?attr/colorPrimary">
++
++        <ImageButton
++            android:onClick="mapback"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageButton"
++            android:layout_gravity="left|center_vertical"
++            android:background="@drawable/back" />
++
++        <TextView
++
++            android:layout_width="190dp"
++            android:layout_height="60dp"
++            android:text="@string/myloc"
++            android:id="@+id/textView5"
++            android:layout_gravity="center"
++            android:layout_marginLeft="5dp"
++            android:layout_marginRight="50dp"
++            android:textSize="26dp"
++            android:textColor="#fefefe"
++            android:layout_marginTop="8dp" />
++
++    </FrameLayout>
++
++</LinearLayout>
+\ No newline at end of file
+Index: .idea/runConfigurations.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/runConfigurations.xml	(revision )
++++ .idea/runConfigurations.xml	(revision )
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RunConfigurationProducerService">
++    <option name="ignoredProducers">
++      <set>
++        <option value="org.jetbrains.plugins.gradle.execution.test.runner.AllInPackageGradleConfigurationProducer" />
++        <option value="org.jetbrains.plugins.gradle.execution.test.runner.TestClassGradleConfigurationProducer" />
++        <option value="org.jetbrains.plugins.gradle.execution.test.runner.TestMethodGradleConfigurationProducer" />
++      </set>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision )
++++ build.gradle	(revision )
+@@ -0,0 +1,27 @@
++// Top-level build file where you can add configuration options common to all sub-projects/modules.
++
++buildscript {
++    repositories {
++        jcenter()
++    }
++    dependencies {
++        classpath 'com.android.tools.build:gradle:1.5.0'
++
++        // NOTE: Do not place your application dependencies here; they belong
++        // in the individual module build.gradle files
++    }
++}
++
++allprojects {
++    repositories {
++        jcenter()
++    }
++}
++
++
++
++
++
++task clean(type: Delete) {
++    delete rootProject.buildDir
++}
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision )
++++ app/build.gradle	(revision )
+@@ -0,0 +1,42 @@
++apply plugin: 'com.android.application'
++
++android {
++    compileSdkVersion 23
++    buildToolsVersion "23.0.1"
++
++    defaultConfig {
++        applicationId "com.test"
++        minSdkVersion 10
++        targetSdkVersion 23
++        versionCode 1
++        versionName "1.0"
++        multiDexEnabled = true
++    }
++    buildTypes {
++        release {
++            minifyEnabled false
++            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
++        }
++    }
++
++    sourceSets {
++        main {
++            jniLibs.srcDirs = ['libs']
++        }
++    }
++}
++
++dependencies {
++    compile fileTree(include: ['*.jar'], dir: 'libs')
++    testCompile 'junit:junit:4.12'
++    compile 'com.android.support:appcompat-v7:23.1.1'
++    compile 'com.android.support:design:23.1.1'
++    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
++    compile files('libs/baidumapapi_base_v3_7_3.jar')
++    compile files('libs/baidumapapi_cloud_v3_7_3.jar')
++    compile files('libs/baidumapapi_map_v3_7_3.jar')
++    compile files('libs/baidumapapi_radar_v3_7_3.jar')
++    compile files('libs/baidumapapi_search_v3_7_3.jar')
++    compile files('libs/baidumapapi_util_v3_7_3.jar')
++    compile files('libs/locSDK_6.13.jar')
++}
+Index: app/src/main/java/com/test/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/MainActivity.java	(revision )
++++ app/src/main/java/com/test/MainActivity.java	(revision )
+@@ -0,0 +1,385 @@
++package com.test;
++
++import android.app.Activity;
++import android.app.ActivityManager;
++import android.content.Context;
++import android.content.DialogInterface;
++import android.content.Intent;
++import android.location.Location;
++import android.net.ConnectivityManager;
++import android.net.Uri;
++import android.os.Bundle;
++import android.os.SystemClock;
++import android.support.annotation.DrawableRes;
++import android.support.design.widget.FloatingActionButton;
++import android.support.design.widget.Snackbar;
++import android.support.v7.app.AlertDialog;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++import android.util.Log;
++import android.view.View;
++import android.view.Menu;
++import android.view.MenuItem;
++import android.widget.ImageButton;
++import android.widget.TextView;
++import android.widget.Toast;
++
++import com.baidu.location.BDLocation;
++import com.baidu.location.BDLocationListener;
++import com.baidu.location.LocationClient;
++import com.baidu.location.LocationClientOption;
++import com.baidu.mapapi.SDKInitializer;
++import com.baidu.mapapi.map.BaiduMap;
++import com.baidu.mapapi.map.BitmapDescriptor;
++import com.baidu.mapapi.map.BitmapDescriptorFactory;
++import com.baidu.mapapi.map.MapStatus;
++import com.baidu.mapapi.map.MapStatusUpdateFactory;
++import com.baidu.mapapi.map.MapView;
++import com.baidu.mapapi.map.MarkerOptions;
++import com.baidu.mapapi.map.MyLocationConfiguration;
++import com.baidu.mapapi.map.MyLocationData;
++import com.baidu.mapapi.map.OverlayOptions;
++import com.baidu.mapapi.model.LatLng;
++import com.baidu.mapapi.search.core.PoiInfo;
++import com.baidu.mapapi.search.core.SearchResult;
++import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
++import com.baidu.mapapi.search.poi.PoiDetailResult;
++import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
++import com.baidu.mapapi.search.poi.PoiResult;
++import com.baidu.mapapi.search.poi.PoiSearch;
++import com.baidu.mapapi.utils.DistanceUtil;
++import com.google.android.gms.appindexing.Action;
++import com.google.android.gms.appindexing.AppIndex;
++import com.google.android.gms.common.api.GoogleApiClient;
++
++import java.util.List;
++import java.util.Timer;
++import java.util.TimerTask;
++import java.util.TooManyListenersException;
++import java.util.logging.Handler;
++
++public class MainActivity extends AppCompatActivity {
++    LocationClient mLocClient;
++    LatLng mylocation;
++    public MyLocationListenner myListener = new MyLocationListenner();
++    boolean isFirstLoc = true;
++    private PoiSearch poiSearch;
++    private long time=10000;
++    private String B = "sssss";
++
++    List<PoiInfo> poiInfoList;
++
++    /**
++     * ATTENTION: This was auto-generated to implement the App Indexing API.
++     * See https://g.co/AppIndexing/AndroidStudio for more information.
++     */
++    private GoogleApiClient client;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++      //  SDKInitializer.initialize(getApplicationContext());
++        setContentView(R.layout.activity_main);
++        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        toolbar.setTitle("模拟车等我APP的设计与实现");
++
++        setSupportActionBar(toolbar);
++
++
++        ConnectivityManager con = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
++        boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
++        boolean internet = con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
++        if (wifi | internet)
++        {
++
++            SDKInitializer.initialize(getApplicationContext());
++
++            MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
++            mLocClient = new LocationClient(this);
++            mLocClient.registerLocationListener(myListener);
++            LocationClientOption option = new LocationClientOption();
++            option.setIsNeedAddress(true);
++            option.setIsNeedLocationDescribe(true);
++
++            option.setOpenGps(true); // 打开gps
++            option.setCoorType("bd09ll"); // 设置坐标类型
++            option.setScanSpan(1000);
++            mLocClient.setLocOption(option);
++            mLocClient.start();
++
++
++        } else
++        {
++           // exit();
++
++            Toast.makeText(getApplicationContext(),
++                    "请检查网络是否连接！", Toast.LENGTH_LONG).show();
++
++           check();
++
++
++
++           /* Thread thread=new Thread(new Runnable()
++            {
++                public void run(){
++
++                    try {
++                        Thread.sleep(1000);
++                    } catch (InterruptedException e) {
++                        e.printStackTrace();
++                    }
++                }
++
++            });
++            thread.start();*/
++
++
++        }
++/*
++
++        SDKInitializer.initialize(getApplicationContext());
++
++        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
++        mLocClient = new LocationClient(this);
++        mLocClient.registerLocationListener(myListener);
++        LocationClientOption option = new LocationClientOption();
++        option.setIsNeedAddress(true);
++        option.setOpenGps(true); // 打开gps
++        option.setCoorType("bd09ll"); // 设置坐标类型
++        option.setScanSpan(1000);
++        mLocClient.setLocOption(option);
++        mLocClient.start();
++*/
++
++        //  database nearby=new database(this);
++        // nearby.getWritableDatabase();
++        // DistanceUtil.getDistance(p1, p2);
++        //nearbydata ywq = new nearbydata(MainActivity.this);
++        // ywq.add("yaddas","ydaswq","150米");
++        // ATTENTION: This was auto-generated to implement the App Indexing API.
++        // See https://g.co/AppIndexing/AndroidStudio for more information.
++        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
++    }
++
++    @Override
++    public boolean onCreateOptionsMenu(Menu menu) {
++        // Inflate the menu; this adds items to the action bar if it is present.
++        getMenuInflater().inflate(R.menu.menu_main, menu);
++        return true;
++    }
++
++    @Override
++    public boolean onOptionsItemSelected(MenuItem item) {
++        // Handle action bar item clicks here. The action bar will
++        // automatically handle clicks on the Home/Up button, so long
++        // as you specify a parent activity in AndroidManifest.xml.
++        int id = item.getItemId();
++
++        //noinspection SimplifiableIfStatement
++        if (id == R.id.action_settings) {
++            return true;
++        }
++
++        return super.onOptionsItemSelected(item);
++    }
++
++    /*
++    *点击转到查询站点界面
++    *
++    * */
++    public void to1(View view) {
++        // Toast.makeText(MainActivity.this, "HHHHH", Toast.LENGTH_SHORT).show();
++        Intent intent = new Intent(MainActivity.this, Query.class);
++        startActivity(intent);
++
++    }
++
++
++    /*
++    *
++    * 点击转到我要去界面
++    * */
++
++    public void to2(View view) {
++
++        // Intent intent = new Intent(MainActivity.this, LocationTryActivity.class);
++        //   startActivity(intent);
++
++        Intent intent = new Intent(MainActivity.this, LocationTryActivity.class);
++        startActivity(intent);
++
++    }
++
++
++    public void to3(View view) {
++        Intent intent=new Intent(MainActivity.this,searchsite.class);
++        startActivity(intent);
++    }
++
++    @Override
++    public void onStart() {
++        super.onStart();
++
++        // ATTENTION: This was auto-generated to implement the App Indexing API.
++        // See https://g.co/AppIndexing/AndroidStudio for more information.
++        client.connect();
++        Action viewAction = Action.newAction(
++                Action.TYPE_VIEW, // TODO: choose an action type.
++                "Main Page", // TODO: Define a title for the content shown.
++                // TODO: If you have web page content that matches this app activity's content,
++                // make sure this auto-generated web page URL is correct.
++                // Otherwise, set the URL to null.
++                Uri.parse("http://host/path"),
++                // TODO: Make sure this auto-generated app deep link URI is correct.
++                Uri.parse("android-app://com.test/http/host/path")
++        );
++        AppIndex.AppIndexApi.start(client, viewAction);
++    }
++
++    @Override
++    public void onStop() {
++        super.onStop();
++
++        // ATTENTION: This was auto-generated to implement the App Indexing API.
++        // See https://g.co/AppIndexing/AndroidStudio for more information.
++        Action viewAction = Action.newAction(
++                Action.TYPE_VIEW, // TODO: choose an action type.
++                "Main Page", // TODO: Define a title for the content shown.
++                // TODO: If you have web page content that matches this app activity's content,
++                // make sure this auto-generated web page URL is correct.
++                // Otherwise, set the URL to null.
++                Uri.parse("http://host/path"),
++                // TODO: Make sure this auto-generated app deep link URI is correct.
++                Uri.parse("android-app://com.test/http/host/path")
++        );
++        AppIndex.AppIndexApi.end(client, viewAction);
++        client.disconnect();
++    }
++
++
++
++
++    public class MyLocationListenner implements BDLocationListener {
++
++        @Override
++        public void onReceiveLocation(BDLocation location) {
++            // map view 销毁后不在处理新接收的位置
++            if (location == null) {
++
++                return;
++            }
++
++
++            // Toast.makeText(MainActivity.this, locData.toString(),Toast.LENGTH_LONG).show();
++            if (isFirstLoc) {
++                isFirstLoc = false;
++
++                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
++                String loc = location.getAddrStr();
++                String des=location.getLocationDescribe();
++                String time=location.getTime();
++                TextView loca = (TextView) findViewById(R.id.locView);
++                loca.setText("\n"+"\n"+"您现在的位置：\n" + loc+","+des);
++
++
++                Log.e("YY:", location.getAddrStr());
++                Log.e("ll:", ll.toString());
++
++                mylocation = ll;
++                poiSearch = PoiSearch.newInstance();
++                poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
++
++
++                poiSearch.searchNearby((new PoiNearbySearchOption())
++                        .location(ll).radius(1500).keyword("公交站").pageCapacity(15));
++
++
++            }
++        }
++
++        public void onReceivePoi(BDLocation poiLocation) {
++        }
++    }
++
++    private class PoiSearchResultListener implements
++            OnGetPoiSearchResultListener {
++
++        @Override
++        public void onGetPoiDetailResult(PoiDetailResult result) {
++            if (result.error != SearchResult.ERRORNO.NO_ERROR) {
++                Log.e("add", B);
++            } else {
++
++                Log.e("add", B);
++
++                Toast.makeText(getApplicationContext(),
++                        result.getName() + ": " + result.getAddress(), Toast.LENGTH_SHORT)
++                        .show();
++            }
++        }
++
++
++        public void onGetPoiResult(PoiResult result) {
++            if ((result == null)
++                    || (result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND)) {
++
++                Log.e("add", "A");
++                return;
++            }
++            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
++
++                //Toast.makeText(MainActivity.this, "查找成功！", Toast.LENGTH_SHORT).show();
++
++                //c = result.getTotalPoiNum();
++                //Log.e("add", "A" + c);
++
++                poiInfoList = result.getAllPoi();
++                for (int i = 0; i < poiInfoList.size(); i++) {
++                    int a = (int) DistanceUtil.getDistance(poiInfoList.get(i).location, mylocation);
++
++
++                    String distance = +a + "米";
++                    Log.e("addddd", poiInfoList.get(i).address + poiInfoList.get(i).name + "cc" + distance + "bb");
++
++                    nearbydata ywq = new nearbydata(MainActivity.this);
++                    ywq.add(poiInfoList.get(i).name, poiInfoList.get(i).address, distance);
++
++
++                }
++
++
++                // String c=result.getAllAddr().get(0).address.trim();
++                // Log.e("address",c);
++                return;
++            }
++            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
++                Log.e("add", "C");
++            }
++        }
++
++
++    }
++
++
++
++    public void check() {
++        new AlertDialog.Builder(this).setTitle("请检查网络是否连接\n程序将关闭!")
++                .setIcon(R.drawable.warn).setPositiveButton("确定", new DialogInterface.OnClickListener() {
++            @Override
++            public void onClick(DialogInterface dialog, int which) {
++                MainActivity.this.finish();
++            }
++        }).show();
++
++
++    }
++
++    public void exit(){
++        //<uses-permission android:name="android.permission.RESTART_PACKAGES"></uses-permission>
++        ActivityManager actManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
++        actManager.restartPackage(getPackageName());
++        Toast.makeText(getApplicationContext(),
++                "请检查网络是否连接！", Toast.LENGTH_LONG).show();
++    }
++
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/map.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/map.xml	(revision )
++++ app/src/main/res/layout/map.xml	(revision )
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:orientation="vertical" android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++</LinearLayout>
+\ No newline at end of file
+Index: gradlew.bat
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gradlew.bat	(revision )
++++ gradlew.bat	(revision )
+@@ -0,0 +1,90 @@
++@if "%DEBUG%" == "" @echo off
++@rem ##########################################################################
++@rem
++@rem  Gradle startup script for Windows
++@rem
++@rem ##########################################################################
++
++@rem Set local scope for the variables with windows NT shell
++if "%OS%"=="Windows_NT" setlocal
++
++@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
++set DEFAULT_JVM_OPTS=
++
++set DIRNAME=%~dp0
++if "%DIRNAME%" == "" set DIRNAME=.
++set APP_BASE_NAME=%~n0
++set APP_HOME=%DIRNAME%
++
++@rem Find java.exe
++if defined JAVA_HOME goto findJavaFromJavaHome
++
++set JAVA_EXE=java.exe
++%JAVA_EXE% -version >NUL 2>&1
++if "%ERRORLEVEL%" == "0" goto init
++
++echo.
++echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
++echo.
++echo Please set the JAVA_HOME variable in your environment to match the
++echo location of your Java installation.
++
++goto fail
++
++:findJavaFromJavaHome
++set JAVA_HOME=%JAVA_HOME:"=%
++set JAVA_EXE=%JAVA_HOME%/bin/java.exe
++
++if exist "%JAVA_EXE%" goto init
++
++echo.
++echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
++echo.
++echo Please set the JAVA_HOME variable in your environment to match the
++echo location of your Java installation.
++
++goto fail
++
++:init
++@rem Get command-line arguments, handling Windowz variants
++
++if not "%OS%" == "Windows_NT" goto win9xME_args
++if "%@eval[2+2]" == "4" goto 4NT_args
++
++:win9xME_args
++@rem Slurp the command line arguments.
++set CMD_LINE_ARGS=
++set _SKIP=2
++
++:win9xME_args_slurp
++if "x%~1" == "x" goto execute
++
++set CMD_LINE_ARGS=%*
++goto execute
++
++:4NT_args
++@rem Get arguments from the 4NT Shell from JP Software
++set CMD_LINE_ARGS=%$
++
++:execute
++@rem Setup the command line
++
++set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
++
++@rem Execute Gradle
++"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %CMD_LINE_ARGS%
++
++:end
++@rem End local scope for the variables with windows NT shell
++if "%ERRORLEVEL%"=="0" goto mainEnd
++
++:fail
++rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
++rem the _cmd.exe /c_ return code!
++if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
++exit /b 1
++
++:mainEnd
++if "%OS%"=="Windows_NT" endlocal
++
++:omega
+Index: .idea/.name
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/.name	(revision )
++++ .idea/.name	(revision )
+@@ -0,0 +1,1 @@
++Test
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision )
++++ .idea/misc.xml	(revision )
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="EntryPointsManager">
++    <entry_points version="2.0" />
++  </component>
++  <component name="NullableNotNullManager">
++    <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
++    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
++    <option name="myNullables">
++      <value>
++        <list size="4">
++          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
++          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
++          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
++          <item index="3" class="java.lang.String" itemvalue="android.support.annotation.Nullable" />
++        </list>
++      </value>
++    </option>
++    <option name="myNotNulls">
++      <value>
++        <list size="4">
++          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
++          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
++          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
++          <item index="3" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
++        </list>
++      </value>
++    </option>
++  </component>
++  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
++    <OptionsSetting value="true" id="Add" />
++    <OptionsSetting value="true" id="Remove" />
++    <OptionsSetting value="true" id="Checkout" />
++    <OptionsSetting value="true" id="Update" />
++    <OptionsSetting value="true" id="Status" />
++    <OptionsSetting value="true" id="Edit" />
++    <ConfirmationsSetting value="0" id="Add" />
++    <ConfirmationsSetting value="0" id="Remove" />
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/build/classes" />
++  </component>
++  <component name="ProjectType">
++    <option name="id" value="Android" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/layout/sitesinfo.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/sitesinfo.xml	(revision )
++++ app/src/main/res/layout/sitesinfo.xml	(revision )
+@@ -0,0 +1,47 @@
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="horizontal"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1">
++    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++        android:orientation="vertical" android:layout_width="fill_parent"
++        android:layout_height="70dp" android:gravity="right"
++        android:padding="10dp"
++        android:layout_gravity="left">
++
++        <TextView android:id="@+id/tv_name"
++            android:text="沈阳航空航天大学"
++            android:layout_width="200dp"
++            android:layout_height="wrap_content"
++            android:textSize="16dp"
++            android:textColor="#0b0b0b"
++            android:gravity="top|left|center_vertical"
++            android:layout_alignBottom="@+id/tv_distance"
++            android:layout_alignParentLeft="true"
++            android:layout_alignParentStart="true"
++            android:layout_alignTop="@+id/tv_distance" />
++        <TextView android:id="@+id/tv_busid"
++            android:text="180路"
++            android:layout_width="match_parent"
++            android:layout_height="50dp"
++            android:textSize="14dp"
++            android:textColor="#23750f"
++            android:singleLine="true"
++            android:maxLength="30"
++            android:layout_below="@+id/tv_name" />
++
++        <TextView android:id="@+id/tv_distance"
++            android:text="150米"
++            android:layout_width="80dp"
++            android:layout_height="30dp"
++            android:textColor="#ed5050"
++            android:gravity="bottom|right"
++            android:layout_alignParentTop="true"
++            android:layout_alignRight="@+id/tv_busid"
++            android:layout_alignEnd="@+id/tv_busid"
++            android:layout_marginRight="27dp"
++            android:layout_marginEnd="27dp" />
++    </RelativeLayout>
++
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/content_query.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/content_query.xml	(revision )
++++ app/src/main/res/layout/content_query.xml	(revision )
+@@ -0,0 +1,44 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1">
++
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        android:background="?attr/colorPrimary">
++
++        <ImageButton
++            android:onClick="back2"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageButton"
++            android:layout_gravity="left|center_vertical"
++            android:background="@drawable/back" />
++
++        <TextView
++
++            android:layout_width="190dp"
++            android:layout_height="match_parent"
++            android:text="周边站点查询"
++            android:id="@+id/textView5"
++            android:layout_gravity="center"
++            android:layout_marginLeft="5dp"
++            android:layout_marginRight="50dp"
++            android:textSize="23dp"
++            android:textColor="#fefefe"
++            android:layout_marginTop="8dp" />
++
++    </LinearLayout>
++
++
++    <ListView
++        android:id="@android:id/list"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"></ListView>
++
++</LinearLayout>
+\ No newline at end of file
+Index: gradle.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>GBK
+===================================================================
+--- gradle.properties	(revision )
++++ gradle.properties	(revision )
+@@ -0,0 +1,18 @@
++# Project-wide Gradle settings.
++
++# IDE (e.g. Android Studio) users:
++# Gradle settings configured through the IDE *will override*
++# any settings specified in this file.
++
++# For more details on how to configure your build environment visit
++# http://www.gradle.org/docs/current/userguide/build_environment.html
++
++# Specifies the JVM arguments used for the daemon process.
++# The setting is particularly useful for tweaking memory settings.
++# Default value: -Xmx10248m -XX:MaxPermSize=256m
++# org.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
++
++# When configured, Gradle will run in incubating parallel mode.
++# This option should only be used with decoupled projects. More details, visit
++# http://www.gradle.org/docs/current/userguide/multi_project_builds.html#sec:decoupled_projects
++# org.gradle.parallel=true
+\ No newline at end of file
+Index: app/src/main/res/menu/menu_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_main.xml	(revision )
++++ app/src/main/res/menu/menu_main.xml	(revision )
+@@ -0,0 +1,10 @@
++<menu xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    tools:context="com.test.MainActivity">
++    <item
++        android:id="@+id/action_settings"
++        android:orderInCategory="100"
++        android:title="@string/action_settings"
++        app:showAsAction="never" />
++</menu>
+Index: app/src/main/java/com/test/searchsite.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/searchsite.java	(revision )
++++ app/src/main/java/com/test/searchsite.java	(revision )
+@@ -0,0 +1,93 @@
++package com.test;
++
++import android.support.v7.app.AppCompatActivity;
++import android.os.Bundle;
++import android.text.Layout;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.Button;
++import android.widget.LinearLayout;
++import android.widget.ListView;
++
++public class searchsite extends AppCompatActivity {
++    private int select=1;
++    private Button site;
++    private Button route;
++    private LinearLayout layout;
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.content_searchsite);
++
++
++        LayoutInflater inflater=LayoutInflater.from(this);
++        layout= (LinearLayout) findViewById(R.id.searlayout);
++        inflater.inflate(R.layout.searchtab1, layout);
++
++
++
++    }
++
++    public void back3(View view) {
++        finish();
++    }
++
++    public void selectsites(View view) {
++
++        if(select!=1)
++        {
++            select=1;
++            site= (Button) findViewById(R.id.button);
++            route= (Button) findViewById(R.id.button2);
++            site.setBackgroundResource(R.color.mywhite);
++            site.setTextColor(getResources().getColor(R.color.colorPrimary));
++
++            route.setBackgroundResource(R.color.colorPrimary);
++            route.setTextColor(getResources().getColor(R.color.mywhite));
++
++            LinearLayout hiddenView= (LinearLayout) findViewById(R.id.searlayout2);
++            ViewGroup parent = (ViewGroup) hiddenView.getParent();
++            parent.removeView(hiddenView);
++
++            //
++            LayoutInflater inflater=LayoutInflater.from(this);
++            layout= (LinearLayout) findViewById(R.id.searlayout);
++            inflater.inflate(R.layout.searchtab1, layout);
++
++            layout.removeView(layout);
++        }
++
++
++
++
++
++    }
++
++    public void selectroutes(View view) {
++        if(select!=2)
++        {
++            select=2;
++            site= (Button) findViewById(R.id.button);
++            route= (Button) findViewById(R.id.button2);
++            route.setBackgroundResource(R.color.mywhite);
++            route.setTextColor(getResources().getColor(R.color.colorPrimary));
++
++            site.setBackgroundResource(R.color.colorPrimary);
++            site.setTextColor(getResources().getColor(R.color.mywhite));
++
++            LinearLayout hiddenView= (LinearLayout) findViewById(R.id.searlayout1);
++            ViewGroup parent = (ViewGroup) hiddenView.getParent();
++            parent.removeView(hiddenView);
++
++
++            //
++            LayoutInflater inflater=LayoutInflater.from(this);
++            layout= (LinearLayout) findViewById(R.id.searlayout);
++            inflater.inflate(R.layout.searchtab2, layout);
++
++        }
++
++
++    }
++}
+Index: app/src/main/res/values-w820dp/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values-w820dp/dimens.xml	(revision )
++++ app/src/main/res/values-w820dp/dimens.xml	(revision )
+@@ -0,0 +1,6 @@
++<resources>
++    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
++         (such as screen margins) for screens with more than 820dp of available width. This
++         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
++    <dimen name="activity_horizontal_margin">64dp</dimen>
++</resources>
+Index: app/src/main/java/com/test/Query.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/Query.java	(revision )
++++ app/src/main/java/com/test/Query.java	(revision )
+@@ -0,0 +1,273 @@
++package com.test;
++
++import android.app.ListActivity;
++import android.content.Context;
++import android.content.Intent;
++import android.net.Uri;
++import android.os.Bundle;
++import android.util.Log;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.BaseAdapter;
++import android.widget.LinearLayout;
++import android.widget.TextView;
++import android.widget.Toast;
++import com.baidu.mapapi.SDKInitializer;
++import com.baidu.mapapi.search.core.PoiInfo;
++import com.baidu.mapapi.search.core.SearchResult;
++import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
++import com.baidu.mapapi.search.poi.PoiDetailResult;
++import com.baidu.mapapi.search.poi.PoiResult;
++import com.baidu.mapapi.search.poi.PoiSearch;
++import com.google.android.gms.appindexing.Action;
++import com.google.android.gms.appindexing.AppIndex;
++import com.google.android.gms.common.api.GoogleApiClient;
++
++import java.util.ArrayList;
++import java.util.List;
++
++import nearbysite.nearbysites;
++
++public class Query extends ListActivity {
++
++    private  String[] applicationNames =new String[15];
++
++    private  String[] authors=new String[15];
++
++    private String[] applicationRating=new String[15];
++
++    String inflater = Context.LAYOUT_INFLATER_SERVICE;
++    LayoutInflater layoutInflater;
++    private RatingAdapter raAdapter;
++
++
++    private PoiSearch poiSearch;
++    private int c;
++    List<PoiInfo> poiInfoList;
++
++
++    /**
++     * ATTENTION: This was auto-generated to implement the App Indexing API.
++     * See https://g.co/AppIndexing/AndroidStudio for more information.
++     */
++    private GoogleApiClient client;
++
++
++    class RatingAdapter extends BaseAdapter
++    {
++        private Context context;
++        //构造函数
++        public RatingAdapter(Context context)
++        {
++            this.context = context;
++            layoutInflater = (LayoutInflater) context
++                    .getSystemService(inflater);
++        }
++
++        //@Override
++        public int getCount()
++        {
++            return applicationNames.length;
++        }
++
++        // @Override
++        public Object getItem(int position)
++        {
++            return applicationNames[position];
++        }
++
++        // @Override
++        public long getItemId(int position)
++        {
++            return position;
++        }
++        //设置星行分数
++        /*public void setRating(int position, float rating)
++        {
++            applicationRating[position] = rating;
++            //在adapter的数据发生变化以后通知UI主线程根据新的数据重新画图
++            notifyDataSetChanged();
++        }*/
++
++        // @Override
++        public View getView(int position, View convertView, ViewGroup parent)
++        {
++            //对listview布局
++            LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
++                    R.layout.sitesinfo, null);
++            //分别得到3个组件
++
++            TextView tvApplicationName = ((TextView) linearLayout
++                    .findViewById(R.id.tv_name));
++            TextView tvAuthor = (TextView) linearLayout
++                    .findViewById(R.id.tv_busid);
++            TextView tvRating = (TextView) linearLayout
++                    .findViewById(R.id.tv_distance);
++
++            //3个组件分别得到内容
++
++            tvApplicationName.setText(applicationNames[position]);
++            tvAuthor.setText(authors[position]);
++            tvRating.setText(String.valueOf(applicationRating[position]));
++
++            return linearLayout;
++        }
++    }
++
++
++
++
++
++
++
++
++
++
++
++
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        SDKInitializer.initialize(getApplicationContext());
++        setContentView(R.layout.content_query);
++
++     /*   poiSearch = PoiSearch.newInstance();
++        poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
++        ListView listView= (ListView) findViewById(R.id.listView2);*/
++
++        nearbydata db = new nearbydata(this);
++        List<nearbysites> site = db.findAll();
++        Log.e("Long:", site.size() + "");
++        for (int i = 0; i < site.size(); i++) {
++
++
++            applicationNames[i] = site.get(i).getName();
++
++            authors[i] = site.get(i).getBusid();
++
++            applicationRating[i] = site.get(i).getDistance();
++
++
++        }
++
++        List<View> viewList = new ArrayList<View>();
++
++        viewList.add(getLayoutInflater().inflate(R.layout.activity_iwantogo, null));
++        raAdapter = new RatingAdapter(this);
++        setListAdapter(raAdapter);
++
++        // ATTENTION: This was auto-generated to implement the App Indexing API.
++        // See https://g.co/AppIndexing/AndroidStudio for more information.
++        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
++    }
++
++    @Override
++    public void onStart() {
++        super.onStart();
++
++        // ATTENTION: This was auto-generated to implement the App Indexing API.
++        // See https://g.co/AppIndexing/AndroidStudio for more information.
++        client.connect();
++        Action viewAction = Action.newAction(
++                Action.TYPE_VIEW, // TODO: choose an action type.
++                "Query Page", // TODO: Define a title for the content shown.
++                // TODO: If you have web page content that matches this app activity's content,
++                // make sure this auto-generated web page URL is correct.
++                // Otherwise, set the URL to null.
++                Uri.parse("http://host/path"),
++                // TODO: Make sure this auto-generated app deep link URI is correct.
++                Uri.parse("android-app://com.test/http/host/path")
++        );
++        AppIndex.AppIndexApi.start(client, viewAction);
++    }
++
++    @Override
++    public void onStop() {
++        super.onStop();
++
++        // ATTENTION: This was auto-generated to implement the App Indexing API.
++        // See https://g.co/AppIndexing/AndroidStudio for more information.
++        Action viewAction = Action.newAction(
++                Action.TYPE_VIEW, // TODO: choose an action type.
++                "Query Page", // TODO: Define a title for the content shown.
++                // TODO: If you have web page content that matches this app activity's content,
++                // make sure this auto-generated web page URL is correct.
++                // Otherwise, set the URL to null.
++                Uri.parse("http://host/path"),
++                // TODO: Make sure this auto-generated app deep link URI is correct.
++                Uri.parse("android-app://com.test/http/host/path")
++        );
++        AppIndex.AppIndexApi.end(client, viewAction);
++        client.disconnect();
++    }
++
++    public void to11(View view) {
++
++        Intent intent=new Intent(this,searchsite.class);
++        startActivity(intent);
++    }
++
++    public void back2(View view) {
++        finish();
++    }
++
++       //监听器
++    private class PoiSearchResultListener implements
++            OnGetPoiSearchResultListener {
++
++        @Override
++        public void onGetPoiDetailResult(PoiDetailResult result) {
++            if (result.error != SearchResult.ERRORNO.NO_ERROR) {
++
++            } else {
++
++
++
++                Toast.makeText(getApplicationContext(),
++                        result.getName() + ": " + result.getAddress(), Toast.LENGTH_SHORT)
++                        .show();
++            }
++        }
++
++
++        public void onGetPoiResult(PoiResult result) {
++            if ((result == null)
++                    || (result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND)) {
++
++                Log.e("add", "A");
++                return;
++            }
++            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
++
++                Toast.makeText(Query.this,"查找成功！",Toast.LENGTH_SHORT).show();
++
++                c=result.getTotalPoiNum();
++                Log.e("add","A"+c);
++
++                poiInfoList=result.getAllPoi();
++                for(int i=0;i<poiInfoList.size();i++)
++               {
++
++                Log.e("add",poiInfoList.get(i).address+poiInfoList.get(i).name);
++                    Toast.makeText(Query.this,c+"",Toast.LENGTH_SHORT).show();
++
++                }
++
++
++               // String c=result.getAllAddr().get(0).address.trim();
++               // Log.e("address",c);
++                return;
++            }
++            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
++                Log.e("add", "C");
++            }
++        }
++
++
++
++
++
++
++    }      //自定义一个Adapter继承BaseAdapter，要重写getCount(),getItem(),getItemId(),getView()四种方法
++
++}
+Index: app/src/main/java/com/test/database.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/test/database.java	(revision )
++++ app/src/main/java/com/test/database.java	(revision )
+@@ -0,0 +1,30 @@
++package com.test;
++
++import android.content.Context;
++import android.database.sqlite.SQLiteDatabase;
++import android.database.sqlite.SQLiteOpenHelper;
++import android.util.Log;
++
++/**
++ * Created by Administrator on 2016/4/7.
++ */
++public class database extends SQLiteOpenHelper {
++
++    private static final String DATABASE_NAME ="wow.db";
++
++    public database(Context context) {
++        super(context,DATABASE_NAME,null, 1);
++    }
++
++    @Override
++    public void onCreate(SQLiteDatabase db) {
++        db.execSQL("create table nearby (id integer primary key autoincrement,name varchar(20),busid char(20),distance char(20))");
++        String a=db.getPath();
++        Log.e("db:",a);
++    }
++
++    @Override
++    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
++
++    }
++}
+Index: app/proguard-rules.pro
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/proguard-rules.pro	(revision )
++++ app/proguard-rules.pro	(revision )
+@@ -0,0 +1,17 @@
++# Add project specific ProGuard rules here.
++# By default, the flags in this file are appended to flags specified
++# in C:\Users\Administrator\AppData\Local\Android\Sdk/tools/proguard/proguard-android.txt
++# You can edit the include path and order by changing the proguardFiles
++# directive in build.gradle.
++#
++# For more details, see
++#   http://developer.android.com/guide/developing/tools/proguard.html
++
++# Add any project specific keep options here:
++
++# If your project uses WebView with JS, uncomment the following
++# and specify the fully qualified class name to the JavaScript interface
++# class:
++#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
++#   public *;
++#}
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(revision )
++++ .idea/modules.xml	(revision )
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/Test.iml" filepath="$PROJECT_DIR$/Test.iml" />
++      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/values/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/dimens.xml	(revision )
++++ app/src/main/res/values/dimens.xml	(revision )
+@@ -0,0 +1,6 @@
++<resources>
++    <!-- Default screen margins, per the Android Design guidelines. -->
++    <dimen name="activity_horizontal_margin">16dp</dimen>
++    <dimen name="activity_vertical_margin">16dp</dimen>
++    <dimen name="fab_margin">16dp</dimen>
++</resources>
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision )
++++ app/src/main/res/values/strings.xml	(revision )
+@@ -0,0 +1,23 @@
++<resources>
++    <string name="app_name">chedengwo</string>
++    <string name="action_settings">Settings</string>
++    <string name="text1">到站查询</string>
++    <string name="chedengwo">车等我</string>
++    <string name="query">到站查询</string>
++    <string name="iwantto">我要去</string>
++    <string name="sousuo">搜索</string>
++    <string name="zhongdian">请输入终点</string>
++    <string name="qidian">请输入起点</string>
++    <string name="title_activity_iwantogo">iwantogo</string>
++    <string name="IWG">我要去</string>
++    <string name="title_activity_query">Query</string>
++    <string name="surroundsites">周边站点查询</string>
++    <string name="title_activity_map">MapActivity</string>
++    <string name="sites">站点</string>
++    <string name="routes">线路</string>
++    <string name="pleaseInputsite">请输入站点关键字</string>
++    <string name="mylocation">我的位置</string>
++    <string name="myloc">我的位置→</string>
++    <string name="siteroutesear">站点/路径搜索</string>
++    <string name="routekey">请输入路线关键字</string>
++</resources>
+Index: app/src/androidTest/java/com/test/ApplicationTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/androidTest/java/com/test/ApplicationTest.java	(revision )
++++ app/src/androidTest/java/com/test/ApplicationTest.java	(revision )
+@@ -0,0 +1,13 @@
++package com.test;
++
++import android.app.Application;
++import android.test.ApplicationTestCase;
++
++/**
++ * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
++ */
++public class ApplicationTest extends ApplicationTestCase<Application> {
++    public ApplicationTest() {
++        super(Application.class);
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_gotosite.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_gotosite.xml	(revision )
++++ app/src/main/res/layout/activity_gotosite.xml	(revision )
+@@ -0,0 +1,48 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1">
++
++
++    <FrameLayout
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        android:background="?attr/colorPrimary">
++
++        <ImageButton
++            android:onClick="back4"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageButton"
++            android:layout_gravity="left|center_vertical"
++            android:background="@drawable/back" />
++
++        <TextView
++
++            android:layout_width="190dp"
++            android:layout_height="60dp"
++            android:text="@string/myloc"
++            android:id="@+id/textView5"
++            android:layout_gravity="center"
++            android:layout_marginLeft="5dp"
++            android:layout_marginRight="50dp"
++            android:textSize="26dp"
++            android:textColor="#fefefe"
++            android:layout_marginTop="8dp" />
++
++    </FrameLayout>
++
++    <ListView
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:id="@+id/listView2"
++        android:layout_gravity="right" />
++
++    <ListView
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:id="@+id/listView" />
++</LinearLayout>
+\ No newline at end of file
+Index: app/libs/readme.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/libs/readme.txt	(revision )
++++ app/libs/readme.txt	(revision )
+@@ -0,0 +1,131 @@
++百度地图Android SDK自v2.3.0起，采用可定制的形式为您提供开发包，当前开发包包含如下功能:
++基础地图：地图显示、操作和各种覆盖物图层：
++检索功能：POI检索、地理编码、路径规划等；
++LBS云检索：基于LBS云的周边、城市内、区域、详情检索；
++计算工具：调启百度地图客户端导航、调启Web App导航、计算距离等；
++周边雷达：包含位置信息上传和检索周边相同应用的用户位置信息功能；
++百度地图Android SDK自v2.3.0起，采用可定制的形式为您提供开发包，当前开发包包含如下功能:
++
++基础地图：地图显示、操作和各种覆盖物图层：
++
++检索功能：POI检索、地理编码、路径规划等；
++
++LBS云检索：基于LBS云的周边、城市内、区域、详情检索；
++
++计算工具：调启百度地图客户端导航、调启Web App导航、计算距离等；
++
++周边雷达：包含位置信息上传和检索周边相同应用的用户位置信息功能；
++
++------------------------------------------------------------------------------------------------
++
++Android 地图 SDK v3.7.3是适用于Android系统移动设备的矢量地图开发包
++
++------------------------------------------------------------------------------------------------
++注意：为了给用户提供更安全的服务，Android SDK自v2.1.3版本开始采用了全新的Key验证体系。因此，当您选择使用v2.1.3及之后版本的SDK时，需要到新的Key申请页面进行全新Key的申请，申请及配置流程请参考开发指南的对应章节。（选择使用v2.1.2及之前版本SDK的开发者，申请密钥（Key） 的方式不变）
++------------------------------------------------------------------------------------------------
++地图SDK功能介绍（全功能开发包）：
++
++地图：
++	提供地图（2D、3D）的展示和缩放、平移、旋转、改变视角等地图操作；
++POI检索：
++	可根据关键字，对POI数据进行周边、区域和城市内三种检索；
++地理编码：
++	提供地理坐标和地址之间相互转换的能力；
++线路规划：
++	支持公交信息查询、公交换乘查询、驾车线路规划和步行路径检索；
++覆盖物：
++	提供多种地图覆盖物（瓦片图层、自定义标注、几何图形、文字绘制、地形图图层、热力图图层等），满足开发者的各种需求；
++定位：
++	采用多种定位模式，使用定位SDK获取位置信息，使用地图SDK我的位置图层进行位置展示；
++离线地图：
++	支持使用离线地图，节省用户流量，同时为用户带来更好的地图体验；
++调启百度地图：
++	利用SDK接口，直接在本地打开百度地图客户端或WebApp，实现地图功能。
++周边雷达：
++	利用周边雷达功能，开发者可在App内低成本、快速实现查找周边使用相同App的用户位置的功能。
++LBS云检索：
++	支持用户检索存储在LBS云内的自有POI数据，并展示；
++特色功能：
++	提供短串分享、Place详情检索、热力图等特色功能，帮助开发者搭建功能更加强大的应用；
++------------------------------------------------------------------------------------------------
++
++【新版提示】
++
++	
++1、自v3.6.0起，官网不再支持地图离线包下载，所以SDK去掉“手动导入离线包接口”，SDK在线下载离线包接口仍维持不变。
++	
++
++2、因为新版采用新的分包形式，旧包无法与新包同时混用，请将之前所有旧包（so和jar）全部替换为新包。
++	
++
++3、自V3.6.0起，Android SDK使用新的矢量地图样式，地图显示更加清新，和百度地图客户端保持一致。
++	
++
++4、自V3.6.0起，原内置覆盖物相关类代码开源（OverlayManager/PoiOverlay/TransitRouteOverlay/WalkingRouteOverlay/BusLineOverlay）,源码可在BaiduMapsApiDemo工程中找到。
++
++	
++5、自V3.6.0起，Android SDK采用功能包拆分的形式，
++
++其中:
++baidumapapi_base_vX_X_X.jar和libBaiduMapSDK_base_vX_X_X.so为基础包，使用地图、检索、云检索、工具、周边雷达中任何一功能都必须包含；
++
++
++baidumapapi_map_vX_X_X.jar和libBaiduMapSDK_map_vX_X_X.so为地图功能包；
++baidumapapi_search_vX_X_X.jar和libBaiduMapSDK_search_vX_X_X.so为检索功能包；
++
++
++baidumapapi_cloud_vX_X_X.jar和libBaiduMapSDK_cloud_vX_X_X.so为云检索功能包；
++baidumapapi_util_vX_X_X.jar和libBaiduMapSDK_util_vX_X_X.so为工具功能包；
++
++
++baidumapapi_radar_vX_X_X.jar和libBaiduMapSDK_radar_vX_X_X.so为周边雷达工具包；
++
++
++如果您从http://lbsyun.baidu.com/sdk/download这里下载的开发包，提供给您的将所有jar打包成BaiduLBS_Android.jar。native动态库so的形式不变。
++
++
++较之v3.7.1，升级功能：
++
++
++【 新 增 】
++
++
++ [ 基 础 地 图 ]
++
++
++1、 新增自定义指南针图标，支持个性化定制指南针图标
++
++          MapView/TextureMapView 新增setCompassIcon(Bitmap icon),设置指南针自定义图标
++
++2、 新增个性化地图道路文字颜色设置（包括高速及国道、城市主路、普通道路）
++
++【 优 化 】
++
++1、 更新了缩放控件
++
++2、 优化计算点到直线最短距离点的误差问题
++
++【 变 更 】
++
++ [ 检 索 功 能]
++
++为兼容一些行政区边界不连续，行政区边界数据检索接口 List<LatLng> getPolylines() 变更为 List<List<LatLng>> getPolylines()接口，适配边界多个形状区域的情况。
++         
++【 Bug 修 复 】 
++         
++1、  修复某些情况下sug检索city、district为空；
++
++2、  修复marker设置大尺寸图标，拖拽地图，marker点抖动的问题；
++
++3、  修复批量添加maker点，未更新overlay的状态；
++
++4、  修复setPadding的bug；
++
++5、  修复某些情况下调起驾车导航数据解析失败的问题；
++
++6、  修复设置瓦片图后，底图资源释放问题导致的纹理错乱问题；
++
++7、  修复MapStatus解析过程偶现空指针；
++
++8、  修复骑行检索在断网情况下回调错误；
++
+Index: app/src/main/res/values-v21/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values-v21/styles.xml	(revision )
++++ app/src/main/res/values-v21/styles.xml	(revision )
+@@ -0,0 +1,9 @@
++<resources>>
++
++    <style name="AppTheme.NoActionBar">
++        <item name="windowActionBar">false</item>
++        <item name="windowNoTitle">true</item>
++        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
++        <item name="android:statusBarColor">@android:color/transparent</item>
++    </style>
++</resources>
+Index: app/src/main/res/layout/content_searchsite.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/content_searchsite.xml	(revision )
++++ app/src/main/res/layout/content_searchsite.xml	(revision )
+@@ -0,0 +1,105 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:id="@+id/searlayout"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:weightSum="1"
++    android:baselineAligned="false"
++    android:background="#ffffff">
++
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        android:background="?attr/colorPrimary">
++
++        <ImageButton
++            android:onClick="back3"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:id="@+id/imageButton"
++            android:background="@drawable/back" />
++
++        <TextView
++
++            android:layout_width="80dp"
++            android:layout_height="match_parent"
++            android:text="搜索"
++            android:id="@+id/textView5"
++            android:layout_marginLeft="5dp"
++            android:layout_marginRight="50dp"
++            android:textSize="23dp"
++            android:textColor="#fefefe"
++            android:layout_marginTop="8dp"
++            android:layout_gravity="center_vertical" />
++
++        <RelativeLayout
++            android:layout_width="154dp"
++            android:layout_height="43dp"
++            android:layout_gravity="center_vertical|right"
++            style="@style/TextAppearance.AppCompat.Button"
++            android:background="#ffffff">
++
++            <Button
++                android:onClick="selectroutes"
++                android:layout_width="75dp"
++                android:layout_height="40dp"
++                android:text="@string/routes"
++                android:id="@+id/button2"
++                android:layout_gravity="center_horizontal"
++                android:background="?attr/colorPrimary"
++                android:textColor="#ffffff"
++                android:layout_centerVertical="true"
++                android:layout_alignParentRight="true"
++                android:layout_alignParentEnd="false"
++                android:layout_marginRight="2dp" />
++
++            <Button
++                android:onClick="selectsites"
++                android:layout_width="75dp"
++                android:layout_height="40dp"
++                android:text="@string/sites"
++                android:id="@+id/button"
++                android:layout_gravity="center_horizontal"
++                android:background="#ffffff"
++                android:textColor="?attr/colorPrimary"
++                android:layout_alignTop="@+id/button2"
++                android:layout_toLeftOf="@+id/button2"
++                android:layout_toStartOf="@+id/button2"
++                android:layout_marginLeft="0dp" />
++
++        </RelativeLayout>
++
++
++    </LinearLayout>
++
++    <!--<LinearLayout
++        android:orientation="horizontal"
++        android:layout_width="match_parent"
++        android:layout_height="50dp"
++        android:background="#c1c1c1">
++
++        <EditText
++            android:hint="@string/pleaseInputsite"
++            android:background="#ffffff"
++            android:layout_width="200dp"
++            android:layout_height="40dp"
++            android:id="@+id/ed1"
++            android:layout_marginLeft="10dp"
++            android:layout_gravity="center_vertical" />
++
++        <Button
++            android:background="#ffffff"
++            android:layout_width="80dp"
++            android:layout_height="40dp"
++            android:text="@string/sousuo"
++            android:id="@+id/button3"
++            android:layout_gravity="center_vertical"
++            android:layout_marginLeft="40dp" />
++
++    </LinearLayout>-->
++
++
++</LinearLayout>
+\ No newline at end of file
+Index: .idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/encodings.xml	(revision )
++++ .idea/encodings.xml	(revision )
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Encoding">
++    <file url="PROJECT" charset="UTF-8" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/.gitignore	(revision )
++++ app/.gitignore	(revision )
+@@ -0,0 +1,1 @@
++/build
+Index: app/src/main/res/layout/content_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/content_main.xml	(revision )
++++ app/src/main/res/layout/content_main.xml	(revision )
+@@ -0,0 +1,143 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:paddingBottom="@dimen/activity_vertical_margin"
++    android:paddingLeft="@dimen/activity_horizontal_margin"
++    android:paddingRight="@dimen/activity_horizontal_margin"
++    android:paddingTop="@dimen/activity_vertical_margin"
++
++    tools:context="com.chedengwo.MainActivity"
++    tools:showIn="@layout/activity_main"
++    android:weightSum="1">
++
++
++    <TextView
++        android:layout_width="fill_parent"
++        android:layout_height="60dp"
++        android:textColor="#000000"
++        android:text="@string/chedengwo"
++        android:id="@+id/textView"
++        android:gravity="center|center_horizontal"
++        android:textSize="35dp"
++        android:layout_marginTop="39dp"
++        android:layout_alignParentTop="true"
++        android:layout_centerHorizontal="true" />
++
++    <TextView
++        android:layout_width="300dp"
++        android:layout_height="120dp"
++        android:text=""
++        android:id="@+id/locView"
++        android:layout_below="@+id/textView"
++        android:layout_alignParentLeft="true"
++        android:layout_alignParentStart="true"
++        android:textSize="18dp"
++        android:textColor="#ff0000"
++        android:layout_weight="0.31"
++        android:layout_gravity="center_horizontal" />
++
++    <LinearLayout
++        android:orientation="vertical"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_gravity="center_horizontal">
++    <LinearLayout
++        android:layout_width="wrap_content"
++        android:layout_height="150dp"
++        android:layout_gravity="center_horizontal">
++    <FrameLayout
++        android:onClick="to1"
++        android:background="#4C5EAE"
++        android:layout_width="150dp"
++        android:layout_height="150dp"
++        android:id="@+id/frameLayout"
++        android:layout_alignParentBottom="true"
++        android:layout_alignParentLeft="true"
++        android:layout_alignParentStart="true"
++        android:layout_marginBottom="126dp"
++
++        >
++
++        <TextView
++            android:layout_marginTop="8sp"
++            android:layout_width="120dp"
++            android:layout_height="50dp"
++            android:text="@string/query"
++            android:id="@+id/textView2"
++            android:layout_gravity="center_horizontal|top"
++            android:textSize="24dp"
++            android:textAlignment="center"
++            android:textColor="#ffffff" />
++
++        <ImageView
++
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageView"
++            android:layout_gravity="center"
++            android:src="@drawable/a1" />
++    </FrameLayout>
++
++    <FrameLayout
++        android:onClick="to2"
++        android:background="#95D624"
++        android:layout_width="150dp"
++        android:layout_height="150dp"
++        android:layout_alignTop="@+id/frameLayout"
++        android:layout_alignParentRight="true"
++        android:layout_alignParentEnd="true">
++
++        <TextView
++            android:layout_marginTop="8sp"
++            android:layout_width="120dp"
++            android:layout_height="50dp"
++            android:text="@string/iwantto"
++            android:id="@+id/textView3"
++            android:layout_gravity="center_horizontal|top"
++            android:textSize="24dp"
++            android:textAlignment="center"
++            android:textColor="#ffffff" />
++
++        <ImageView
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:id="@+id/imageView2"
++            android:layout_gravity="center"
++            android:src="@drawable/a2" />
++    </FrameLayout>
++    </LinearLayout>
++        <FrameLayout
++            android:onClick="to3"
++            android:background="#c2692a"
++            android:layout_width="300dp"
++            android:layout_height="150dp"
++            android:layout_alignTop="@+id/frameLayout"
++            android:layout_alignParentRight="true"
++            android:layout_alignParentEnd="true">
++
++            <TextView
++                android:layout_marginTop="8sp"
++                android:layout_width="200dp"
++                android:layout_height="40dp"
++                android:text="@string/siteroutesear"
++                android:id="@+id/tv_siteroute"
++                android:layout_gravity="center_horizontal|top"
++                android:textSize="24dp"
++                android:textAlignment="center"
++                android:textColor="#ffffff" />
++
++            <ImageView
++                android:layout_width="60dp"
++                android:layout_height="60dp"
++                android:id="@+id/im_search"
++                android:layout_gravity="center"
++                android:src="@drawable/search" />
++        </FrameLayout>
++
++    </LinearLayout>
++
++</LinearLayout>
+Index: .idea/inspectionProfiles/profiles_settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/inspectionProfiles/profiles_settings.xml	(revision )
++++ .idea/inspectionProfiles/profiles_settings.xml	(revision )
+@@ -0,0 +1,7 @@
++<component name="InspectionProjectProfileManager">
++  <settings>
++    <option name="PROJECT_PROFILE" value="Project Default" />
++    <option name="USE_PROJECT_PROFILE" value="true" />
++    <version value="1.0" />
++  </settings>
++</component>
+\ No newline at end of file

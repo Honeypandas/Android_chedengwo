@@ -14,10 +14,10 @@
     <string name="surroundsites">周边站点查询</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="sites">站点</string>
-    <string name="routes">线路</string>
-    <string name="pleaseInputsite">请输入站点关键字</string>
+    <string name="routes">路线</string>
+    <string name="sitekey">请输入站点关键字</string>
     <string name="mylocation">我的位置</string>
     <string name="myloc">我的位置→</string>
-    <string name="siteroutesear">站点/路径搜索</string>
-    <string name="routekey">请输入路线关键字</string>
+    <string name="siteroutesear">站点/路线搜索</string>
+    <string name="routekey">请输入路线号</string>
 </resources>

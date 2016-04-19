@@ -12,7 +12,7 @@
 
         <TextView android:id="@+id/tv_name"
             android:text="沈阳航空航天大学"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="#0b0b0b"

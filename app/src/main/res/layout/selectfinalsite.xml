@@ -10,25 +10,27 @@
         android:padding="10dp"
         android:layout_gravity="left">
 
-        <TextView android:id="@+id/tv_name"
+        <TextView android:id="@+id/tv_sitename"
             android:text="沈阳航空航天大学"
-            android:layout_width="200dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="18dp"
             android:textColor="#0b0b0b"
             android:gravity="top|left|center_vertical"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
-        <TextView android:id="@+id/tv_busid"
+        <TextView android:id="@+id/tv_busline"
             android:text="180路"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="14dp"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
             android:textColor="#23750f"
             android:singleLine="true"
             android:maxLength="30"
-            android:layout_below="@+id/tv_name"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
