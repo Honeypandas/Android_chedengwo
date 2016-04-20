@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                // Log.e("YY:", location.getAddrStr());
-                Log.e("ll:", ll.toString());
+               // Log.e("ll:", ll.toString());
 
                 mylocation = ll;
                 poiSearch = PoiSearch.newInstance();
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     String distance = a + "米";
-                   Log.e("addddd", poiInfoList.get(i).address + poiInfoList.get(i).name + "cc" + distance + "bb");
+                  // Log.e("addddd", poiInfoList.get(i).address + poiInfoList.get(i).name + "cc" + distance + "bb");
 
 
 

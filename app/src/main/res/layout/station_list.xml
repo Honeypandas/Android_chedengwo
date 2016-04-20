@@ -18,6 +18,6 @@
             android:textColor="#23920f"
             android:textSize="20sp"
             android:textIsSelectable="false"
-            android:textAlignment="center" />
+            android:textAlignment="textStart" />
     </LinearLayout>
 </LinearLayout>

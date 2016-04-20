@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
@@ -34,12 +35,17 @@ import nearbysite.nearbysites;
  * Created by Administrator on 2016/4/17.
  */
 public class selectsites extends ListActivity {
+    public  static  int status=0;
+
     static private  int first=0;
     List<View> viewList = new ArrayList<View>();
-    String target;
+    String target,start;
+    public static LatLng start_loc;
+    public static LatLng tar_loc;
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
     String uid;
+    private LatLng[] location=new LatLng[25];
     private SiteAdapter raAdapter;
     private String[] name=new String[25]   ;
     private  String[] busline=new String[25];
@@ -123,8 +129,9 @@ public class selectsites extends ListActivity {
         setContentView(R.layout.selectsites);
 
         Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
+        final Bundle bundle=intent.getExtras();
         target=bundle.getString("终点");
+        start=bundle.getString("起点");
 
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
@@ -137,14 +144,19 @@ public class selectsites extends ListActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String v = name[position];
-                    Toast.makeText(selectsites.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
 
-                    Intent intent=new Intent(selectsites.this,Gotosite.class);
-                    Bundle bundle=new Bundle();
-                    bundle.putString("name",v);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    if(status==1) {
+                        String v = name[position];
+                        Toast.makeText(selectsites.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
+                        Gotosite.tar_loc = location[position];
+                        Gotosite.start_loc = start_loc;
+                        Intent intent = new Intent(selectsites.this, Gotosite.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("start","我的位置");
+                        bundle.putString("end", v);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
 
 
                 }
@@ -204,15 +216,19 @@ public class selectsites extends ListActivity {
                         {
                             name[i] = poiInfoList.get(i).name+"(公交站)";
                             busline[i] = poiInfoList.get(i).address;
-
+                            location[i]=poiInfoList.get(i).location;
+                            //Log.e("print:",i+"次数："+location[i].toString());
                             s++;
                             continue;
                         }
                         s++;
+
+                        location[i]=poiInfoList.get(i).location;
+                       // Log.e("print:",i+"次数："+location[i].toString());
                         name[i] = poiInfoList.get(i).name;
                         busline[i] = poiInfoList.get(i).address;
                         uid = poiInfoList.get(i).uid;
-                        Log.e("s", busline[i]);
+                        //Log.e("s", busline[i]);
 
 
 

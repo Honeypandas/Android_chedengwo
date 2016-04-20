@@ -126,9 +126,26 @@ public class BusInfo extends AppCompatActivity {
     public void to_bus_map(View view) {
         Intent intent=new Intent(BusInfo.this,Bus_station_map.class);
         Bundle bundle=new Bundle();
-        bundle.putString("busline",v);
+        bundle.putString("busline", v);
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+
+
+    @Override
+    protected void onDestroy() {
+        busLineSearch.destroy();
+
+        super.onDestroy();
+    }
+
+
+
+
+
+
+
+
 }
 

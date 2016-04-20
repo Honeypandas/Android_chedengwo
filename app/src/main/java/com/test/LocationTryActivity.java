@@ -30,6 +30,8 @@ import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 
+import java.util.Objects;
+
 
 /**
  * 使用MyLocationOverlay绘制定位位置 同时展示如何使用自定义图标绘制并点击时弹出泡泡
@@ -96,22 +98,68 @@ public class LocationTryActivity extends AppCompatActivity {
             return ;
         }
 
-       Log.e("myloc",mylocation.toString());
+       //Log.e("myloc",mylocation.toString());
         if(ed2.getText().toString().equals(""))
         {
             Toast.makeText(LocationTryActivity.this,"请输入终点！",Toast.LENGTH_SHORT).show();
             return ;
         }
+
+
         String start=ed1.getText().toString().trim();
         String finalsite=ed2.getText().toString().trim();
+        Log.e("start:",start);
+        Log.e("end:",finalsite);
 
-        Intent intent=new Intent(this,selectsites.class);
-        Bundle bundle=new Bundle();
 
-        bundle.putString("终点", finalsite);
-        intent.putExtras(bundle);
+        if(start.equals("我的位置")) {
 
-        startActivity(intent);
+            Log.e("status:","1");
+            selectsites.status=1;
+
+            Intent intent = new Intent(this, selectsites.class);
+            Bundle bundle = new Bundle();
+            //我的位置
+            selectsites.start_loc = mylocation;
+            bundle.putString("终点", finalsite);
+            bundle.putString("起点", start);
+
+            intent.putExtras(bundle);
+
+            startActivity(intent);
+        }
+        if(finalsite.equals("我的位置"))
+        {
+            Log.e("status:","2");
+            Select_start.status=1;
+            Intent intent = new Intent(this, Select_start.class);
+            Bundle bundle = new Bundle();
+            //我的位置
+            Select_start.tar_loc= mylocation;
+            bundle.putString("终点", finalsite);
+            bundle.putString("起点", start);
+            intent.putExtras(bundle);
+
+            startActivity(intent);
+
+        }
+
+        /*else {
+
+            Log.e("status:","3");
+            Select_start.status=2;
+            selectsites.status=2;
+            Bundle bundle = new Bundle();
+            Intent intent = new Intent(this, Select_start.class);
+            bundle.putString("终点", finalsite);
+            bundle.putString("起点", start);
+            startActivity(intent);
+
+
+        }
+*/
+
+
 
     }
 

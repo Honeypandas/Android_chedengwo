@@ -1,11 +1,13 @@
 package com.test;
 
 
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +45,7 @@ public class bussites extends ListActivity {
 
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
-    String uid[]=new String[30];
+    private  String[] uid=new String[30];
     private SiteAdapter raAdapter;
     private String[] name=new String[30]   ;
     private  String[] sitenum=new String[30];
@@ -287,7 +289,7 @@ public class bussites extends ListActivity {
                         sitenum[s] = s+"站后到达";
                         distance[s] ="距约"+s+"公里" ;
                         time[s] ="约"+s+"分钟后到达";
-                         uid[s]=poiInfoList.get(s).uid;
+                         uid[s]=poiInfoList.get(i).uid;
                         Log.e("pppppp",name[s]);
                         s++;
                 }
@@ -301,7 +303,16 @@ public class bussites extends ListActivity {
 
                 if(Arrays.equals(name, temp))
                 {
-                    Toast.makeText(bussites.this,"未找到对象！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(bussites.this, "未找到对象！", Toast.LENGTH_SHORT).show();
+
+                    new AlertDialog.Builder(bussites.this).setTitle("抱歉，未找到对象!\n点击确定后返回！")
+                            .setIcon(R.drawable.warn).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            bussites.this.finish();
+                        }
+                    }).show();
+
 
                 }
 

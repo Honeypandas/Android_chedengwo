@@ -6,19 +6,23 @@
     android:weightSum="1">
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="70dp" android:gravity="right"
+        android:layout_height="80dp"
         android:padding="10dp">
 
-        <TextView android:id="@+id/map_name"
+        <TextView android:id="@+id/map_Name"
             android:text="180路"
-            android:layout_width="250dp"
+
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:textColor="#0b0b0b"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="false" />
-        <TextView android:id="@+id/map_sitenum"
+            android:layout_toStartOf="@+id/map_time"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/map_distamce"
+            android:lines="@integer/design_snackbar_text_max_lines" />
+        <TextView android:id="@+id/map_distamce"
             android:text="全程5公里"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +36,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:id="@+id/map_reachtime"
+            android:id="@+id/map_time"
             android:text="约30分钟到达"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,19 +45,11 @@
             android:singleLine="true"
             android:maxLength="30"
             android:gravity="center_vertical"
-            android:layout_alignTop="@+id/map_sitenum"
-            android:layout_centerHorizontal="true" />
-
-        <Button
-            android:background="#127e0e"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:text="地图"
-            android:id="@+id/button4"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/map_reachtime"
-            android:textColor="#ffffff" />
+            android:layout_alignTop="@+id/map_distamce"
+            android:layout_toRightOf="@+id/map_distamce"
+            android:layout_toEndOf="@+id/map_distamce"
+            android:layout_marginLeft="87dp"
+            android:layout_marginStart="87dp" />
 
     </RelativeLayout>
 

@@ -83,7 +83,13 @@
         <activity
             android:name=".Bus_site_list"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Bus_station_map"
+        <activity
+            android:name=".Bus_station_map"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Route_instruction"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Select_start"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
