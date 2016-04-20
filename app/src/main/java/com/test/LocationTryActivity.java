@@ -144,20 +144,25 @@ public class LocationTryActivity extends AppCompatActivity {
 
         }
 
-        /*else {
+        if(!start.equals("我的位置")&&!finalsite.equals("我的位置")) {
 
             Log.e("status:","3");
-            Select_start.status=2;
             selectsites.status=2;
-            Bundle bundle = new Bundle();
+
             Intent intent = new Intent(this, Select_start.class);
+            Bundle bundle = new Bundle();
+            //我的位置
+
             bundle.putString("终点", finalsite);
             bundle.putString("起点", start);
+
+            intent.putExtras(bundle);
+
             startActivity(intent);
 
 
         }
-*/
+
 
 
 
