@@ -68,7 +68,9 @@ public class Bus_station_map extends FragmentActivity implements
         mSearch.setOnGetPoiSearchResultListener(this);
         mBusLineSearch = BusLineSearch.newInstance();
         mBusLineSearch.setOnGetBusLineSearchResultListener(this);
+
         busLineIDList = new ArrayList<String>();
+
         overlay = new BusLineOverlay(mBaiduMap);
         mBaiduMap.setOnMarkerClickListener(overlay);
 

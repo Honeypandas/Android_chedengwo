@@ -89,7 +89,10 @@
         <activity
             android:name=".Route_instruction"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Select_start"
+        <activity
+            android:name=".Select_start"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Site_map"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

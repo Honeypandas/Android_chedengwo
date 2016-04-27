@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class bussites extends ListActivity {
-
+    final static  String ZANWU="暂无信息";
     private  Handler hander=null;
     List<View> viewList = new ArrayList<View>();
      int s=0;
@@ -286,11 +286,11 @@ public class bussites extends ListActivity {
                             continue;
                         }
                         name[s] = poiInfoList.get(i).name ;
-                        sitenum[s] = s+"站后到达";
-                        distance[s] ="距约"+s+"公里" ;
-                        time[s] ="约"+s+"分钟后到达";
+                        sitenum[s] = ZANWU;
+                        distance[s] =ZANWU ;
+                        time[s] =ZANWU;
                          uid[s]=poiInfoList.get(i).uid;
-                        Log.e("pppppp",name[s]);
+                       // Log.e("pppppp",name[s]);
                         s++;
                 }
 

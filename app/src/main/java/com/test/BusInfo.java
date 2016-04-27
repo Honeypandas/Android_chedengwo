@@ -8,12 +8,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.busline.BusLineResult;
 import com.baidu.mapapi.search.busline.BusLineSearch;
 import com.baidu.mapapi.search.busline.BusLineSearchOption;
 import com.baidu.mapapi.search.busline.OnGetBusLineSearchResultListener;
 
-import java.sql.Date;
+import com.baidu.mapapi.search.busline.BusLineResult.BusStation;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +23,11 @@ public class BusInfo extends AppCompatActivity {
     BusLineSearch busLineSearch=null;
     TextView textView=null;
     boolean monthTicket;
+    LatLng[]  latLngs=new LatLng[50];
     String start=null,end=null;
     String lineinfo=null;
     String v=null;
-    String[] bus_station=new String[40];
+    String[] bus_station=new String[50];
     List<BusLineResult.BusStation> busStationList;
     StringBuffer sb=new StringBuffer(100);
     @Override
@@ -54,7 +56,8 @@ public class BusInfo extends AppCompatActivity {
                 String monthti;
                busStationList= busLineResult.getStations();
 
-               lineinfo= busLineResult.getBusLineName();
+             //  busLineResult.getSteps().get().getWayPoints()
+                lineinfo= busLineResult.getBusLineName();
                 start =  busLineResult.getStartTime().toString().substring(11, 19);
                 end =   busLineResult.getEndTime().toString().substring(11, 19);
                 monthTicket = busLineResult.isMonthTicket();
@@ -76,9 +79,21 @@ public class BusInfo extends AppCompatActivity {
                for(int i=0;i< busStationList.size();i++) {
                    bus_station[i]=busStationList.get(i).getTitle();
 
+
+                   if( busStationList.get(i).getLocation()!=null)
+                   {
+                      LatLng ll=busStationList.get(i).getLocation();
+
+                       latLngs[i]=ll;
+                    //   Log.e("yyyyyyyyyy", ll.toString());
+                   }else {
+                      // Log.e("NOOOOOOOO","OOOOOOOO");
+                   }
+
                }
 
                 bus_station=Arrays.copyOf(bus_station, busStationList.size());
+              //  latLngs=Arrays.copyOf(latLngs, busStationList.size());
                 TextView textView = (TextView) findViewById(R.id.textView6);
                 textView.setText(sb);
 
@@ -114,6 +129,7 @@ public class BusInfo extends AppCompatActivity {
     public void tobuslist(View view) {
         Intent intent=new Intent(BusInfo.this,Bus_site_list.class);
         Bundle bundle=new Bundle();
+        Bus_site_list.latLng=latLngs;
         bundle.putString("lineInfo",lineinfo);
         bundle.putStringArray("bus_station",bus_station);
         intent.putExtras(bundle);

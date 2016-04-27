@@ -9,16 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bus_site_list extends ListActivity {
+    ListView listView=null;
     String lineinfo;
     String[] name;
+    public  static  LatLng[] latLng;
     TextView textView=null;
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
@@ -101,6 +107,23 @@ public class Bus_site_list extends ListActivity {
         viewList.add(getLayoutInflater().inflate(R.layout.activity_bus_site_list, null));
         raAdapter = new RatingAdapter(this);
         setListAdapter(raAdapter);
+
+
+        listView= (ListView) findViewById(android.R.id.list);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+                Intent intent = new Intent(Bus_site_list.this,Site_map.class);
+                Site_map.latLng=latLng[position];
+                Site_map.title  = name[position];
+                startActivity(intent);
+
+            }
+        });
 
 
 

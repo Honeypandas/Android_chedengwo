@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+
+        <ImageButton
+            android:onClick="map_site_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/site_map_but"
+            android:layout_gravity="left|center_vertical"
+            android:background="@drawable/back" />
+
+        <TextView
+
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:text="站点位置"
+            android:id="@+id/site_map_tv"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="50dp"
+            android:textSize="18dp"
+            android:textColor="#fefefe"
+            android:layout_marginTop="8dp" />
+
+
+
+    </LinearLayout>
+
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/site_map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true"
+        android:layout_marginTop="0dp" />
+
+
+
+
+</LinearLayout>
