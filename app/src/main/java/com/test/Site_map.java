@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import  com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptor;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -34,10 +34,9 @@ import com.baidu.mapapi.model.LatLng;
 
 public class Site_map extends AppCompatActivity {
 
-    public  static LatLng latLng;
+    public static LatLng latLng;
     public static String title;
     // 定位相关
-
 
 
     MapView mMapView;
@@ -72,16 +71,14 @@ public class Site_map extends AppCompatActivity {
         marker = (Marker) mBaiduMap.addOverlay(options);
 
 
-
         MapStatus.Builder builder = new MapStatus.Builder();
 
         builder.target(latLng).zoom(18.0f);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
-        TextView textView= (TextView) findViewById(R.id.site_map_tv);
-        textView.setText(Site_map.title+"公交站的位置");
+        TextView textView = (TextView) findViewById(R.id.site_map_tv);
+        textView.setText(Site_map.title + "公交站的位置");
     }
-
 
 
     public void map_site_back(View view) {

@@ -41,40 +41,35 @@ import java.util.List;
 public class searchsite extends ListActivity {
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
-    private String[] uid=new String[15];
+    private String[] uid = new String[15];
     private SiteAdapter raAdapter;
-    private String[] name=new String[15]   ;
-    private  String[] busline=new String[15];
-    private String[] temp=new String[15]   ;
+    private String[] name = new String[15];
+    private String[] busline = new String[15];
+    private String[] temp = new String[15];
 
 
-
-    class SiteAdapter extends BaseAdapter
-    {
+    class SiteAdapter extends BaseAdapter {
         private Context context;
+
         //构造函数
-        public SiteAdapter(Context context)
-        {
+        public SiteAdapter(Context context) {
             this.context = context;
             layoutInflater = (LayoutInflater) context
                     .getSystemService(inflater);
         }
 
         //@Override
-        public int getCount()
-        {
+        public int getCount() {
             return name.length;
         }
 
         // @Override
-        public Object getItem(int position)
-        {
+        public Object getItem(int position) {
             return name[position];
         }
 
         // @Override
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return position;
         }
         //设置星行分数
@@ -86,8 +81,7 @@ public class searchsite extends ListActivity {
         }*/
 
         // @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
             LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
                     R.layout.selectfinalsite, null);
@@ -95,7 +89,7 @@ public class searchsite extends ListActivity {
 
             TextView Name = ((TextView) linearLayout
                     .findViewById(R.id.tv_sitename));
-            TextView  Busline = (TextView) linearLayout
+            TextView Busline = (TextView) linearLayout
                     .findViewById(R.id.tv_busline);
 
 
@@ -111,60 +105,56 @@ public class searchsite extends ListActivity {
 
     ListView listView;
     String key;
-    private int select=1;
+    private int select = 1;
     private Button site;
     private Button route;
     private BusLineSearch busLineSearch;
     private LinearLayout layout;
     private PoiSearch poiSearch;
     List<PoiInfo> poiInfoList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_searchsite);
 
 
-
-
-
-
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
 
-        busLineSearch=BusLineSearch.newInstance();
+        busLineSearch = BusLineSearch.newInstance();
         busLineSearch.setOnGetBusLineSearchResultListener(new bus());
 
-        listView= (ListView) findViewById(android.R.id.list);
+        listView = (ListView) findViewById(android.R.id.list);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-              if(select==1) {
-                  String v = name[position];
-                  String b = busline[position];
-                  //Toast.makeText(searchsite.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
-                  Bundle bundle = new Bundle();
-                  bundle.putString("site", v);
-                  bundle.putString("busline", b);
-                  Intent intent = new Intent(searchsite.this, bussites.class);
-                  intent.putExtras(bundle);
-                  startActivity(intent);
-              }
-                if(select==2) {
+                if (select == 1) {
+                    String v = name[position];
+                    String b = busline[position];
+                    //Toast.makeText(searchsite.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("site", v);
+                    bundle.putString("busline", b);
+                    Intent intent = new Intent(searchsite.this, bussites.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                if (select == 2) {
 
 
-                  Bundle bundle = new Bundle();
-                  bundle.putString("name",name[position]);
-                  bundle.putString("busline", key);
-                  bundle.putString("uid",uid[position]);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", name[position]);
+                    bundle.putString("busline", key);
+                    bundle.putString("uid", uid[position]);
                     Intent intent = new Intent(searchsite.this, BusInfo.class);
-                  intent.putExtras(bundle);
-                  startActivity(intent);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
 
 
-
-              }
+                }
 
 
             }
@@ -179,11 +169,10 @@ public class searchsite extends ListActivity {
 
     public void selectsites(View view) {
 
-        if(select!=1)
-        {
-            select=1;
-            site= (Button) findViewById(R.id.button);
-            route= (Button) findViewById(R.id.button2);
+        if (select != 1) {
+            select = 1;
+            site = (Button) findViewById(R.id.button);
+            route = (Button) findViewById(R.id.button2);
             site.setBackgroundResource(R.color.mywhite);
             site.setTextColor(getResources().getColor(R.color.colorPrimary));
 
@@ -191,7 +180,7 @@ public class searchsite extends ListActivity {
             route.setTextColor(getResources().getColor(R.color.mywhite));
 
 
-            EditText ed= (EditText) findViewById(R.id.ed_site);
+            EditText ed = (EditText) findViewById(R.id.ed_site);
             ed.setText("");
 
             ed.setHint(R.string.sitekey);
@@ -206,24 +195,20 @@ public class searchsite extends ListActivity {
         }
 
 
-
-
-
     }
 
     public void selectroutes(View view) {
-        if(select!=2)
-        {
-            select=2;
-            site= (Button) findViewById(R.id.button);
-            route= (Button) findViewById(R.id.button2);
+        if (select != 2) {
+            select = 2;
+            site = (Button) findViewById(R.id.button);
+            route = (Button) findViewById(R.id.button2);
             route.setBackgroundResource(R.color.mywhite);
             route.setTextColor(getResources().getColor(R.color.colorPrimary));
 
             site.setBackgroundResource(R.color.colorPrimary);
             site.setTextColor(getResources().getColor(R.color.mywhite));
 
-            EditText ed= (EditText) findViewById(R.id.ed_site);
+            EditText ed = (EditText) findViewById(R.id.ed_site);
             ed.setText("");
 
 
@@ -234,8 +219,6 @@ public class searchsite extends ListActivity {
 */
 
 
-
-
         }
 
 
@@ -243,33 +226,30 @@ public class searchsite extends ListActivity {
 
     //按钮
     public void sitesearch(View view) {
-        EditText ed= (EditText) findViewById(R.id.ed_site);
-        if (ed.getText().toString().equals(""))
-        {
-            Toast.makeText(this,"请输入站点信息！",Toast.LENGTH_SHORT).show();
-            return ;
+        EditText ed = (EditText) findViewById(R.id.ed_site);
+        if (ed.getText().toString().equals("")) {
+            Toast.makeText(this, "请输入站点信息！", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if(select==1) {
-           key = ed.getText().toString().trim() + " 站";
-        }
-        else {
+        if (select == 1) {
+            key = ed.getText().toString().trim() + " 站";
+        } else {
 
-         key = ed.getText().toString().trim();
+            key = ed.getText().toString().trim();
 
         }
 
         poiSearch.searchInCity(new PoiCitySearchOption().city("沈阳")
                 .keyword(key).pageCapacity(15));
 
-        name= Arrays.copyOf(temp, 15);
-        busline = Arrays.copyOf(temp,15);
-        uid=Arrays.copyOf(temp,15);
-        Toast.makeText(searchsite.this,"内容加载中",Toast.LENGTH_SHORT).show();
+        name = Arrays.copyOf(temp, 15);
+        busline = Arrays.copyOf(temp, 15);
+        uid = Arrays.copyOf(temp, 15);
+        Toast.makeText(searchsite.this, "内容加载中", Toast.LENGTH_SHORT).show();
 
 
     }
-
 
 
     private class PoiSearchResultListener implements
@@ -278,7 +258,6 @@ public class searchsite extends ListActivity {
         @Override
         public void onGetPoiDetailResult(PoiDetailResult result) {
             if (result.error != SearchResult.ERRORNO.NO_ERROR) {
-
 
 
             } else {
@@ -300,8 +279,8 @@ public class searchsite extends ListActivity {
             if (result.error == SearchResult.ERRORNO.NO_ERROR) {
 
                 poiInfoList = result.getAllPoi();
-                int s=0;
-                if(select==1) {
+                int s = 0;
+                if (select == 1) {
                     for (int i = 0; i < poiInfoList.size(); i++) {
 
                         //说明该条POI为公交信息，获取该条POI的UID
@@ -313,7 +292,6 @@ public class searchsite extends ListActivity {
                                 .address.contains("地铁2号线")) {
 
 
-
                             //Log.e("BUSSTATION:",poiInfoList.get(i).name+poiInfoList.get(i).address);
                             name[s] = poiInfoList.get(s).name;
 
@@ -323,17 +301,15 @@ public class searchsite extends ListActivity {
                             s++;
                         }
                     }
-                }
-
-                else{
+                } else {
                     for (int i = 0; i < poiInfoList.size(); i++) {
 
                         //说明该条POI为公交信息，获取该条POI的UID
-                        if (poiInfoList.get(i).name.contains("路")&&poiInfoList.get(i).name.contains(key)
+                        if (poiInfoList.get(i).name.contains("路") && poiInfoList.get(i).name.contains(key)
                                 && !poiInfoList.get(i).address.contains("线") && !poiInfoList.get(i)
                                 .name.contains("口") && poiInfoList
                                 .get(i).type != PoiInfo.POITYPE.SUBWAY_STATION && !poiInfoList.get(i)
-                                .address.contains("地铁")&&poiInfoList.get(i).type== PoiInfo.POITYPE.BUS_LINE&&poiInfoList.get(i).address=="") {
+                                .address.contains("地铁") && poiInfoList.get(i).type == PoiInfo.POITYPE.BUS_LINE && poiInfoList.get(i).address == "") {
                             //Log.e("BUSSTATION:",poiInfoList.get(i).name+poiInfoList.get(i).address);
                             name[s] = poiInfoList.get(s).name;
 
@@ -345,46 +321,24 @@ public class searchsite extends ListActivity {
                     }
 
 
-
-
-
-
-
-
-
-
-
-
-
                 }
-                if(uid==null)
-                {
-                    Toast.makeText(searchsite.this,"未找到对象！",Toast.LENGTH_SHORT).show();
-                    return ;
+                if (uid == null) {
+                    Toast.makeText(searchsite.this, "未找到对象！", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
 
-
-
-
-
-                if(Arrays.equals(name,temp))
-                {
-                    Toast.makeText(searchsite.this,"未找到对象！",Toast.LENGTH_SHORT).show();
+                if (Arrays.equals(name, temp)) {
+                    Toast.makeText(searchsite.this, "未找到对象！", Toast.LENGTH_SHORT).show();
                 }
                 name = Arrays.copyOf(name, s);
-                busline = Arrays.copyOf(busline,s);
-                uid=Arrays.copyOf(uid,s);
+                busline = Arrays.copyOf(busline, s);
+                uid = Arrays.copyOf(uid, s);
                 List<View> viewList = new ArrayList<View>();
 
                 viewList.add(getLayoutInflater().inflate(R.layout.searchtab1, null));
                 raAdapter = new SiteAdapter(searchsite.this);
                 setListAdapter(raAdapter);
-
-
-
-
-
 
 
                 return;
@@ -397,7 +351,7 @@ public class searchsite extends ListActivity {
 
     }
 
-    public class bus implements   OnGetBusLineSearchResultListener{
+    public class bus implements OnGetBusLineSearchResultListener {
 
 
         public void onGetBusLineResult(BusLineResult result)
@@ -406,26 +360,14 @@ public class searchsite extends ListActivity {
             if (result.error == SearchResult.ERRORNO.NO_ERROR) {
 
                 Log.e("BUS::", "asdasdas");
-            }
-
-
-            else {
+            } else {
                 Log.e("BUS::", "eeeee");
             }
 
         }
 
 
-
-
-
-
     }
-
-
-
-
-
 
 
     @Override
@@ -434,9 +376,6 @@ public class searchsite extends ListActivity {
 
         super.onDestroy();
     }
-
-
-
 
 
 }

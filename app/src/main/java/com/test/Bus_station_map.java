@@ -53,9 +53,9 @@ public class Bus_station_map extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus_station_map);
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        busline=bundle.getString("busline");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        busline = bundle.getString("busline");
 
         mBtnPre = (Button) findViewById(R.id.pre);
         mBtnNext = (Button) findViewById(R.id.next);
@@ -86,11 +86,7 @@ public class Bus_station_map extends FragmentActivity implements
                 .keyword(busline));
 
 
-
     }
-
-
-
 
 
     public void searchNextBusline(View v) {
@@ -214,6 +210,7 @@ public class Bus_station_map extends FragmentActivity implements
         return false;
     }
 
-    public void bus_station_map_back(View view) {finish();
+    public void bus_station_map_back(View view) {
+        finish();
     }
 }

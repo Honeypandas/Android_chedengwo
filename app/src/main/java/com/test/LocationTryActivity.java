@@ -37,9 +37,9 @@ import java.util.Objects;
  * 使用MyLocationOverlay绘制定位位置 同时展示如何使用自定义图标绘制并点击时弹出泡泡
  */
 public class LocationTryActivity extends AppCompatActivity {
-    EditText editText=null;
-    String target=null;
-    LatLng mylocation=null;
+    EditText editText = null;
+    String target = null;
+    LatLng mylocation = null;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
@@ -87,35 +87,32 @@ public class LocationTryActivity extends AppCompatActivity {
     public void search(View view) {
         EditText ed1 = (EditText) findViewById(R.id.ed1);
         EditText ed2 = (EditText) findViewById(R.id.ed2);
-        if(ed2.getText().toString().equals("")&&ed1.getText().toString().equals(""))
-        {
-            Toast.makeText(LocationTryActivity.this,"请输入完整信息！",Toast.LENGTH_SHORT).show();
-            return ;
+        if (ed2.getText().toString().equals("") && ed1.getText().toString().equals("")) {
+            Toast.makeText(LocationTryActivity.this, "请输入完整信息！", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if(ed1.getText().toString().equals(""))
-        {
-            Toast.makeText(LocationTryActivity.this,"请输入起点！",Toast.LENGTH_SHORT).show();
-            return ;
+        if (ed1.getText().toString().equals("")) {
+            Toast.makeText(LocationTryActivity.this, "请输入起点！", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-       //Log.e("myloc",mylocation.toString());
-        if(ed2.getText().toString().equals(""))
-        {
-            Toast.makeText(LocationTryActivity.this,"请输入终点！",Toast.LENGTH_SHORT).show();
-            return ;
+        //Log.e("myloc",mylocation.toString());
+        if (ed2.getText().toString().equals("")) {
+            Toast.makeText(LocationTryActivity.this, "请输入终点！", Toast.LENGTH_SHORT).show();
+            return;
         }
 
 
-        String start=ed1.getText().toString().trim();
-        String finalsite=ed2.getText().toString().trim();
-        Log.e("start:",start);
-        Log.e("end:",finalsite);
+        String start = ed1.getText().toString().trim();
+        String finalsite = ed2.getText().toString().trim();
+        Log.e("start:", start);
+        Log.e("end:", finalsite);
 
 
-        if(start.equals("我的位置")) {
+        if (start.equals("我的位置")) {
 
-            Log.e("status:","1");
-            selectsites.status=1;
+            Log.e("status:", "1");
+            selectsites.status = 1;
 
             Intent intent = new Intent(this, selectsites.class);
             Bundle bundle = new Bundle();
@@ -128,14 +125,13 @@ public class LocationTryActivity extends AppCompatActivity {
 
             startActivity(intent);
         }
-        if(finalsite.equals("我的位置"))
-        {
-            Log.e("status:","2");
-            Select_start.status=1;
+        if (finalsite.equals("我的位置")) {
+            Log.e("status:", "2");
+            Select_start.status = 1;
             Intent intent = new Intent(this, Select_start.class);
             Bundle bundle = new Bundle();
             //我的位置
-            Select_start.tar_loc= mylocation;
+            Select_start.tar_loc = mylocation;
             bundle.putString("终点", finalsite);
             bundle.putString("起点", start);
             intent.putExtras(bundle);
@@ -144,10 +140,10 @@ public class LocationTryActivity extends AppCompatActivity {
 
         }
 
-        if(!start.equals("我的位置")&&!finalsite.equals("我的位置")) {
+        if (!start.equals("我的位置") && !finalsite.equals("我的位置")) {
 
-            Log.e("status:","3");
-            selectsites.status=2;
+            Log.e("status:", "3");
+            selectsites.status = 2;
 
             Intent intent = new Intent(this, Select_start.class);
             Bundle bundle = new Bundle();
@@ -162,8 +158,6 @@ public class LocationTryActivity extends AppCompatActivity {
 
 
         }
-
-
 
 
     }
@@ -190,7 +184,7 @@ public class LocationTryActivity extends AppCompatActivity {
 
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
-                mylocation =ll;
+                mylocation = ll;
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
@@ -242,9 +236,6 @@ public class LocationTryActivity extends AppCompatActivity {
     public void back(View view) {
         finish();
     }
-
-
-
 
 
 }

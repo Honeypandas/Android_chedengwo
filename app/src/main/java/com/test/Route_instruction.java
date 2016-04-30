@@ -8,21 +8,22 @@ import android.view.View;
 import android.widget.TextView;
 
 public class Route_instruction extends AppCompatActivity {
-    String[] step=new String[10];
+    String[] step = new String[10];
     String instruction;
     String title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_instruction);
 
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
 
-        instruction=bundle.getString("instruction");
-        title=bundle.getString("title");
-       // Log.e("instr", instruction);
-        TextView textView= (TextView) findViewById(R.id.route_text);
+        instruction = bundle.getString("instruction");
+        title = bundle.getString("title");
+        // Log.e("instr", instruction);
+        TextView textView = (TextView) findViewById(R.id.route_text);
         textView.setText(title);
 
         if (instruction != null) {
@@ -30,18 +31,17 @@ public class Route_instruction extends AppCompatActivity {
             //Log.e("gggg:",step[0]);
         }
 
-        for(int i=0;i<step.length;i++) {
-            Log.e("steps:","第"+i+"步:"+step[i]);
+        for (int i = 0; i < step.length; i++) {
+            Log.e("steps:", "第" + i + "步:" + step[i]);
         }
 
-        StringBuffer sb=new StringBuffer(200);
-        for(int i=1;i<=step.length;i++) {
-            sb.append("\n"+"第"+i+"步:"+step[i-1]+"\n");
+        StringBuffer sb = new StringBuffer(200);
+        for (int i = 1; i <= step.length; i++) {
+            sb.append("\n" + "第" + i + "步:" + step[i - 1] + "\n");
         }
 
-        TextView tv= (TextView) findViewById(R.id.route_instr);
+        TextView tv = (TextView) findViewById(R.id.route_instr);
         tv.setText(sb);
-
 
 
     }

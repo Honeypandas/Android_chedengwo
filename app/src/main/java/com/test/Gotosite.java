@@ -36,58 +36,51 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Gotosite extends ListActivity {
-    String start=null;
-     String target=null;
+    String start = null;
+    String target = null;
 
 
-    String[] name=new String[10];
-    String[] distance=new String[10];
-    String[] duration=new String[10];
-    String[] title=new  String[10];
+    String[] name = new String[10];
+    String[] distance = new String[10];
+    String[] duration = new String[10];
+    String[] title = new String[10];
     private SiteAdapter raAdapter;
-    String[] instruction=new String[10];
+    String[] instruction = new String[10];
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
-    TextView textView=null;
+    TextView textView = null;
     List<TransitRouteLine> transitRouteLines;
-    public  static LatLng start_loc;
-    public  static LatLng tar_loc;
+    public static LatLng start_loc;
+    public static LatLng tar_loc;
     List<View> viewList = new ArrayList<View>();
 
 
-
-
-    class SiteAdapter extends BaseAdapter
-    {
+    class SiteAdapter extends BaseAdapter {
         private Context context;
+
         //构造函数
-        public SiteAdapter(Context context)
-        {
+        public SiteAdapter(Context context) {
             this.context = context;
             layoutInflater = (LayoutInflater) context
                     .getSystemService(inflater);
         }
 
         //@Override
-        public int getCount()
-        {
+        public int getCount() {
             return name.length;
         }
 
         // @Override
-        public Object getItem(int position)
-        {
+        public Object getItem(int position) {
             return name[position];
         }
 
         // @Override
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return position;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
             LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
                     R.layout.map, null);
@@ -95,10 +88,9 @@ public class Gotosite extends ListActivity {
 
             TextView Name = ((TextView) linearLayout
                     .findViewById(R.id.map_Name));
-            TextView  Distance = (TextView) linearLayout.findViewById(R.id.map_distamce);
+            TextView Distance = (TextView) linearLayout.findViewById(R.id.map_distamce);
 
-            TextView Duration= (TextView) linearLayout.findViewById(R.id.map_time);
-
+            TextView Duration = (TextView) linearLayout.findViewById(R.id.map_time);
 
 
             //3个组件分别得到内容
@@ -112,32 +104,18 @@ public class Gotosite extends ListActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gotosite);
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        target=bundle.getString("end");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        target = bundle.getString("end");
 
 
+        textView = (TextView) findViewById(R.id.textView5);
 
-        textView= (TextView) findViewById(R.id.textView5);
-
-        textView.setText(bundle.getString("start") +"->"+ target);
+        textView.setText(bundle.getString("start") + "->" + target);
 
         RoutePlanSearch mSearch;
 
@@ -155,7 +133,7 @@ public class Gotosite extends ListActivity {
             @Override
             public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
 
-                if (transitRouteResult== null || transitRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                if (transitRouteResult == null || transitRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
                     Toast.makeText(Gotosite.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
                 }
                 if (transitRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
@@ -166,69 +144,67 @@ public class Gotosite extends ListActivity {
                 if (transitRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
 
                     transitRouteResult.getSuggestAddrInfo();
-                    transitRouteLines=transitRouteResult.getRouteLines();
-                   for(int i=0;i<transitRouteLines.size();i++) {
-                       int s=transitRouteLines.get(i).getDistance();
-                       int v=transitRouteLines.get(i).getDuration();
-                       //Log.e("iiii", );
-                       int h,m,p;
-                       String dis,dur,title=null,instr="";
+                    transitRouteLines = transitRouteResult.getRouteLines();
+                    for (int i = 0; i < transitRouteLines.size(); i++) {
+                        int s = transitRouteLines.get(i).getDistance();
+                        int v = transitRouteLines.get(i).getDuration();
+                        //Log.e("iiii", );
+                        int h, m, p;
+                        String dis, dur, title = null, instr = "";
 
-                       p=s%1000;p=p/100;
+                        p = s % 1000;
+                        p = p / 100;
 
-                           dis = "全程约" + s / 1000 + "." + p + "公里";
+                        dis = "全程约" + s / 1000 + "." + p + "公里";
 
-                       h=v/3600;m=v%3600;m=m/60;
-                       if(h==0){
-                           dur="约"+m+"分钟到达";
-                       }else {
-                           dur = "约" + h + "小时" + m + "分钟到达";
-                       }
-                       distance[i]=dis;
-                       duration[i]=dur;
+                        h = v / 3600;
+                        m = v % 3600;
+                        m = m / 60;
+                        if (h == 0) {
+                            dur = "约" + m + "分钟到达";
+                        } else {
+                            dur = "约" + h + "小时" + m + "分钟到达";
+                        }
+                        distance[i] = dis;
+                        duration[i] = dur;
 
-                       int num=0;
-                       List<TransitRouteLine.TransitStep> transitSteps= transitRouteLines.get(i).getAllStep();
-                       for(int k=0;k<transitSteps.size();k++) {
+                        int num = 0;
+                        List<TransitRouteLine.TransitStep> transitSteps = transitRouteLines.get(i).getAllStep();
+                        for (int k = 0; k < transitSteps.size(); k++) {
                             String js;
-                           String ss = transitSteps.get(k).getInstructions();
-                           //Log.e("time",""+transitSteps.get(k).getDuration());
-                            int time=transitSteps.get(k).getDuration();
+                            String ss = transitSteps.get(k).getInstructions();
+                            //Log.e("time",""+transitSteps.get(k).getDuration());
+                            int time = transitSteps.get(k).getDuration();
 
-                           time=time/60;
+                            time = time / 60;
 
 
-                          instr=instr+ss+"("+time+"分钟)"+"%";
-                            if(ss.contains("乘坐"))
-                            {
-                                js=ss.substring(2,ss.indexOf(","));
-                             if(num==0)
-                             {
-                                 title=js;
-                                 num++;
-                                 continue;
-                             }
-                                title=title+"->"+js;
+                            instr = instr + ss + "(" + time + "分钟)" + "%";
+                            if (ss.contains("乘坐")) {
+                                js = ss.substring(2, ss.indexOf(","));
+                                if (num == 0) {
+                                    title = js;
+                                    num++;
+                                    continue;
+                                }
+                                title = title + "->" + js;
 
                                 num++;
                             }
 
 
+                        }
 
 
-                       }
-
-
-                       instruction[i]=instr;
-                       name[i]=title;
-                      // Log.e("key",name[i]);
-                        name=Arrays.copyOf(name,transitRouteLines.size());
-                       distance=Arrays.copyOf(distance, transitRouteLines.size());
-                       duration=Arrays.copyOf(duration,transitRouteLines.size());
-                        instruction=Arrays.copyOf(instruction,transitRouteLines.size());
-                    //Log.e("ywq:",dis+" "+dur);
-                   }
-
+                        instruction[i] = instr;
+                        name[i] = title;
+                        // Log.e("key",name[i]);
+                        name = Arrays.copyOf(name, transitRouteLines.size());
+                        distance = Arrays.copyOf(distance, transitRouteLines.size());
+                        duration = Arrays.copyOf(duration, transitRouteLines.size());
+                        instruction = Arrays.copyOf(instruction, transitRouteLines.size());
+                        //Log.e("ywq:",dis+" "+dur);
+                    }
 
 
                     viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
@@ -236,10 +212,7 @@ public class Gotosite extends ListActivity {
                     setListAdapter(raAdapter);
 
 
-
                 }
-
-
 
 
             }
@@ -256,19 +229,6 @@ public class Gotosite extends ListActivity {
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         PlanNode stNode = PlanNode.withLocation(start_loc);
         PlanNode enNode = PlanNode.withLocation(tar_loc);
 
@@ -278,7 +238,7 @@ public class Gotosite extends ListActivity {
                 .to(enNode));
 
 
-        ListView listView= (ListView) findViewById(android.R.id.list);
+        ListView listView = (ListView) findViewById(android.R.id.list);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -286,20 +246,16 @@ public class Gotosite extends ListActivity {
 
                 Intent intent = new Intent(Gotosite.this, Route_instruction.class);
                 Bundle bundle = new Bundle();
-                String title=textView.getText().toString();
-                bundle.putString("title",title);
-                String s=instruction[position];
-                bundle.putString("instruction",s);
+                String title = textView.getText().toString();
+                bundle.putString("title", title);
+                String s = instruction[position];
+                bundle.putString("instruction", s);
                 intent.putExtras(bundle);
 
                 startActivity(intent);
 
             }
         });
-
-
-
-
 
 
     }

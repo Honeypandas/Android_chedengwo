@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  SDKInitializer.initialize(getApplicationContext());
+        //  SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("模拟车等我APP的设计与实现");
@@ -90,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager con = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
         boolean internet = con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
-        if (wifi | internet)
-        {
+        if (wifi | internet) {
 
             SDKInitializer.initialize(getApplicationContext());
 
@@ -109,14 +108,13 @@ public class MainActivity extends AppCompatActivity {
             mLocClient.start();
 
 
-        } else
-        {
-           // exit();
+        } else {
+            // exit();
 
             Toast.makeText(getApplicationContext(),
                     "请检查网络是否连接！", Toast.LENGTH_LONG).show();
 
-           check();
+            check();
 
 
         }
@@ -195,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void to3(View view) {
-        Intent intent=new Intent(MainActivity.this,searchsite.class);
+        Intent intent = new Intent(MainActivity.this, searchsite.class);
         startActivity(intent);
     }
 
@@ -260,21 +258,21 @@ public class MainActivity extends AppCompatActivity {
 
                 LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 String loc = location.getAddrStr();
-                String des=location.getLocationDescribe();
+                String des = location.getLocationDescribe();
 
                 TextView loca = (TextView) findViewById(R.id.locView);
                 loca.setText("\n" + "\n" + "您现在的位置：\n" + loc + "," + des);
 
 
-               // Log.e("YY:", location.getAddrStr());
-               // Log.e("ll:", ll.toString());
+                // Log.e("YY:", location.getAddrStr());
+                // Log.e("ll:", ll.toString());
 
                 mylocation = ll;
                 poiSearch = PoiSearch.newInstance();
                 poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
 
 
-               poiSearch.searchNearby((new PoiNearbySearchOption())
+                poiSearch.searchNearby((new PoiNearbySearchOption())
                         .location(ll).radius(1500).keyword("公交站").pageCapacity(15));
 
 
@@ -324,12 +322,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                     String distance = a + "米";
-                  // Log.e("addddd", poiInfoList.get(i).address + poiInfoList.get(i).name + "cc" + distance + "bb");
+                    // Log.e("addddd", poiInfoList.get(i).address + poiInfoList.get(i).name + "cc" + distance + "bb");
 
 
-
-
-                        ywq.add(poiInfoList.get(i).name, poiInfoList.get(i).address, distance);
+                    ywq.add(poiInfoList.get(i).name, poiInfoList.get(i).address, distance);
 
 
                 }
@@ -346,7 +342,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 
     public void check() {
@@ -368,8 +363,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
-
-
 
 
 }

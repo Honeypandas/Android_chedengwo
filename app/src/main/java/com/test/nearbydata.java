@@ -15,59 +15,56 @@ import nearbysite.nearbysites;
 public class nearbydata {
     private database helper;
 
-    public nearbydata(Context context){
-        helper=new database(context);
+    public nearbydata(Context context) {
+        helper = new database(context);
     }
 
     //添加Nearby信息
-    public void add(String name,String busid,String distance)
-    {
+    public void add(String name, String busid, String distance) {
 
-        if(find(name)==false) {
-            SQLiteDatabase db=helper.getWritableDatabase();
+        if (find(name) == false) {
+            SQLiteDatabase db = helper.getWritableDatabase();
             db.execSQL("insert into nearby (name,busid,distance) values(?,?,?)", new Object[]{name, busid, distance});
             db.close();
-        }else {
+        } else {
             return;
         }
 
     }
 
-    public boolean find(String name)
-    {
-        SQLiteDatabase db= helper.getReadableDatabase();
-        Cursor cursor=db.rawQuery("select *from nearby where name=?", new String[]{name});
-        boolean result=cursor.moveToNext();
+    public boolean find(String name) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select *from nearby where name=?", new String[]{name});
+        boolean result = cursor.moveToNext();
         cursor.close();
         db.close();
         return result;
     }
 
-    public  void updata(String name,String distance)
-    {
-        SQLiteDatabase db=helper.getWritableDatabase();
+    public void updata(String name, String distance) {
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("update nearby set distance=？ where name=?", new Object[]{distance, name});
         db.close();
     }
-    //删除一条记录
-    public  void delete(String name) {
 
-        SQLiteDatabase db=helper.getWritableDatabase();
-        db.execSQL("delete from nearby where name=?",new Object[]{name});
+    //删除一条记录
+    public void delete(String name) {
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("delete from nearby where name=?", new Object[]{name});
         db.close();
     }
 
-    public List<nearbysites> findAll(){
-        SQLiteDatabase db=helper.getReadableDatabase();
-        List<nearbysites> sites=new ArrayList<nearbysites>() ;
-        Cursor cursor=db.rawQuery("select * from nearby", null);
-        while (cursor.moveToNext())
-        {
-            int id=cursor.getInt(cursor.getColumnIndex("id"));
-            String name=cursor.getString(cursor.getColumnIndex("name"));
-            String busid=cursor.getString(cursor.getColumnIndex("busid"));
-            String distance=cursor.getString(cursor.getColumnIndex("distance"));
-            nearbysites site=new nearbysites(id,name,busid,distance);
+    public List<nearbysites> findAll() {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        List<nearbysites> sites = new ArrayList<nearbysites>();
+        Cursor cursor = db.rawQuery("select * from nearby", null);
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String busid = cursor.getString(cursor.getColumnIndex("busid"));
+            String distance = cursor.getString(cursor.getColumnIndex("distance"));
+            nearbysites site = new nearbysites(id, name, busid, distance);
             sites.add(site);
         }
 
@@ -78,12 +75,11 @@ public class nearbydata {
     }
 
     public void clear() {
-        SQLiteDatabase db=helper.getWritableDatabase();
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("delete from nearby where 1=1");
         db.close();
 
     }
-
 
 
 }

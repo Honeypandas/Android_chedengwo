@@ -13,8 +13,8 @@ public class Map extends AppCompatActivity {
     }
 
 
-
     public void mapback(View view) {
-        finish();;
+        finish();
+        ;
     }
 }

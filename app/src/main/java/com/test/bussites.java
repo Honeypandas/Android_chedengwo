@@ -36,60 +36,55 @@ import java.util.Arrays;
 import java.util.List;
 
 public class bussites extends ListActivity {
-    final static  String ZANWU="暂无信息";
-    private  Handler hander=null;
+    final static String ZANWU = "暂无信息";
+    private Handler hander = null;
     List<View> viewList = new ArrayList<View>();
-     int s=0;
-    int num=0;
-    int j=0;
+    int s = 0;
+    int num = 0;
+    int j = 0;
 
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
-    private  String[] uid=new String[30];
+    private String[] uid = new String[30];
     private SiteAdapter raAdapter;
-    private String[] name=new String[30]   ;
-    private  String[] sitenum=new String[30];
-    private  String[] distance=new String[30];
-    private  String[] time=new String[30];
-    private String[] temp=new String[30]   ;
-    ListView listView=null;
-    TextView textView=null;
+    private String[] name = new String[30];
+    private String[] sitenum = new String[30];
+    private String[] distance = new String[30];
+    private String[] time = new String[30];
+    private String[] temp = new String[30];
+    ListView listView = null;
+    TextView textView = null;
     private PoiSearch poiSearch;
     List<PoiInfo> poiInfoList;
-    String key=null;
-    String[] line= new String[30];
+    String key = null;
+    String[] line = new String[30];
 
-    class SiteAdapter extends BaseAdapter
-    {
+    class SiteAdapter extends BaseAdapter {
         private Context context;
+
         //构造函数
-        public SiteAdapter(Context context)
-        {
+        public SiteAdapter(Context context) {
             this.context = context;
             layoutInflater = (LayoutInflater) context
                     .getSystemService(inflater);
         }
 
         //@Override
-        public int getCount()
-        {
+        public int getCount() {
             return name.length;
         }
 
         // @Override
-        public Object getItem(int position)
-        {
+        public Object getItem(int position) {
             return name[position];
         }
 
         // @Override
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return position;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
             LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
                     R.layout.realtimeroutime, null);
@@ -97,11 +92,11 @@ public class bussites extends ListActivity {
 
             TextView Name = ((TextView) linearLayout
                     .findViewById(R.id.routename));
-             TextView  Sitenum = (TextView) linearLayout.findViewById(R.id.sitenum);
+            TextView Sitenum = (TextView) linearLayout.findViewById(R.id.sitenum);
 
-             TextView Distance= (TextView) linearLayout.findViewById(R.id.mdistance);
+            TextView Distance = (TextView) linearLayout.findViewById(R.id.mdistance);
 
-            TextView Reachtime= (TextView) linearLayout.findViewById(R.id.reachtime);
+            TextView Reachtime = (TextView) linearLayout.findViewById(R.id.reachtime);
 
             //3个组件分别得到内容
 
@@ -119,17 +114,17 @@ public class bussites extends ListActivity {
 
         setContentView(R.layout.activity_bussites);
 
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        String v=bundle.getString("site");
-        String b=bundle.getString("busline");
-        textView= (TextView) findViewById(R.id.siteinfo);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String v = bundle.getString("site");
+        String b = bundle.getString("busline");
+        textView = (TextView) findViewById(R.id.siteinfo);
         textView.setText(v);
         Log.e("bus:", b);
 
         if (b != null) {
             line = b.split(";");
-            Log.e("gggg:",line[0]);
+            Log.e("gggg:", line[0]);
         }
 
 
@@ -148,8 +143,7 @@ public class bussites extends ListActivity {
         });
         thread.start();*/
 
-        for(String str:line)
-        {
+        for (String str : line) {
             search(str);
         }
 
@@ -166,7 +160,7 @@ public class bussites extends ListActivity {
                 while (!Thread.currentThread().isInterrupted()) {
 
 
-                    Message m=hander.obtainMessage();
+                    Message m = hander.obtainMessage();
                     m.arg1 = index;
                     m.what = 0x101;
                     hander.sendMessage(m);
@@ -182,12 +176,10 @@ public class bussites extends ListActivity {
             }
         });
 
-        hander=new Handler(){
+        hander = new Handler() {
 
-            public  void handleMessage(Message msg)
-            {
-                if(msg.what==0x101)
-                {
+            public void handleMessage(Message msg) {
+                if (msg.what == 0x101) {
                     viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
                     raAdapter = new SiteAdapter(bussites.this);
                     setListAdapter(raAdapter);
@@ -198,20 +190,19 @@ public class bussites extends ListActivity {
         };
 
 
-
         Toast.makeText(bussites.this, "结果加载中，请稍等", Toast.LENGTH_LONG).show();
 
 
-        listView= (ListView) findViewById(android.R.id.list);
+        listView = (ListView) findViewById(android.R.id.list);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                String v = name[position].substring(0,3);
+                String v = name[position].substring(0, 3);
                 String b = uid[position];
-                Log.e("name",v);
+                Log.e("name", v);
 
                 Intent intent = new Intent(bussites.this, BusInfo.class);
                 Bundle bundle = new Bundle();
@@ -225,18 +216,10 @@ public class bussites extends ListActivity {
         });
 
 
-
-
-
-
-
-
-
     }
 
 
-
-    public void search(String sear){
+    public void search(String sear) {
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
 
@@ -271,27 +254,24 @@ public class bussites extends ListActivity {
                 //判断是否有误
                 return;
             }
-            if (result.error == SearchResult.ERRORNO.NO_ERROR)
-            {
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
 
 
                 poiInfoList = result.getAllPoi();
 
-                Log.e("error;","sssdfghj");
+                Log.e("error;", "sssdfghj");
 
-                for (int i = 0; i < 2; i++)
-                {
-                        if(!poiInfoList.get(i).name.contains("("))
-                        {
-                            continue;
-                        }
-                        name[s] = poiInfoList.get(i).name ;
-                        sitenum[s] = ZANWU;
-                        distance[s] =ZANWU ;
-                        time[s] =ZANWU;
-                         uid[s]=poiInfoList.get(i).uid;
-                       // Log.e("pppppp",name[s]);
-                        s++;
+                for (int i = 0; i < 2; i++) {
+                    if (!poiInfoList.get(i).name.contains("(")) {
+                        continue;
+                    }
+                    name[s] = poiInfoList.get(i).name;
+                    sitenum[s] = ZANWU;
+                    distance[s] = ZANWU;
+                    time[s] = ZANWU;
+                    uid[s] = poiInfoList.get(i).uid;
+                    // Log.e("pppppp",name[s]);
+                    s++;
                 }
 
 
@@ -301,8 +281,7 @@ public class bussites extends ListActivity {
 
                 }*/
 
-                if(Arrays.equals(name, temp))
-                {
+                if (Arrays.equals(name, temp)) {
                     Toast.makeText(bussites.this, "未找到对象！", Toast.LENGTH_SHORT).show();
 
                     new AlertDialog.Builder(bussites.this).setTitle("抱歉，未找到对象!\n点击确定后返回！")
@@ -317,27 +296,19 @@ public class bussites extends ListActivity {
                 }
 
 
-
-
-
-
-
-
                 num++;
-                Log.e("num:",num+"");
-                if(num==line.length) {
+                Log.e("num:", num + "");
+                if (num == line.length) {
 
                     name = Arrays.copyOf(name, s);
                     sitenum = Arrays.copyOf(sitenum, s);
                     distance = Arrays.copyOf(distance, s);
                     time = Arrays.copyOf(time, s);
-                    uid=Arrays.copyOf(uid,s);
+                    uid = Arrays.copyOf(uid, s);
                     viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
                     raAdapter = new SiteAdapter(bussites.this);
                     setListAdapter(raAdapter);
                 }
-
-
 
 
                 return;
@@ -363,10 +334,6 @@ public class bussites extends ListActivity {
 
         super.onDestroy();
     }
-
-
-
-
 
 
     public void back8(View view) {

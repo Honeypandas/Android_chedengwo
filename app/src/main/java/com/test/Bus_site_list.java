@@ -21,41 +21,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bus_site_list extends ListActivity {
-    ListView listView=null;
+    ListView listView = null;
     String lineinfo;
     String[] name;
-    public  static  LatLng[] latLng;
-    TextView textView=null;
+    public static LatLng[] latLng;
+    TextView textView = null;
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
     private RatingAdapter raAdapter;
 
-    class RatingAdapter extends BaseAdapter
-    {
+    class RatingAdapter extends BaseAdapter {
         private Context context;
+
         //构造函数
-        public RatingAdapter(Context context)
-        {
+        public RatingAdapter(Context context) {
             this.context = context;
             layoutInflater = (LayoutInflater) context
                     .getSystemService(inflater);
         }
 
         //@Override
-        public int getCount()
-        {
+        public int getCount() {
             return name.length;
         }
 
         // @Override
-        public Object getItem(int position)
-        {
+        public Object getItem(int position) {
             return name[position];
         }
 
         // @Override
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return position;
         }
 
@@ -67,8 +63,7 @@ public class Bus_site_list extends ListActivity {
         }*/
 
         // @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
             LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
                     R.layout.station_list, null);
@@ -87,19 +82,18 @@ public class Bus_site_list extends ListActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus_site_list);
 
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        name=bundle.getStringArray("bus_station");
-        lineinfo=bundle.getString("lineInfo");
-        textView= (TextView) findViewById(R.id.Bus_site_list_info);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        name = bundle.getStringArray("bus_station");
+        lineinfo = bundle.getString("lineInfo");
+        textView = (TextView) findViewById(R.id.Bus_site_list_info);
         textView.setText(lineinfo);
-        Log.e("size:",name.length+"");
+        Log.e("size:", name.length + "");
 
 
         List<View> viewList = new ArrayList<View>();
@@ -109,23 +103,20 @@ public class Bus_site_list extends ListActivity {
         setListAdapter(raAdapter);
 
 
-        listView= (ListView) findViewById(android.R.id.list);
+        listView = (ListView) findViewById(android.R.id.list);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-
-                Intent intent = new Intent(Bus_site_list.this,Site_map.class);
-                Site_map.latLng=latLng[position];
-                Site_map.title  = name[position];
+                Intent intent = new Intent(Bus_site_list.this, Site_map.class);
+                Site_map.latLng = latLng[position];
+                Site_map.title = name[position];
                 startActivity(intent);
 
             }
         });
-
-
 
 
     }

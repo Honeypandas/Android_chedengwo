@@ -35,21 +35,21 @@ import nearbysite.nearbysites;
  * Created by Administrator on 2016/4/17.
  */
 public class selectsites extends ListActivity {
-    public  static  int status=0;
+    public static int status = 0;
 
-    static private  int first=0;
+    static private int first = 0;
     List<View> viewList = new ArrayList<View>();
-    String target,start;
+    String target, start;
     public static LatLng start_loc;
     public static LatLng tar_loc;
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
     String uid;
-    private LatLng[] location=new LatLng[25];
+    private LatLng[] location = new LatLng[25];
     private SiteAdapter raAdapter;
-    private String[] name=new String[25]   ;
-    private  String[] busline=new String[25];
-    private String[] temp=new String[25]   ;
+    private String[] name = new String[25];
+    private String[] busline = new String[25];
+    private String[] temp = new String[25];
     ListView listView;
 
     public void backselect(View view) {
@@ -57,32 +57,28 @@ public class selectsites extends ListActivity {
     }
 
 
-    class SiteAdapter extends BaseAdapter
-    {
+    class SiteAdapter extends BaseAdapter {
         private Context context;
+
         //构造函数
-        public SiteAdapter(Context context)
-        {
+        public SiteAdapter(Context context) {
             this.context = context;
             layoutInflater = (LayoutInflater) context
                     .getSystemService(inflater);
         }
 
         //@Override
-        public int getCount()
-        {
+        public int getCount() {
             return name.length;
         }
 
         // @Override
-        public Object getItem(int position)
-        {
+        public Object getItem(int position) {
             return name[position];
         }
 
         // @Override
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return position;
         }
         //设置星行分数
@@ -94,8 +90,7 @@ public class selectsites extends ListActivity {
         }*/
 
         // @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
             LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
                     R.layout.selectfinalsite, null);
@@ -103,7 +98,7 @@ public class selectsites extends ListActivity {
 
             TextView Name = ((TextView) linearLayout
                     .findViewById(R.id.tv_sitename));
-            TextView  Busline = (TextView) linearLayout
+            TextView Busline = (TextView) linearLayout
                     .findViewById(R.id.tv_busline);
 
 
@@ -118,20 +113,19 @@ public class selectsites extends ListActivity {
     }
 
 
-
-
     private LinearLayout layout;
     private PoiSearch poiSearch;
     List<PoiInfo> poiInfoList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selectsites);
 
-        Intent intent=getIntent();
-        final Bundle bundle=intent.getExtras();
-        target=bundle.getString("终点");
-        start=bundle.getString("起点");
+        Intent intent = getIntent();
+        final Bundle bundle = intent.getExtras();
+        target = bundle.getString("终点");
+        start = bundle.getString("起点");
 
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
@@ -139,48 +133,43 @@ public class selectsites extends ListActivity {
                 .keyword(target).pageCapacity(25));
 
         //ITEM点击事件
-        listView= (ListView) findViewById(android.R.id.list);
+        listView = (ListView) findViewById(android.R.id.list);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    if(status==1) {
-                        String v = name[position];
-                        Toast.makeText(selectsites.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
-                        Gotosite.tar_loc = location[position];
-                        Gotosite.start_loc = start_loc;
-                        Intent intent = new Intent(selectsites.this, Gotosite.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("start","我的位置");
-                        bundle.putString("end", v);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                if (status == 1) {
+                    String v = name[position];
+                    Toast.makeText(selectsites.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
+                    Gotosite.tar_loc = location[position];
+                    Gotosite.start_loc = start_loc;
+                    Intent intent = new Intent(selectsites.this, Gotosite.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("start", "我的位置");
+                    bundle.putString("end", v);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
 
-                    }
-                    else{
+                } else {
 
-                        String v = name[position];
-                        Toast.makeText(selectsites.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
-                        Gotosite.tar_loc = location[position];
-                        Gotosite.start_loc = start_loc;
-                        Intent intent = new Intent(selectsites.this, Gotosite.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("start",start);
-                        bundle.putString("end", v);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-
-
-
-
-                    }
+                    String v = name[position];
+                    Toast.makeText(selectsites.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
+                    Gotosite.tar_loc = location[position];
+                    Gotosite.start_loc = start_loc;
+                    Intent intent = new Intent(selectsites.this, Gotosite.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("start", start);
+                    bundle.putString("end", v);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
 
 
                 }
-            });
 
 
+            }
+        });
 
 
     }
@@ -220,59 +209,52 @@ public class selectsites extends ListActivity {
                 //判断是否有误
                 return;
             }
-            if (result.error == SearchResult.ERRORNO.NO_ERROR)
-            {
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
 
                 poiInfoList = result.getAllPoi();
-                int s=0;
+                int s = 0;
 
-                    for (int i = 0; i < poiInfoList.size(); i++)
-                    {
+                for (int i = 0; i < poiInfoList.size(); i++) {
 
 
-                        if(poiInfoList.get(i).type== PoiInfo.POITYPE.BUS_STATION)
-                        {
-                            name[i] = poiInfoList.get(i).name+"(公交站)";
-                            busline[i] = poiInfoList.get(i).address;
-                            location[i]=poiInfoList.get(i).location;
-                            //Log.e("print:",i+"次数："+location[i].toString());
-                            s++;
-                            continue;
-                        }
-                        s++;
-
-                        location[i]=poiInfoList.get(i).location;
-                       // Log.e("print:",i+"次数："+location[i].toString());
-                        name[i] = poiInfoList.get(i).name;
+                    if (poiInfoList.get(i).type == PoiInfo.POITYPE.BUS_STATION) {
+                        name[i] = poiInfoList.get(i).name + "(公交站)";
                         busline[i] = poiInfoList.get(i).address;
-                        uid = poiInfoList.get(i).uid;
-                        //Log.e("s", busline[i]);
-
-
-
+                        location[i] = poiInfoList.get(i).location;
+                        //Log.e("print:",i+"次数："+location[i].toString());
+                        s++;
+                        continue;
                     }
+                    s++;
+
+                    location[i] = poiInfoList.get(i).location;
+                    // Log.e("print:",i+"次数："+location[i].toString());
+                    name[i] = poiInfoList.get(i).name;
+                    busline[i] = poiInfoList.get(i).address;
+                    uid = poiInfoList.get(i).uid;
+                    //Log.e("s", busline[i]);
 
 
-                if(uid==null)
-                {
-                    Toast.makeText(selectsites.this,"未找到对象！",Toast.LENGTH_SHORT).show();
-                    return ;
                 }
 
-                  if(Arrays.equals(name,temp))
-                {
-                    Toast.makeText(selectsites.this,"未找到对象！",Toast.LENGTH_SHORT).show();
+
+                if (uid == null) {
+                    Toast.makeText(selectsites.this, "未找到对象！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (Arrays.equals(name, temp)) {
+                    Toast.makeText(selectsites.this, "未找到对象！", Toast.LENGTH_SHORT).show();
                 }
                 name = Arrays.copyOf(name, s);
-                busline = Arrays.copyOf(busline,s);
-
+                busline = Arrays.copyOf(busline, s);
 
 
                 viewList.add(getLayoutInflater().inflate(R.layout.selectfinalsite, null));
                 raAdapter = new SiteAdapter(selectsites.this);
                 setListAdapter(raAdapter);
 
-                first=1;
+                first = 1;
 
 
                 return;
@@ -292,7 +274,6 @@ public class selectsites extends ListActivity {
 
         super.onDestroy();
     }
-
 
 
 }
