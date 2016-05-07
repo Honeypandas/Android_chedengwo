@@ -7,7 +7,7 @@
     android:weightSum="1">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary">
@@ -22,26 +22,35 @@
 
         <TextView
 
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:text="详细说明"
             android:id="@+id/route_text"
             android:layout_gravity="center"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="50dp"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:textColor="#fefefe"
-            android:layout_marginTop="0dp"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/route_botton"
+            android:layout_toEndOf="@+id/route_botton" />
+
+        <Button
+            android:onClick="route_map"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="地图上显示"
+            android:id="@+id/button7"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:textColor="#ffffff"
+            android:paddingLeft="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
-
-
-
-
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"

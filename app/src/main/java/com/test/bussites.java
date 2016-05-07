@@ -92,6 +92,7 @@ public class bussites extends ListActivity {
 
             TextView Name = ((TextView) linearLayout
                     .findViewById(R.id.routename));
+
             TextView Sitenum = (TextView) linearLayout.findViewById(R.id.sitenum);
 
             TextView Distance = (TextView) linearLayout.findViewById(R.id.mdistance);
@@ -111,7 +112,7 @@ public class bussites extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_bussites);
 
         Intent intent = getIntent();

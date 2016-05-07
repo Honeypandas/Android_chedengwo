@@ -268,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
                 // Log.e("ll:", ll.toString());
 
                 mylocation = ll;
+                BusInfo.mylocation=mylocation;
                 poiSearch = PoiSearch.newInstance();
                 poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
 

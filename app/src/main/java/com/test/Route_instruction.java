@@ -21,7 +21,9 @@ public class Route_instruction extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         instruction = bundle.getString("instruction");
+
         title = bundle.getString("title");
+        RoutePlan.title=title;
         // Log.e("instr", instruction);
         TextView textView = (TextView) findViewById(R.id.route_text);
         textView.setText(title);
@@ -49,5 +51,10 @@ public class Route_instruction extends AppCompatActivity {
 
     public void route_back(View view) {
         finish();
+    }
+
+    public void route_map(View view) {
+        Intent intent=new Intent(Route_instruction.this,RoutePlan.class);
+        startActivity(intent);
     }
 }

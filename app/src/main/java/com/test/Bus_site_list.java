@@ -123,6 +123,8 @@ public class Bus_site_list extends ListActivity {
 
 
     public void bus_site_list_back(View view) {
+
+
         finish();
     }
 }

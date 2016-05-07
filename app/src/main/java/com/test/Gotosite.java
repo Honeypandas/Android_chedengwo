@@ -251,6 +251,8 @@ public class Gotosite extends ListActivity {
                 String s = instruction[position];
                 bundle.putString("instruction", s);
                 intent.putExtras(bundle);
+                RoutePlan.start_loc=start_loc;
+                RoutePlan.tar_loc=tar_loc;
 
                 startActivity(intent);
 

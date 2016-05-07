@@ -140,6 +140,7 @@ public class Bus_station_map extends FragmentActivity implements
 
     @Override
     protected void onPause() {
+
         super.onPause();
     }
 
@@ -211,6 +212,10 @@ public class Bus_station_map extends FragmentActivity implements
     }
 
     public void bus_station_map_back(View view) {
+        mSearch.destroy();
         finish();
     }
+
+
+
 }

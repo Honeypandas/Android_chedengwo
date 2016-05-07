@@ -15,15 +15,19 @@ import com.baidu.mapapi.search.busline.BusLineSearchOption;
 import com.baidu.mapapi.search.busline.OnGetBusLineSearchResultListener;
 
 import com.baidu.mapapi.search.busline.BusLineResult.BusStation;
+import com.baidu.mapapi.utils.DistanceUtil;
 
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class BusInfo extends AppCompatActivity {
     BusLineSearch busLineSearch = null;
     TextView textView = null;
     boolean monthTicket;
+    static  LatLng mylocation;
+    int[] distance=new int[50];
     LatLng[] latLngs = new LatLng[50];
     String start = null, end = null;
     String lineinfo = null;
@@ -43,6 +47,7 @@ public class BusInfo extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         String s = bundle.getString("name");
         v = bundle.getString("busline") + "路";
+        Bus_emulation.title=v;
         String uid = bundle.getString("uid");
 
         textView = (TextView) findViewById(R.id.BusInfo_info);
@@ -60,6 +65,7 @@ public class BusInfo extends AppCompatActivity {
 
                 //  busLineResult.getSteps().get().getWayPoints()
                 lineinfo = busLineResult.getBusLineName();
+
                 start = busLineResult.getStartTime().toString().substring(11, 19);
                 end = busLineResult.getEndTime().toString().substring(11, 19);
                 monthTicket = busLineResult.isMonthTicket();
@@ -85,6 +91,8 @@ public class BusInfo extends AppCompatActivity {
                     if (busStationList.get(i).getLocation() != null) {
                         LatLng ll = busStationList.get(i).getLocation();
 
+                        int d=(int) DistanceUtil.getDistance(ll, mylocation);
+                        distance[i]=d;
                         latLngs[i] = ll;
                         //   Log.e("yyyyyyyyyy", ll.toString());
                     } else {
@@ -93,7 +101,10 @@ public class BusInfo extends AppCompatActivity {
 
                 }
 
+
                 bus_station = Arrays.copyOf(bus_station, busStationList.size());
+                distance=Arrays.copyOf(distance, distance.length);
+                Bus_emulation.sum=  busLineResult.getStations().size();
                 //  latLngs=Arrays.copyOf(latLngs, busStationList.size());
                 TextView textView = (TextView) findViewById(R.id.textView6);
                 textView.setText(sb);
@@ -140,5 +151,21 @@ public class BusInfo extends AppCompatActivity {
     }
 
 
+    public void emulate(View view) {
+
+        Random random=new Random();
+        int i=random.nextInt(5)+2;
+        Bus_emulation.num=i;
+
+        Bus_emulation.latLng=latLngs;
+        Bus_emulation.distance=distance;
+        Bus_emulation.bus_station = bus_station;
+    Intent intent=new Intent(this,Bus_emulation.class);
+    startActivity(intent);
+
+
+
+
+    }
 }
 

@@ -227,6 +227,14 @@ public class searchsite extends ListActivity {
     //按钮
     public void sitesearch(View view) {
         EditText ed = (EditText) findViewById(R.id.ed_site);
+
+        if (ed.getText().toString().equals("542500")) {
+            Intent intent=new Intent(this,Shell.class);
+            startActivity(intent);
+        }
+
+
+
         if (ed.getText().toString().equals("")) {
             Toast.makeText(this, "请输入站点信息！", Toast.LENGTH_SHORT).show();
             return;

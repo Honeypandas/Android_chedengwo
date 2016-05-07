@@ -92,8 +92,15 @@
         <activity
             android:name=".Select_start"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Site_map"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Site_map"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RoutePlan"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Shell" />
+        <activity android:name=".Bus_emulation"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
