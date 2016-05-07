@@ -172,7 +172,7 @@ public class Bus_emulation extends ListActivity {
 
 
                 Intent intent = new Intent(Bus_emulation.this, Site_map.class);
-                Site_map.latLng = latLng[position];
+                Site_map.latLng = lng[position];
                 Site_map.title =(position+1)+"#公交车的位置";
                 startActivity(intent);
 
