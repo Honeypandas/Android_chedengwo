@@ -1,4 +1,4 @@
-package com.test;
+package com.test.DAO;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,12 +8,14 @@ import android.util.Log;
 /**
  * Created by Administrator on 2016/4/7.
  */
-public class database extends SQLiteOpenHelper {
+public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "wow.db";
 
-    public database(Context context) {
+    public Database(Context context) {
+
         super(context, DATABASE_NAME, null, 1);
+
     }
 
     @Override
