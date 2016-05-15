@@ -1,4 +1,4 @@
-package com.test;
+package com.test.DAO;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,16 +7,17 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import nearbysite.nearbysites;
+import com.test.Entity.Nearby_sites;
 
 /**
  * Created by Administrator on 2016/4/7.
  */
 public class nearbydata {
-    private database helper;
+    private Database helper;
 
     public nearbydata(Context context) {
-        helper = new database(context);
+
+        helper = new Database(context);
     }
 
     //添加Nearby信息
@@ -55,16 +56,16 @@ public class nearbydata {
         db.close();
     }
 
-    public List<nearbysites> findAll() {
+    public List<Nearby_sites> findAll() {
         SQLiteDatabase db = helper.getReadableDatabase();
-        List<nearbysites> sites = new ArrayList<nearbysites>();
+        List<Nearby_sites> sites = new ArrayList<Nearby_sites>();
         Cursor cursor = db.rawQuery("select * from nearby", null);
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex("id"));
             String name = cursor.getString(cursor.getColumnIndex("name"));
             String busid = cursor.getString(cursor.getColumnIndex("busid"));
             String distance = cursor.getString(cursor.getColumnIndex("distance"));
-            nearbysites site = new nearbysites(id, name, busid, distance);
+            Nearby_sites site = new Nearby_sites(id, name, busid, distance);
             sites.add(site);
         }
 

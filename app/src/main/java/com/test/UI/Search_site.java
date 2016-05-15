@@ -1,11 +1,9 @@
-package com.test;
+package com.test.UI;
 
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,24 +19,21 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.search.busline.BusLineResult;
 import com.baidu.mapapi.search.busline.BusLineSearch;
-import com.baidu.mapapi.search.busline.BusLineSearchOption;
 import com.baidu.mapapi.search.busline.OnGetBusLineSearchResultListener;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
-import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.baidu.mapapi.utils.DistanceUtil;
+import com.test.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class searchsite extends ListActivity {
+public class Search_site extends ListActivity {
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
     private String[] uid = new String[15];
@@ -134,11 +129,11 @@ public class searchsite extends ListActivity {
                 if (select == 1) {
                     String v = name[position];
                     String b = busline[position];
-                    //Toast.makeText(searchsite.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Search_site.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putString("site", v);
                     bundle.putString("busline", b);
-                    Intent intent = new Intent(searchsite.this, bussites.class);
+                    Intent intent = new Intent(Search_site.this, Bus_sites.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
@@ -149,7 +144,7 @@ public class searchsite extends ListActivity {
                     bundle.putString("name", name[position]);
                     bundle.putString("busline", key);
                     bundle.putString("uid", uid[position]);
-                    Intent intent = new Intent(searchsite.this, BusInfo.class);
+                    Intent intent = new Intent(Search_site.this, BusInfo.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
 
@@ -248,13 +243,13 @@ public class searchsite extends ListActivity {
 
         }
 
-        poiSearch.searchInCity(new PoiCitySearchOption().city("沈阳")
+        poiSearch.searchInCity(new PoiCitySearchOption().city("广州")
                 .keyword(key).pageCapacity(15));
 
         name = Arrays.copyOf(temp, 15);
         busline = Arrays.copyOf(temp, 15);
         uid = Arrays.copyOf(temp, 15);
-        Toast.makeText(searchsite.this, "内容加载中", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Search_site.this, "内容加载中", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -331,13 +326,13 @@ public class searchsite extends ListActivity {
 
                 }
                 if (uid == null) {
-                    Toast.makeText(searchsite.this, "未找到对象！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Search_site.this, "未找到对象！", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
                 if (Arrays.equals(name, temp)) {
-                    Toast.makeText(searchsite.this, "未找到对象！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Search_site.this, "未找到对象！", Toast.LENGTH_SHORT).show();
                 }
                 name = Arrays.copyOf(name, s);
                 busline = Arrays.copyOf(busline, s);
@@ -345,7 +340,7 @@ public class searchsite extends ListActivity {
                 List<View> viewList = new ArrayList<View>();
 
                 viewList.add(getLayoutInflater().inflate(R.layout.searchtab1, null));
-                raAdapter = new SiteAdapter(searchsite.this);
+                raAdapter = new SiteAdapter(Search_site.this);
                 setListAdapter(raAdapter);
 
 

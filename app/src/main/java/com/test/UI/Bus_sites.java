@@ -1,4 +1,4 @@
-package com.test;
+package com.test.UI;
 
 
 import android.content.DialogInterface;
@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,13 +28,14 @@ import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.test.R;
+import com.test.Util.Constant;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class bussites extends ListActivity {
+public class Bus_sites extends ListActivity {
     final static String ZANWU = "暂无信息";
     private Handler hander = null;
     List<View> viewList = new ArrayList<View>();
@@ -150,7 +150,7 @@ public class bussites extends ListActivity {
 
 
         viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
-        raAdapter = new SiteAdapter(bussites.this);
+        raAdapter = new SiteAdapter(Bus_sites.this);
         setListAdapter(raAdapter);
 
         Thread t = new Thread(new Runnable() {
@@ -182,7 +182,7 @@ public class bussites extends ListActivity {
             public void handleMessage(Message msg) {
                 if (msg.what == 0x101) {
                     viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
-                    raAdapter = new SiteAdapter(bussites.this);
+                    raAdapter = new SiteAdapter(Bus_sites.this);
                     setListAdapter(raAdapter);
                 }
                 super.handleMessage(msg);
@@ -191,7 +191,7 @@ public class bussites extends ListActivity {
         };
 
 
-        Toast.makeText(bussites.this, "结果加载中，请稍等", Toast.LENGTH_LONG).show();
+        Toast.makeText(Bus_sites.this, "结果加载中，请稍等", Toast.LENGTH_LONG).show();
 
 
         listView = (ListView) findViewById(android.R.id.list);
@@ -205,7 +205,7 @@ public class bussites extends ListActivity {
                 String b = uid[position];
                 Log.e("name", v);
 
-                Intent intent = new Intent(bussites.this, BusInfo.class);
+                Intent intent = new Intent(Bus_sites.this, BusInfo.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("busline", v);
                 bundle.putString("uid", b);
@@ -224,7 +224,7 @@ public class bussites extends ListActivity {
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
 
-        poiSearch.searchInCity(new PoiCitySearchOption().city("沈阳")
+        poiSearch.searchInCity(new PoiCitySearchOption().city(Constant.city)
                 .keyword(sear).pageCapacity(15));
 
 
@@ -278,18 +278,18 @@ public class bussites extends ListActivity {
 
                /* if(uid==null)
                 {
-                    Toast.makeText(bussites.this,"未找到对象！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Bus_sites.this,"未找到对象！",Toast.LENGTH_SHORT).show();
 
                 }*/
 
                 if (Arrays.equals(name, temp)) {
-                    Toast.makeText(bussites.this, "未找到对象！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Bus_sites.this, "未找到对象！", Toast.LENGTH_SHORT).show();
 
-                    new AlertDialog.Builder(bussites.this).setTitle("抱歉，未找到对象!\n点击确定后返回！")
+                    new AlertDialog.Builder(Bus_sites.this).setTitle("抱歉，未找到对象!\n点击确定后返回！")
                             .setIcon(R.drawable.warn).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            bussites.this.finish();
+                            Bus_sites.this.finish();
                         }
                     }).show();
 
@@ -307,7 +307,7 @@ public class bussites extends ListActivity {
                     time = Arrays.copyOf(time, s);
                     uid = Arrays.copyOf(uid, s);
                     viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
-                    raAdapter = new SiteAdapter(bussites.this);
+                    raAdapter = new SiteAdapter(Bus_sites.this);
                     setListAdapter(raAdapter);
                 }
 
@@ -316,7 +316,7 @@ public class bussites extends ListActivity {
 
 
                 /*viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
-                raAdapter = new SiteAdapter(bussites.this);
+                raAdapter = new SiteAdapter(Bus_sites.this);
                 setListAdapter(raAdapter);*/
             }
 

@@ -1,9 +1,8 @@
-package com.test;
+package com.test.UI;
 
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +23,8 @@ import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.test.R;
+import com.test.Util.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,7 +131,7 @@ public class Select_start extends ListActivity {
 
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
-        poiSearch.searchInCity(new PoiCitySearchOption().city("沈阳")
+        poiSearch.searchInCity(new PoiCitySearchOption().city(Constant.city)
                 .keyword(start).pageCapacity(25));
 
         //ITEM点击事件
@@ -159,9 +160,9 @@ public class Select_start extends ListActivity {
                     Log.e("v:", v);
                     Toast.makeText(Select_start.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
 
-                    selectsites.start_loc = location[position];
+                    Select_sites.start_loc = location[position];
 
-                    Intent intent = new Intent(Select_start.this, selectsites.class);
+                    Intent intent = new Intent(Select_start.this, Select_sites.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("起点", v);
                     bundle.putString("终点", target);

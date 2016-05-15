@@ -1,4 +1,4 @@
-package com.test;
+package com.test.Emulation;
 
 import android.app.Activity;
 
@@ -11,30 +11,30 @@ import static android.os.SystemClock.sleep;
  */
 public class Bus extends Activity implements Runnable {
 
-    public  LatLng latLng;
-    public  int loc=0;
-    public  int sum=0;
+    public LatLng latLng;
+    public int loc = 0;
+    public int sum = 0;
+
     @Override
     public void run() {
 
-       while(true) {
-           while (loc < sum) {
+        while (true) {
+            while (loc < sum) {
 
 
-               sleep(3000);
-               loc++;
+                sleep(3000);
+                loc++;
 
 
+            }
 
-           }
-
-           while (loc > 0) {
+            while (loc > 0) {
 
 
-               sleep(3000);
-               loc--;
-           }
-       }
+                sleep(3000);
+                loc--;
+            }
+        }
 
     }
 

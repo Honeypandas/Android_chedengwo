@@ -1,19 +1,19 @@
-package nearbysite;
+package com.test.Entity;
 
 /**
  * Created by Administrator on 2016/4/7.
  */
-public class nearbysites {
+public class Nearby_sites {
     private int id;
     private String name;
     private String busid;
     private String distance;
 
-    public nearbysites() {
+    public Nearby_sites() {
 
     }
 
-    public nearbysites(int id, String name, String busid, String distance) {
+    public Nearby_sites(int id, String name, String busid, String distance) {
         this.id = id;
         this.name = name;
         this.busid = busid;

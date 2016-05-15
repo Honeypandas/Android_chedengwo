@@ -1,7 +1,9 @@
-package com.test;
+package com.test.UI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.test.R;
 
 public class Shell extends AppCompatActivity {
 

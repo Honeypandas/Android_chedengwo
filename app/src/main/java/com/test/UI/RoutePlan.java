@@ -1,4 +1,4 @@
-package com.test;
+package com.test.UI;
 
 
 import android.app.Activity;
@@ -25,10 +25,8 @@ import com.baidu.mapapi.overlayutil.WalkingRouteOverlay;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteLine;
-import com.baidu.mapapi.search.route.BikingRoutePlanOption;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteLine;
-import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
@@ -37,8 +35,9 @@ import com.baidu.mapapi.search.route.TransitRouteLine;
 import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteLine;
-import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.test.R;
+import com.test.Util.Constant;
 
 /**
  * 此demo用来展示如何进行驾车、步行、公交路线搜索并在地图使用RouteOverlay、TransitOverlay绘制
@@ -107,7 +106,7 @@ public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
 
         // 实际使用中请对起点终点城市进行正确的设定
         mSearch.transitSearch((new TransitRoutePlanOption())
-                    .from(stNode).city("沈阳").to(enNode));
+                    .from(stNode).city(Constant.city).to(enNode));
 
     }
 

@@ -1,9 +1,8 @@
-package com.test;
+package com.test.UI;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,10 +13,10 @@ import com.baidu.mapapi.search.busline.BusLineSearch;
 import com.baidu.mapapi.search.busline.BusLineSearchOption;
 import com.baidu.mapapi.search.busline.OnGetBusLineSearchResultListener;
 
-import com.baidu.mapapi.search.busline.BusLineResult.BusStation;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.test.R;
+import com.test.Util.Constant;
 
-import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -26,9 +25,9 @@ public class BusInfo extends AppCompatActivity {
     BusLineSearch busLineSearch = null;
     TextView textView = null;
     boolean monthTicket;
-    static  LatLng mylocation;
-    int[] distance=new int[50];
-    LatLng[] latLngs = new LatLng[50];
+    static LatLng mylocation;
+    int[] distance = new int[70];
+    LatLng[] latLngs = new LatLng[70];
     String start = null, end = null;
     String lineinfo = null;
     String v = null;
@@ -47,14 +46,14 @@ public class BusInfo extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         String s = bundle.getString("name");
         v = bundle.getString("busline") + "路";
-        Bus_emulation.title=v;
+        Bus_emulation.title = v;
         String uid = bundle.getString("uid");
 
         textView = (TextView) findViewById(R.id.BusInfo_info);
         textView.setText(v);
 
         busLineSearch = BusLineSearch.newInstance();
-        busLineSearch.searchBusLine(new BusLineSearchOption().city("沈阳").uid(uid));
+        busLineSearch.searchBusLine(new BusLineSearchOption().city(Constant.city).uid(uid));
 
 
         busLineSearch.setOnGetBusLineSearchResultListener(new OnGetBusLineSearchResultListener() {
@@ -91,8 +90,8 @@ public class BusInfo extends AppCompatActivity {
                     if (busStationList.get(i).getLocation() != null) {
                         LatLng ll = busStationList.get(i).getLocation();
 
-                        int d=(int) DistanceUtil.getDistance(ll, mylocation);
-                        distance[i]=d;
+                        int d = (int) DistanceUtil.getDistance(ll, mylocation);
+                        distance[i] = d;
                         latLngs[i] = ll;
                         //   Log.e("yyyyyyyyyy", ll.toString());
                     } else {
@@ -103,8 +102,8 @@ public class BusInfo extends AppCompatActivity {
 
 
                 bus_station = Arrays.copyOf(bus_station, busStationList.size());
-                distance=Arrays.copyOf(distance, distance.length);
-                Bus_emulation.sum=  busLineResult.getStations().size();
+                distance = Arrays.copyOf(distance, distance.length);
+                Bus_emulation.sum = busLineResult.getStations().size();
                 //  latLngs=Arrays.copyOf(latLngs, busStationList.size());
                 TextView textView = (TextView) findViewById(R.id.textView6);
                 textView.setText(sb);
@@ -145,6 +144,7 @@ public class BusInfo extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+
         busLineSearch.destroy();
 
         super.onDestroy();
@@ -153,17 +153,15 @@ public class BusInfo extends AppCompatActivity {
 
     public void emulate(View view) {
 
-        Random random=new Random();
-        int i=random.nextInt(5)+2;
-        Bus_emulation.num=i;
+        Random random = new Random();
+        int i = random.nextInt(5) + 2;
+        Bus_emulation.num = i;
 
-        Bus_emulation.latLng=latLngs;
-        Bus_emulation.distance=distance;
+        Bus_emulation.latLng = latLngs;
+        Bus_emulation.distance = distance;
         Bus_emulation.bus_station = bus_station;
-    Intent intent=new Intent(this,Bus_emulation.class);
-    startActivity(intent);
-
-
+        Intent intent = new Intent(this, Bus_emulation.class);
+        startActivity(intent);
 
 
     }

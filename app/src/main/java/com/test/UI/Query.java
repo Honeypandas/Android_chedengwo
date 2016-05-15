@@ -1,4 +1,4 @@
-package com.test;
+package com.test.UI;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import nearbysite.nearbysites;
+import com.test.DAO.nearbydata;
+import com.test.Entity.Nearby_sites;
+import com.test.R;
 
 public class Query extends ListActivity {
 
@@ -125,7 +127,7 @@ public class Query extends ListActivity {
         ListView listView= (ListView) findViewById(R.id.listView2);*/
 
         nearbydata db = new nearbydata(this);
-        List<nearbysites> site = db.findAll();
+        List<Nearby_sites> site = db.findAll();
         Log.e("Long:", site.size() + "");
         for (int i = 0; i < site.size(); i++) {
 
@@ -162,7 +164,7 @@ public class Query extends ListActivity {
                 String b = busline[position];
 
 
-                Intent intent = new Intent(Query.this, bussites.class);
+                Intent intent = new Intent(Query.this, Bus_sites.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("site", v);
                 bundle.putString("busline", b);
@@ -218,7 +220,7 @@ public class Query extends ListActivity {
 
     public void to11(View view) {
 
-        Intent intent = new Intent(this, searchsite.class);
+        Intent intent = new Intent(this, Search_site.class);
         startActivity(intent);
     }
 

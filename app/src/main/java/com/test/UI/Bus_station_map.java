@@ -1,11 +1,10 @@
-package com.test;
+package com.test.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +26,8 @@ import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.test.R;
+import com.test.Util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class Bus_station_map extends FragmentActivity implements
 
         // 发起poi检索，从得到所有poi中找到公交线路类型的poi，再使用该poi的uid进行公交详情搜索
         mSearch.searchInCity((new PoiCitySearchOption()).city(
-                "沈阳")
+                Constant.city)
                 .keyword(busline));
 
 
@@ -96,7 +97,7 @@ public class Bus_station_map extends FragmentActivity implements
         if (busLineIndex >= 0 && busLineIndex < busLineIDList.size()
                 && busLineIDList.size() > 0) {
             mBusLineSearch.searchBusLine((new BusLineSearchOption()
-                    .city("沈阳").uid(busLineIDList.get(busLineIndex))));
+                    .city(Constant.city).uid(busLineIDList.get(busLineIndex))));
 
             busLineIndex++;
         }

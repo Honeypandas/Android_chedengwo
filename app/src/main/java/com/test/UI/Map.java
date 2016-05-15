@@ -1,8 +1,10 @@
-package com.test;
+package com.test.UI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.test.R;
 
 public class Map extends AppCompatActivity {
 
@@ -15,6 +17,6 @@ public class Map extends AppCompatActivity {
 
     public void mapback(View view) {
         finish();
-        ;
+
     }
 }

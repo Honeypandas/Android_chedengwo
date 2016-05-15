@@ -32,7 +32,7 @@
             android:process=":remote" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".UI.MainActivity"
             android:label="@string/chedengwo"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -46,15 +46,15 @@
             android:label="@string/IWG"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".selectsites"
+            android:name=".UI.Select_sites"
             android:label="@string/IWG"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Query"
+            android:name=".UI.Query"
             android:label="@string/title_activity_query"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LocationTryActivity"
+            android:name=".UI.LocationTryActivity"
             android:label="@string/title_activity_query"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
@@ -66,40 +66,40 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".searchsite"
+            android:name=".UI.Search_site"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Gotosite"
+            android:name=".UI.Gotosite"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Map"
+            android:name=".UI.Map"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".bussites"
+            android:name=".UI.Bus_sites"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BusInfo"
+            android:name=".UI.BusInfo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Bus_site_list"
+            android:name=".UI.Bus_site_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Bus_station_map"
+            android:name=".UI.Bus_station_map"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Route_instruction"
+            android:name=".UI.Route_instruction"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Select_start"
+            android:name=".UI.Select_start"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Site_map"
+            android:name=".UI.Site_map"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RoutePlan"
+            android:name=".UI.RoutePlan"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Shell" />
-        <activity android:name=".Bus_emulation"
+        <activity android:name=".UI.Shell" />
+        <activity android:name=".UI.Bus_emulation"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

@@ -1,9 +1,8 @@
-package com.test;
+package com.test.UI;
 
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,25 +15,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.utils.DistanceUtil;
+import com.test.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static android.os.SystemClock.sleep;
-
 public class Bus_emulation extends ListActivity {
     static int[] distance;
-    int d=0;
+    int d = 0;
     ListView listView;
-    LatLng[] lng=new LatLng[10];
-    String[] direct=new String[10];
+    LatLng[] lng = new LatLng[10];
+    String[] direct = new String[10];
     // static  LatLng mylocation;
     public static String title;
     public static String[] bus_station;
-     public static LatLng[] latLng;
+    public static LatLng[] latLng;
     String[] bus_location = new String[10];
     int[] bus_distance = new int[10];
 
@@ -64,15 +61,14 @@ public class Bus_emulation extends ListActivity {
         raAdapter = new RatingAdapter(this);
         setListAdapter(raAdapter);
 
-        distance=Arrays.copyOf(distance, sum);
-        for(int j:distance)
-        {
-            Log.e("distance=", " "+j);
+        distance = Arrays.copyOf(distance, sum);
+        for (int j : distance) {
+            Log.e("distance=", " " + j);
         }
 
         textView.setText("一共有" + num + "辆公交车在此路线上运行");
         Log.e("sum=", sum + " ");
-        Log.e("num=",num+" ");
+        Log.e("num=", num + " ");
 
         for (int i = 0; i < num; i++) {
 
@@ -82,23 +78,22 @@ public class Bus_emulation extends ListActivity {
 
                     int flag;
 
-                    final int  s=d;
+                    final int s = d;
                     d++;
-                    Random random=new Random();
-                   int loc=random.nextInt(sum);
+                    Random random = new Random();
+                    int loc = random.nextInt(sum);
 
-                    flag=random.nextInt(10);
+                    flag = random.nextInt(10);
 
                     while (true) {
 
 
-
-                        if(flag%2==0) {
+                        if (flag % 2 == 0) {
                             direct[s] = bus_station[sum - 1];
 
 
                             while (loc < sum - 2) {
-                                lng[s]=latLng[loc];
+                                lng[s] = latLng[loc];
                                 bus_location[s] = bus_station[loc];
                                 bus_distance[s] = distance[loc];
 
@@ -124,11 +119,11 @@ public class Bus_emulation extends ListActivity {
 
                             }
                             flag++;
-                        }else {
+                        } else {
                             direct[s] = bus_station[0];
 
                             while (loc > 1) {
-                                lng[s]=latLng[loc];
+                                lng[s] = latLng[loc];
                                 bus_location[s] = bus_station[loc];
                                 bus_distance[s] = distance[loc];
                                 try {
@@ -159,7 +154,6 @@ public class Bus_emulation extends ListActivity {
             }.start();
 
 
-
         }
         //  TextView textView = (TextView) findViewById(R.id.Bus_emulation_tv);
 
@@ -173,14 +167,11 @@ public class Bus_emulation extends ListActivity {
 
                 Intent intent = new Intent(Bus_emulation.this, Site_map.class);
                 Site_map.latLng = lng[position];
-                Site_map.title =(position+1)+"#公交车的位置";
+                Site_map.title = (position + 1) + "#公交车的位置";
                 startActivity(intent);
 
             }
         });
-
-
-
 
 
     }
@@ -215,18 +206,17 @@ public class Bus_emulation extends ListActivity {
             return position;
         }
 
-       public void setRating(int position, int rating)
-        {
-           distance[position] = rating;
+        public void setRating(int position, int rating) {
+            distance[position] = rating;
             //在adapter的数据发生变化以后通知UI主线程根据新的数据重新画图
             notifyDataSetChanged();
         }
 
 
-        public void notify_data()
-        {
+        public void notify_data() {
             notifyDataSetChanged();
         }
+
         // @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
@@ -237,14 +227,14 @@ public class Bus_emulation extends ListActivity {
             TextView Name = ((TextView) linearLayout
                     .findViewById(R.id.bus_location));
 
-             String str2=(position+1)+"#车在"+bus_location[position]+"附近";
+            String str2 = (position + 1) + "#车在" + bus_location[position] + "附近";
             Name.setText(str2);
 
             TextView Direct = ((TextView) linearLayout
                     .findViewById(R.id.sitenum));
 
 
-            String k="正往"+direct[position]+"方向行驶";
+            String k = "正往" + direct[position] + "方向行驶";
             Direct.setText(k);
 
 
@@ -261,7 +251,7 @@ public class Bus_emulation extends ListActivity {
             TextView Distance = ((TextView) linearLayout
                     .findViewById(R.id.run_distance));
 
-            String str="相距约"+bus_distance[position] + "米";
+            String str = "相距约" + bus_distance[position] + "米";
             Distance.setText(str);
 
 

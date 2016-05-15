@@ -1,18 +1,11 @@
-package com.test;
+package com.test.UI;
 
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.annotation.DrawableRes;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,21 +21,11 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
@@ -52,12 +34,10 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.test.DAO.nearbydata;
+import com.test.R;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TooManyListenersException;
-import java.util.logging.Handler;
 
 public class MainActivity extends AppCompatActivity {
     LocationClient mLocClient;
@@ -134,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         mLocClient.start();
 */
 
-        //  database nearby=new database(this);
+        //  Database nearby=new Database(this);
         // nearby.getWritableDatabase();
         // DistanceUtil.getDistance(p1, p2);
         //nearbydata ywq = new nearbydata(MainActivity.this);
@@ -193,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void to3(View view) {
-        Intent intent = new Intent(MainActivity.this, searchsite.class);
+        Intent intent = new Intent(MainActivity.this, Search_site.class);
         startActivity(intent);
     }
 
@@ -346,6 +326,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void check() {
+
         new AlertDialog.Builder(this).setTitle("请检查网络是否连接!\n程序将关闭!")
                 .setIcon(R.drawable.warn).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override

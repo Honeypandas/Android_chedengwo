@@ -1,16 +1,11 @@
-package com.test;
+package com.test.UI;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 
@@ -21,16 +16,13 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-
-import java.util.Objects;
+import com.test.R;
 
 
 /**
@@ -112,12 +104,12 @@ public class LocationTryActivity extends AppCompatActivity {
         if (start.equals("我的位置")) {
 
             Log.e("status:", "1");
-            selectsites.status = 1;
+            Select_sites.status = 1;
 
-            Intent intent = new Intent(this, selectsites.class);
+            Intent intent = new Intent(this, Select_sites.class);
             Bundle bundle = new Bundle();
             //我的位置
-            selectsites.start_loc = mylocation;
+            Select_sites.start_loc = mylocation;
             bundle.putString("终点", finalsite);
             bundle.putString("起点", start);
 
@@ -143,7 +135,7 @@ public class LocationTryActivity extends AppCompatActivity {
         if (!start.equals("我的位置") && !finalsite.equals("我的位置")) {
 
             Log.e("status:", "3");
-            selectsites.status = 2;
+            Select_sites.status = 2;
 
             Intent intent = new Intent(this, Select_start.class);
             Bundle bundle = new Bundle();
