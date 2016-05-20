@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.test">
+    package="com.test"
+    android:versionCode="2"
+    android:versionName="1.3.4">
 
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -17,6 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+
+
         android:allowBackup="true"
         android:icon="@mipmap/ic"
         android:label="@string/chedengwo"
@@ -41,10 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".iwantogo"
-            android:label="@string/IWG"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".UI.Select_sites"
             android:label="@string/IWG"
@@ -72,9 +73,6 @@
             android:name=".UI.Gotosite"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.Map"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".UI.Bus_sites"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -98,7 +96,7 @@
         <activity
             android:name=".UI.RoutePlan"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.Shell" />
+
         <activity android:name=".UI.Bus_emulation"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

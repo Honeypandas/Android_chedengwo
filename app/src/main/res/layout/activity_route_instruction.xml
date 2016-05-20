@@ -34,32 +34,32 @@
             android:layout_toRightOf="@+id/route_botton"
             android:layout_toEndOf="@+id/route_botton" />
 
-        <Button
-            android:onClick="route_map"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="地图上显示"
-            android:id="@+id/button7"
-            android:background="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:textSize="16dp"
-            android:textColor="#ffffff"
-            android:paddingLeft="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
 
     </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:text="详细说明："
         android:id="@+id/route_instr"
         android:layout_gravity="center_horizontal"
         android:textSize="20sp"
         android:textColor="#000000" />
+
+    <Button
+        android:onClick="route_map"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:text="地图上显示"
+        android:id="@+id/button7"
+        android:background="#ffffff"
+        android:textSize="26dp"
+        android:textColor="#751057"
+        android:paddingLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center" />
 
 
 </LinearLayout>
