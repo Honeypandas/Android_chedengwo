@@ -292,7 +292,6 @@ public class Search_site extends ListActivity {
                                 .address.contains("地铁2号线")) {
 
 
-                            //Log.e("BUSSTATION:",poiInfoList.get(i).name+poiInfoList.get(i).address);
                             name[s] = poiInfoList.get(s).name;
 
                             busline[s] = poiInfoList.get(s).address;

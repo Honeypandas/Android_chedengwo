@@ -96,7 +96,7 @@ public class Bus_emulation extends ListActivity {
                                 bus_distance[s] = distance[loc];
 
                                 try {
-                                    sleep(5000);
+                                    sleep(500);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -124,7 +124,7 @@ public class Bus_emulation extends ListActivity {
                                 bus_location[s] = bus_station[loc];
                                 bus_distance[s] = distance[loc];
                                 try {
-                                    sleep(5000);
+                                    sleep(500);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -248,12 +248,13 @@ public class Bus_emulation extends ListActivity {
 
     @Override
     protected void onPause() {
-        run = false;super.onPause();
+        run = false;
+        super.onPause();
     }
 
     @Override
     protected void onStop() {
-
+        run = false;
         super.onStop();
     }
 
