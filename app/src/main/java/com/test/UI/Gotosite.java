@@ -33,14 +33,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Gotosite extends ListActivity {
-    String start = null;
+
     String target = null;
-
-
     String[] name = new String[10];
     String[] distance = new String[10];
     String[] duration = new String[10];
-    String[] title = new String[10];
+
     private SiteAdapter raAdapter;
     String[] instruction = new String[10];
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
@@ -62,17 +60,17 @@ public class Gotosite extends ListActivity {
                     .getSystemService(inflater);
         }
 
-        //@Override
+        @Override
         public int getCount() {
             return name.length;
         }
 
-        // @Override
+         @Override
         public Object getItem(int position) {
             return name[position];
         }
 
-        // @Override
+        @Override
         public long getItemId(int position) {
             return position;
         }
@@ -116,8 +114,7 @@ public class Gotosite extends ListActivity {
 
         RoutePlanSearch mSearch;
 
-        //Log.e("GOTOSITE_start_loc",start_loc.toString());
-        //Log.e("GOTOSITE_TARLOC", tar_loc.toString());
+
 
         mSearch = RoutePlanSearch.newInstance();
 
@@ -145,7 +142,7 @@ public class Gotosite extends ListActivity {
                     for (int i = 0; i < transitRouteLines.size(); i++) {
                         int s = transitRouteLines.get(i).getDistance();
                         int v = transitRouteLines.get(i).getDuration();
-                        //Log.e("iiii", );
+                        ;
                         int h, m, p;
                         String dis, dur, title = null, instr = "";
 
@@ -170,7 +167,6 @@ public class Gotosite extends ListActivity {
                         for (int k = 0; k < transitSteps.size(); k++) {
                             String js;
                             String ss = transitSteps.get(k).getInstructions();
-                            //Log.e("time",""+transitSteps.get(k).getDuration());
                             int time = transitSteps.get(k).getDuration();
 
                             time = time / 60;
@@ -195,12 +191,10 @@ public class Gotosite extends ListActivity {
 
                         instruction[i] = instr;
                         name[i] = title;
-                        // Log.e("key",name[i]);
                         name = Arrays.copyOf(name, transitRouteLines.size());
                         distance = Arrays.copyOf(distance, transitRouteLines.size());
                         duration = Arrays.copyOf(duration, transitRouteLines.size());
                         instruction = Arrays.copyOf(instruction, transitRouteLines.size());
-                        //Log.e("ywq:",dis+" "+dur);
                     }
 
 
@@ -262,5 +256,32 @@ public class Gotosite extends ListActivity {
 
     public void back2(View view) {
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
     }
 }

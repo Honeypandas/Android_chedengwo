@@ -40,8 +40,8 @@ import com.test.R;
 import com.test.Util.Constant;
 
 /**
- * 此demo用来展示如何进行驾车、步行、公交路线搜索并在地图使用RouteOverlay、TransitOverlay绘制
- * 同时展示如何进行节点浏览并弹出泡泡
+ *在地图上显示路线说明
+ *
  */
 public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
         OnGetRoutePlanResultListener {
@@ -58,8 +58,7 @@ public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
     private TextView popupText = null; // 泡泡view
 
 
-    // 地图相关，使用继承MapView的MyRouteMapView目的是重写touch事件实现泡泡处理
-    // 如果不处理touch事件，则无需继承，直接使用MapView即可
+
     MapView mMapView = null;    // 地图View
     BaiduMap mBaidumap = null;
     // 搜索相关
@@ -87,7 +86,7 @@ public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
     }
 
     /**
-     * 发起路线规划搜索示例
+     * 发起路线规划搜索
      *
 
      */
@@ -98,15 +97,13 @@ public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
         mBtnNext.setVisibility(View.INVISIBLE);
         mBaidumap.clear();
         // 处理搜索按钮响应
-        EditText editSt = (EditText) findViewById(R.id.start);
-        EditText editEn = (EditText) findViewById(R.id.end);
         // 设置起终点信息
         PlanNode stNode = PlanNode.withLocation(start_loc);
         PlanNode enNode = PlanNode.withLocation(tar_loc);
 
         // 实际使用中请对起点终点城市进行正确的设定
         mSearch.transitSearch((new TransitRoutePlanOption())
-                    .from(stNode).city(Constant.city).to(enNode));
+                .from(stNode).city(Constant.city).to(enNode));
 
     }
 
@@ -260,8 +257,7 @@ public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
             Toast.makeText(RoutePlan.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
         }
         if (bikingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
-            // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
-            // result.getSuggestAddrInfo()
+
             return;
         }
         if (bikingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
@@ -281,6 +277,8 @@ public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
     public void route_back(View view) {
         finish();
     }
+
+
 
     // 定制RouteOverly
     private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
@@ -405,4 +403,21 @@ public class RoutePlan extends Activity implements BaiduMap.OnMapClickListener,
         super.onDestroy();
     }
 
+
+
+
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 }

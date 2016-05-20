@@ -4,7 +4,6 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bus_site_list extends ListActivity {
-    ListView listView = null;
-    String lineinfo;
-    String[] name;
-    public static LatLng[] latLng;
-    TextView textView = null;
-    String inflater = Context.LAYOUT_INFLATER_SERVICE;
-    LayoutInflater layoutInflater;
+    private ListView listView = null;
+    private String lineinfo;
+    private String[] name;
+    static LatLng[] latLng;
+    private TextView textView = null;
+    private String inflater = Context.LAYOUT_INFLATER_SERVICE;
+    private LayoutInflater layoutInflater;
     private RatingAdapter raAdapter;
 
     class RatingAdapter extends BaseAdapter {
-        private Context context;
+        Context context;
 
         //构造函数
         public RatingAdapter(Context context) {
@@ -40,29 +39,23 @@ public class Bus_site_list extends ListActivity {
                     .getSystemService(inflater);
         }
 
-        //@Override
+        @Override
         public int getCount() {
             return name.length;
         }
 
-        // @Override
+        @Override
         public Object getItem(int position) {
             return name[position];
         }
 
-        // @Override
+        @Override
         public long getItemId(int position) {
             return position;
         }
 
-       /* public void setRating(int position, float rating)
-        {
-           distance[position] = rating;
-            //在adapter的数据发生变化以后通知UI主线程根据新的数据重新画图
-            notifyDataSetChanged();
-        }*/
 
-        // @Override
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
             LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
@@ -93,7 +86,6 @@ public class Bus_site_list extends ListActivity {
         lineinfo = bundle.getString("lineInfo");
         textView = (TextView) findViewById(R.id.Bus_site_list_info);
         textView.setText(lineinfo);
-        Log.e("size:", name.length + "");
 
 
         List<View> viewList = new ArrayList<View>();
@@ -126,5 +118,31 @@ public class Bus_site_list extends ListActivity {
 
 
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

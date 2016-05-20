@@ -142,11 +142,13 @@ public class Bus_station_map extends FragmentActivity implements
     @Override
     protected void onPause() {
 
+
         super.onPause();
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
     }
 
@@ -218,5 +220,17 @@ public class Bus_station_map extends FragmentActivity implements
     }
 
 
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
 }

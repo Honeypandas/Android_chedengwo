@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.test.R;
 
 public class Route_instruction extends AppCompatActivity {
-    String[] step = new String[10];
+    private  String[] step = new String[10];
     String instruction;
     String title;
 
@@ -26,18 +26,13 @@ public class Route_instruction extends AppCompatActivity {
 
         title = bundle.getString("title");
         RoutePlan.title=title;
-        // Log.e("instr", instruction);
         TextView textView = (TextView) findViewById(R.id.route_text);
         textView.setText(title);
 
         if (instruction != null) {
             step = instruction.split("%");
-            //Log.e("gggg:",step[0]);
         }
 
-        for (int i = 0; i < step.length; i++) {
-            Log.e("steps:", "第" + i + "步:" + step[i]);
-        }
 
         StringBuffer sb = new StringBuffer(200);
         for (int i = 1; i <= step.length; i++) {
@@ -58,5 +53,32 @@ public class Route_instruction extends AppCompatActivity {
     public void route_map(View view) {
         Intent intent=new Intent(Route_instruction.this,RoutePlan.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

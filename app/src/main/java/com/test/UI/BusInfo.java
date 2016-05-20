@@ -1,8 +1,8 @@
 package com.test.UI;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,7 +12,6 @@ import com.baidu.mapapi.search.busline.BusLineResult;
 import com.baidu.mapapi.search.busline.BusLineSearch;
 import com.baidu.mapapi.search.busline.BusLineSearchOption;
 import com.baidu.mapapi.search.busline.OnGetBusLineSearchResultListener;
-
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.test.R;
 import com.test.Util.Constant;
@@ -31,7 +30,7 @@ public class BusInfo extends AppCompatActivity {
     String start = null, end = null;
     String lineinfo = null;
     String v = null;
-    String[] bus_station = new String[50];
+    String[] bus_station = new String[70];
     List<BusLineResult.BusStation> busStationList;
     StringBuffer sb = new StringBuffer(100);
 
@@ -62,7 +61,6 @@ public class BusInfo extends AppCompatActivity {
                 String monthti;
                 busStationList = busLineResult.getStations();
 
-                //  busLineResult.getSteps().get().getWayPoints()
                 lineinfo = busLineResult.getBusLineName();
 
                 start = busLineResult.getStartTime().toString().substring(11, 19);
@@ -93,9 +91,8 @@ public class BusInfo extends AppCompatActivity {
                         int d = (int) DistanceUtil.getDistance(ll, mylocation);
                         distance[i] = d;
                         latLngs[i] = ll;
-                        //   Log.e("yyyyyyyyyy", ll.toString());
                     } else {
-                        // Log.e("NOOOOOOOO","OOOOOOOO");
+
                     }
 
                 }
@@ -104,7 +101,6 @@ public class BusInfo extends AppCompatActivity {
                 bus_station = Arrays.copyOf(bus_station, busStationList.size());
                 distance = Arrays.copyOf(distance, distance.length);
                 Bus_emulation.sum = busLineResult.getStations().size();
-                //  latLngs=Arrays.copyOf(latLngs, busStationList.size());
                 TextView textView = (TextView) findViewById(R.id.textView6);
                 textView.setText(sb);
 
@@ -165,5 +161,28 @@ public class BusInfo extends AppCompatActivity {
 
 
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+
 }
 

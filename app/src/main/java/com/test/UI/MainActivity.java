@@ -10,9 +10,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +21,6 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     boolean isFirstLoc = true;
     private PoiSearch poiSearch;
 
-    private String B = "sssss";
 
     List<PoiInfo> poiInfoList;
 
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //  SDKInitializer.initialize(getApplicationContext());
+       SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("模拟车等我APP的设计与实现");
@@ -74,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
             SDKInitializer.initialize(getApplicationContext());
 
-            MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
             mLocClient = new LocationClient(this);
             mLocClient.registerLocationListener(myListener);
             LocationClientOption option = new LocationClientOption();
@@ -98,48 +95,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-/*
 
-        SDKInitializer.initialize(getApplicationContext());
-
-        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-        mLocClient = new LocationClient(this);
-        mLocClient.registerLocationListener(myListener);
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);
-        option.setOpenGps(true); // 打开gps
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
-        mLocClient.setLocOption(option);
-        mLocClient.start();
-*/
-
-        //  Database nearby=new Database(this);
-        // nearby.getWritableDatabase();
-        // DistanceUtil.getDistance(p1, p2);
-        //nearbydata ywq = new nearbydata(MainActivity.this);
-        // ywq.add("yaddas","ydaswq","150米");
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+
+        if (R.id.action_settings == id) {
             return true;
         }
 
@@ -151,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
     *
     * */
     public void to1(View view) {
-        // Toast.makeText(MainActivity.this, "HHHHH", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, Query.class);
         startActivity(intent);
 
@@ -232,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            // Toast.makeText(MainActivity.this, locData.toString(),Toast.LENGTH_LONG).show();
             if (isFirstLoc) {
                 isFirstLoc = false;
 
@@ -244,11 +214,8 @@ public class MainActivity extends AppCompatActivity {
                 loca.setText("\n" + "\n" + "您现在的位置：\n" + loc + "," + des);
 
 
-                // Log.e("YY:", location.getAddrStr());
-                // Log.e("ll:", ll.toString());
-
                 mylocation = ll;
-                BusInfo.mylocation=mylocation;
+                BusInfo.mylocation = mylocation;
                 poiSearch = PoiSearch.newInstance();
                 poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
 
@@ -260,8 +227,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        public void onReceivePoi(BDLocation poiLocation) {
-        }
+
     }
 
     private class PoiSearchResultListener implements
@@ -270,10 +236,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onGetPoiDetailResult(PoiDetailResult result) {
             if (result.error != SearchResult.ERRORNO.NO_ERROR) {
-                Log.e("add", B);
-            } else {
+              return;
+            }
+            else {
 
-                Log.e("add", B);
 
                 Toast.makeText(getApplicationContext(),
                         result.getName() + ": " + result.getAddress(), Toast.LENGTH_SHORT)
@@ -291,10 +257,6 @@ public class MainActivity extends AppCompatActivity {
             }
             if (result.error == SearchResult.ERRORNO.NO_ERROR) {
 
-                //Toast.makeText(MainActivity.this, "查找成功！", Toast.LENGTH_SHORT).show();
-
-                //c = result.getTotalPoiNum();
-                //Log.e("add", "A" + c);
                 nearbydata ywq = new nearbydata(MainActivity.this);
                 ywq.clear();
                 poiInfoList = result.getAllPoi();
@@ -303,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                     String distance = a + "米";
-                    // Log.e("addddd", poiInfoList.get(i).address + poiInfoList.get(i).name + "cc" + distance + "bb");
 
 
                     ywq.add(poiInfoList.get(i).name, poiInfoList.get(i).address, distance);
@@ -311,9 +272,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-
-                // String c=result.getAllAddr().get(0).address.trim();
-                // Log.e("address",c);
                 return;
             }
             if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
@@ -345,6 +303,22 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+
+
 
 
 }

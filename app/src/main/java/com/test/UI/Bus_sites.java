@@ -1,15 +1,14 @@
 package com.test.UI;
 
 
-import android.content.DialogInterface;
-import android.os.Handler;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,12 +35,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Bus_sites extends ListActivity {
-    final static String ZANWU = "暂无信息";
+    final static String STATUS = "暂无信息";
     private Handler hander = null;
     List<View> viewList = new ArrayList<View>();
     int s = 0;
     int num = 0;
-    int j = 0;
 
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
@@ -56,7 +54,6 @@ public class Bus_sites extends ListActivity {
     TextView textView = null;
     private PoiSearch poiSearch;
     List<PoiInfo> poiInfoList;
-    String key = null;
     String[] line = new String[30];
 
     class SiteAdapter extends BaseAdapter {
@@ -121,28 +118,11 @@ public class Bus_sites extends ListActivity {
         String b = bundle.getString("busline");
         textView = (TextView) findViewById(R.id.siteinfo);
         textView.setText(v);
-        Log.e("bus:", b);
 
         if (b != null) {
             line = b.split(";");
-            Log.e("gggg:", line[0]);
+
         }
-
-
-
-
-        /*Thread thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-        thread.start();*/
 
         for (String str : line) {
             search(str);
@@ -203,7 +183,6 @@ public class Bus_sites extends ListActivity {
 
                 String v = name[position].substring(0, 3);
                 String b = uid[position];
-                Log.e("name", v);
 
                 Intent intent = new Intent(Bus_sites.this, BusInfo.class);
                 Bundle bundle = new Bundle();
@@ -260,27 +239,20 @@ public class Bus_sites extends ListActivity {
 
                 poiInfoList = result.getAllPoi();
 
-                Log.e("error;", "sssdfghj");
 
                 for (int i = 0; i < 2; i++) {
                     if (!poiInfoList.get(i).name.contains("(")) {
                         continue;
                     }
                     name[s] = poiInfoList.get(i).name;
-                    sitenum[s] = ZANWU;
-                    distance[s] = ZANWU;
-                    time[s] = ZANWU;
+                    sitenum[s] = STATUS;
+                    distance[s] = STATUS;
+                    time[s] = STATUS;
                     uid[s] = poiInfoList.get(i).uid;
-                    // Log.e("pppppp",name[s]);
+
                     s++;
                 }
 
-
-               /* if(uid==null)
-                {
-                    Toast.makeText(Bus_sites.this,"未找到对象！",Toast.LENGTH_SHORT).show();
-
-                }*/
 
                 if (Arrays.equals(name, temp)) {
                     Toast.makeText(Bus_sites.this, "未找到对象！", Toast.LENGTH_SHORT).show();
@@ -298,7 +270,7 @@ public class Bus_sites extends ListActivity {
 
 
                 num++;
-                Log.e("num:", num + "");
+
                 if (num == line.length) {
 
                     name = Arrays.copyOf(name, s);
@@ -315,9 +287,6 @@ public class Bus_sites extends ListActivity {
                 return;
 
 
-                /*viewList.add(getLayoutInflater().inflate(R.layout.activity_bussites, null));
-                raAdapter = new SiteAdapter(Bus_sites.this);
-                setListAdapter(raAdapter);*/
             }
 
 
@@ -331,8 +300,8 @@ public class Bus_sites extends ListActivity {
 
     @Override
     protected void onDestroy() {
-        poiSearch.destroy();
 
+        poiSearch.destroy();
         super.onDestroy();
     }
 
@@ -341,4 +310,27 @@ public class Bus_sites extends ListActivity {
         finish();
 
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+
 }

@@ -223,10 +223,7 @@ public class Search_site extends ListActivity {
     public void sitesearch(View view) {
         EditText ed = (EditText) findViewById(R.id.ed_site);
 
-        if (ed.getText().toString().equals("542500")) {
-            Intent intent=new Intent(this,Shell.class);
-            startActivity(intent);
-        }
+
 
 
 
@@ -378,6 +375,28 @@ public class Search_site extends ListActivity {
         poiSearch.destroy();
 
         super.onDestroy();
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
 

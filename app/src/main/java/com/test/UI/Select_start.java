@@ -4,7 +4,6 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,6 @@ public class Select_start extends ListActivity {
     static private int first = 0;
     List<View> viewList = new ArrayList<View>();
     String target, start;
-    public static LatLng start_loc;
     public static LatLng tar_loc;
 
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
@@ -79,13 +77,7 @@ public class Select_start extends ListActivity {
         public long getItemId(int position) {
             return position;
         }
-        //设置星行分数
-        /*public void setRating(int position, float rating)
-        {
-           distance[position] = rating;
-            //在adapter的数据发生变化以后通知UI主线程根据新的数据重新画图
-            notifyDataSetChanged();
-        }*/
+
 
         // @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -111,7 +103,6 @@ public class Select_start extends ListActivity {
     }
 
 
-    private LinearLayout layout;
     private PoiSearch poiSearch;
     List<PoiInfo> poiInfoList;
 
@@ -125,9 +116,6 @@ public class Select_start extends ListActivity {
 
         target = bundle.getString("终点");
         start = bundle.getString("起点");
-
-        Log.e("eessssssssss", start);
-        Log.e("eeqqqqqq", target);
 
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
@@ -144,7 +132,6 @@ public class Select_start extends ListActivity {
                 if (status == 1) {
 
                     String v = name[position];
-                    Log.e("v:", v);
                     Toast.makeText(Select_start.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
                     Gotosite.start_loc = location[position];
                     Gotosite.tar_loc = tar_loc;
@@ -157,7 +144,6 @@ public class Select_start extends ListActivity {
                     startActivity(intent);
                 } else {
                     String v = name[position];
-                    Log.e("v:", v);
                     Toast.makeText(Select_start.this, "结果加载中，请稍等", Toast.LENGTH_SHORT).show();
 
                     Select_sites.start_loc = location[position];
@@ -285,4 +271,26 @@ public class Select_start extends ListActivity {
     public void start_back(View view) {
         finish();
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
 }

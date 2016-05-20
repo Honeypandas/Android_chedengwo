@@ -4,7 +4,6 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,23 +23,23 @@ import java.util.Random;
 
 public class Bus_emulation extends ListActivity {
     static int[] distance;
-    int d = 0;
-    ListView listView;
-    LatLng[] lng = new LatLng[10];
-    String[] direct = new String[10];
-    // static  LatLng mylocation;
-    public static String title;
-    public static String[] bus_station;
-    public static LatLng[] latLng;
-    String[] bus_location = new String[10];
-    int[] bus_distance = new int[10];
+    private int d = 0;
+    private ListView listView;
+    private LatLng[] lng = new LatLng[10];
+    private String[] direct = new String[10];
 
-    public static int sum = 0;
+    static String title;
+    static String[] bus_station;
+    static LatLng[] latLng;
+    private String[] bus_location = new String[10];
+    private int[] bus_distance = new int[10];
+
+    static int sum = 0;
     static int num = 0;
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
     private RatingAdapter raAdapter;
-
+    volatile boolean run = false;
 
     //
     @Override
@@ -63,12 +62,11 @@ public class Bus_emulation extends ListActivity {
 
         distance = Arrays.copyOf(distance, sum);
         for (int j : distance) {
-            Log.e("distance=", " " + j);
         }
 
         textView.setText("一共有" + num + "辆公交车在此路线上运行");
-        Log.e("sum=", sum + " ");
-        Log.e("num=", num + " ");
+
+        run = true;
 
         for (int i = 0; i < num; i++) {
 
@@ -85,7 +83,7 @@ public class Bus_emulation extends ListActivity {
 
                     flag = random.nextInt(10);
 
-                    while (true) {
+                    while (run) {
 
 
                         if (flag % 2 == 0) {
@@ -104,7 +102,6 @@ public class Bus_emulation extends ListActivity {
                                 }
                                 loc++;
 
-                                //Log.e("s=",s+" ");
                                 runOnUiThread(new Runnable() {
 
                                     @Override
@@ -155,9 +152,8 @@ public class Bus_emulation extends ListActivity {
 
 
         }
-        //  TextView textView = (TextView) findViewById(R.id.Bus_emulation_tv);
 
-        //   textView.setText("此路线上一共有"+num+"辆公交车正在行驶");
+
         listView = (ListView) findViewById(android.R.id.list);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -173,10 +169,11 @@ public class Bus_emulation extends ListActivity {
             }
         });
 
-
     }
 
     public void Bus_emulation_back(View view) {
+
+        run = false;
         finish();
     }
 
@@ -206,12 +203,6 @@ public class Bus_emulation extends ListActivity {
             return position;
         }
 
-        public void setRating(int position, int rating) {
-            distance[position] = rating;
-            //在adapter的数据发生变化以后通知UI主线程根据新的数据重新画图
-            notifyDataSetChanged();
-        }
-
 
         public void notify_data() {
             notifyDataSetChanged();
@@ -238,16 +229,6 @@ public class Bus_emulation extends ListActivity {
             Direct.setText(k);
 
 
-
-
-
-            /*TextView Name = ((TextView) linearLayout
-                    .findViewById(R.id.bus_location));
-
-
-            Name.setText("第"+position+1+"辆车在"+bus_station[position]+"附近");*/
-
-
             TextView Distance = ((TextView) linearLayout
                     .findViewById(R.id.run_distance));
 
@@ -259,5 +240,30 @@ public class Bus_emulation extends ListActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        run = false;
+        super.onDestroy();
+    }
 
+    @Override
+    protected void onPause() {
+        run = false;super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 }

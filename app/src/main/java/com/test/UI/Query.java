@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,26 +13,18 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.search.core.PoiInfo;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiDetailResult;
-import com.baidu.mapapi.search.poi.PoiResult;
-import com.baidu.mapapi.search.poi.PoiSearch;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.test.DAO.nearbydata;
+import com.test.Entity.Nearby_sites;
+import com.test.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.test.DAO.nearbydata;
-import com.test.Entity.Nearby_sites;
-import com.test.R;
 
 public class Query extends ListActivity {
 
@@ -47,10 +38,6 @@ public class Query extends ListActivity {
     LayoutInflater layoutInflater;
     private RatingAdapter raAdapter;
 
-
-    private PoiSearch poiSearch;
-    private int c;
-    List<PoiInfo> poiInfoList;
     ListView listView;
 
     /**
@@ -70,29 +57,23 @@ public class Query extends ListActivity {
                     .getSystemService(inflater);
         }
 
-        //@Override
+        @Override
         public int getCount() {
             return name.length;
         }
 
-        // @Override
+        @Override
         public Object getItem(int position) {
             return name[position];
         }
 
-        // @Override
+        @Override
         public long getItemId(int position) {
             return position;
         }
 
-       /* public void setRating(int position, float rating)
-        {
-           distance[position] = rating;
-            //在adapter的数据发生变化以后通知UI主线程根据新的数据重新画图
-            notifyDataSetChanged();
-        }*/
 
-        // @Override
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //对listview布局
             LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(
@@ -122,13 +103,10 @@ public class Query extends ListActivity {
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.content_query);
 
-     /*   poiSearch = PoiSearch.newInstance();
-        poiSearch.setOnGetPoiSearchResultListener(new PoiSearchResultListener());
-        ListView listView= (ListView) findViewById(R.id.listView2);*/
 
+        //连接数据库
         nearbydata db = new nearbydata(this);
         List<Nearby_sites> site = db.findAll();
-        Log.e("Long:", site.size() + "");
         for (int i = 0; i < site.size(); i++) {
 
 
@@ -159,11 +137,8 @@ public class Query extends ListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 String v = name[position];
                 String b = busline[position];
-
-
                 Intent intent = new Intent(Query.this, Bus_sites.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("site", v);
@@ -229,57 +204,23 @@ public class Query extends ListActivity {
     }
 
     //监听器
-    private class PoiSearchResultListener implements
-            OnGetPoiSearchResultListener {
 
-        @Override
-        public void onGetPoiDetailResult(PoiDetailResult result) {
-            if (result.error != SearchResult.ERRORNO.NO_ERROR) {
+    @Override
+    protected void onDestroy() {
 
-            } else {
+        super.onDestroy();
+    }
 
-
-                Toast.makeText(getApplicationContext(),
-                        result.getName() + ": " + result.getAddress(), Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
 
-        public void onGetPoiResult(PoiResult result) {
-            if ((result == null)
-                    || (result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND)) {
-
-                Log.e("add", "A");
-                return;
-            }
-            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-
-                Toast.makeText(Query.this, "查找成功！", Toast.LENGTH_SHORT).show();
-
-                c = result.getTotalPoiNum();
-                Log.e("add", "A" + c);
-
-                poiInfoList = result.getAllPoi();
-                for (int i = 0; i < poiInfoList.size(); i++) {
-
-                    Log.e("add", poiInfoList.get(i).address + poiInfoList.get(i).name);
-                    Toast.makeText(Query.this, c + "", Toast.LENGTH_SHORT).show();
-
-                }
-
-
-                // String c=result.getAllAddr().get(0).address.trim();
-                // Log.e("address",c);
-                return;
-            }
-            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
-                Log.e("add", "C");
-            }
-        }
-
-
-    }      //自定义一个Adapter继承BaseAdapter，要重写getCount(),getItem(),getItemId(),getView()四种方法
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
 
 }

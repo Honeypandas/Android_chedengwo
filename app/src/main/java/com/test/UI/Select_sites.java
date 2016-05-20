@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,7 +39,6 @@ public class Select_sites extends ListActivity {
     List<View> viewList = new ArrayList<View>();
     String target, start;
     public static LatLng start_loc;
-    public static LatLng tar_loc;
     String inflater = Context.LAYOUT_INFLATER_SERVICE;
     LayoutInflater layoutInflater;
     String uid;
@@ -173,16 +171,7 @@ public class Select_sites extends ListActivity {
 
     }
 
-    //按钮
-   /* public void sitesearch(View view) {
 
-        poiSearch.searchInCity(new PoiCitySearchOption().city("沈阳")
-                .keyword(key).pageCapacity(15));
-
-        name= Arrays.copyOf(temp, 15);
-        busline = Arrays.copyOf(temp,15);
-
-    }*/
 
 
     private class PoiSearchResultListener implements
@@ -220,18 +209,15 @@ public class Select_sites extends ListActivity {
                         name[i] = poiInfoList.get(i).name + "(公交站)";
                         busline[i] = poiInfoList.get(i).address;
                         location[i] = poiInfoList.get(i).location;
-                        //Log.e("print:",i+"次数："+location[i].toString());
                         s++;
                         continue;
                     }
                     s++;
 
                     location[i] = poiInfoList.get(i).location;
-                    // Log.e("print:",i+"次数："+location[i].toString());
                     name[i] = poiInfoList.get(i).name;
                     busline[i] = poiInfoList.get(i).address;
                     uid = poiInfoList.get(i).uid;
-                    //Log.e("s", busline[i]);
 
 
                 }
@@ -274,6 +260,28 @@ public class Select_sites extends ListActivity {
         super.onDestroy();
     }
 
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
 }
 

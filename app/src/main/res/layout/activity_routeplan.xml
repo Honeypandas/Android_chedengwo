@@ -12,7 +12,7 @@
         android:background="?attr/colorPrimary">
 
         <ImageButton
-            android:onClick="RoutePlan_back"
+            android:onClick="route_back"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:id="@+id/route_botton"

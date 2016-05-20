@@ -21,8 +21,8 @@ import com.test.R;
 
 public class Site_map extends AppCompatActivity {
 
-    public static LatLng latLng;
-    public static String title;
+    static LatLng latLng;
+    static String title;
     // 定位相关
 
 
@@ -100,5 +100,20 @@ public class Site_map extends AppCompatActivity {
         super.onDestroy();
     }
 
+
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
 }
