@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
        //SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("模拟车等我APP的设计与实现");
+        toolbar.setTitle("模拟车等我APP");
 
         setSupportActionBar(toolbar);
 
