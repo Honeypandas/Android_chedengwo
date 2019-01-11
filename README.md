@@ -6,7 +6,7 @@ Design a convenient real-time bus APP, the APP can query the bus line and its bu
 
 ##Characteristic introduce:  
 
-* 1.Data accuracy: input lines or site name, will be able to accurately inform passengers to take any bus current location, departure time and arrive station information.  
+* 1.Data accuracy: input line or site name, will be able to accurately inform passengers to take any bus current location, departure time and arrive station information.  
 
 * 2.All-round function: peripheral circuit, near the bus how far away, there are a few stand to be clear at a glance; Enter start and end, intelligently select multiple transfer plans, providing detailed information on the feasibility of the line and bus stop.
 
